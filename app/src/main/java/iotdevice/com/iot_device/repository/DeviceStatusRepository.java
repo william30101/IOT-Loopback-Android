@@ -7,9 +7,9 @@ import com.strongloop.android.loopback.callbacks.ListCallback;
 
 import iotdevice.com.iot_device.model.DeviceStatusModel;
 
-public class DeviceStatusRepostory extends ModelRepository<DeviceStatusModel> {
+public class DeviceStatusRepository extends ModelRepository<DeviceStatusModel> {
 
-    public DeviceStatusRepostory() {
+    public DeviceStatusRepository() {
         super("DeviceStatus",  "DeviceStatuses", DeviceStatusModel.class);
     }
 

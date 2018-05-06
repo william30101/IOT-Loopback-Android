@@ -22,7 +22,7 @@ public class App extends Application {
             // However, some applications will need to talk to more than one
             // server - create as many Adapters as you need.
             adapter = new RestAdapter(
-                    getApplicationContext(), "http://192.168.0.25:3000/api");
+                    getApplicationContext(), "http://192.168.0.191:3000/api");
 //                    getApplicationContext(), "http://35.194.235.166:3000/api");
 
             // This boilerplate is required for Lesson Three.
