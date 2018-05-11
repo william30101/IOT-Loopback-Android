@@ -1,4 +1,4 @@
-package iotdevice.com.iot_device.model;
+package iotdevice.com.iotDevice.model;
 
 import com.strongloop.android.loopback.Model;
 

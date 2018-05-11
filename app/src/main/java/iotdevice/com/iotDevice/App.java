@@ -1,8 +1,11 @@
-package iotdevice.com.iot_device;
+package iotdevice.com.iotDevice;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.strongloop.android.loopback.RestAdapter;
+
+import iotdevice.com.iotDevice.member.TokenManager;
 
 public class App extends Application {
     public static App sInstance;
@@ -12,6 +15,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        TokenManager.INSTANCE.initialize(this);
     }
 
     public RestAdapter getLoopBackAdapter() {
@@ -33,6 +37,9 @@ public class App extends Application {
         return adapter;
     }
 
+    public Context getContext() {
+        return this.getApplicationContext();
+    }
 
 
 }

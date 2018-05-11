@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="iotdevice.com.iot_device.HomeActivity">
+    tools:context="iotdevice.com.iot_device.iotdevice.com.iotDevice.HomeActivity">
 
     <Button
         android:id="@+id/sendRequest"

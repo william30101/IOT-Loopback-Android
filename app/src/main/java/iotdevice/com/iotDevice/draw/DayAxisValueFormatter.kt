@@ -1,4 +1,4 @@
-package iotdevice.com.iot_device.draw
+package iotdevice.com.iotDevice.draw
 
 import com.github.mikephil.charting.charts.BarLineChartBase
 import com.github.mikephil.charting.components.AxisBase

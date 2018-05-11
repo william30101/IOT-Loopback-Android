@@ -1,11 +1,11 @@
-package iotdevice.com.iot_device.repository;
+package iotdevice.com.iotDevice.repository;
 
 import com.google.common.collect.ImmutableMap;
 import com.strongloop.android.loopback.ModelRepository;
 import com.strongloop.android.loopback.callbacks.JsonArrayParser;
 import com.strongloop.android.loopback.callbacks.ListCallback;
 
-import iotdevice.com.iot_device.model.DeviceStatusModel;
+import iotdevice.com.iotDevice.model.DeviceStatusModel;
 
 public class DeviceStatusRepository extends ModelRepository<DeviceStatusModel> {
 

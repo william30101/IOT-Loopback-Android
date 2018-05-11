@@ -1,4 +1,4 @@
-package iotdevice.com.iot_device.draw
+package iotdevice.com.iotDevice.draw
 
 import android.content.Context
 import android.widget.TextView

@@ -1,4 +1,4 @@
-package iotdevice.com.iot_device.draw
+package iotdevice.com.iotDevice.draw
 
 import android.graphics.RectF
 import android.graphics.Typeface
@@ -140,19 +140,19 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
         var i = start.toInt()
         while (i < start + count.toFloat() + 1f) {
             val mult = range + 1
-            val `val` = (Math.random() * mult).toFloat()
+            val dataVal = (Math.random() * mult).toFloat()
 
             if (Math.random() * 100 < 25) {
-                yVals1.add(BarEntry(i.toFloat(), `val`, resources.getDrawable(R.drawable.star)))
+                yVals1.add(BarEntry(i.toFloat(), dataVal, resources.getDrawable(R.drawable.star, null)))
             } else {
-                yVals1.add(BarEntry(i.toFloat(), `val`))
+                yVals1.add(BarEntry(i.toFloat(), dataVal))
             }
             i++
         }
 
         val set1: BarDataSet
 
-        if (mBarChart.data != null && mBarChart.data.getDataSetCount() > 0) {
+        if (mBarChart.data != null && mBarChart.data.dataSetCount > 0) {
             set1 = mBarChart.data.getDataSetByIndex(0) as BarDataSet
             set1.values = yVals1
             mBarChart.data.notifyDataChanged()
@@ -160,7 +160,7 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
         } else {
             set1 = BarDataSet(yVals1, "The year 2017")
 
-            set1.setDrawIcons(false)
+//            set1.setDrawIcons(false)
 
             set1.setColors(*ColorTemplate.MATERIAL_COLORS)
 

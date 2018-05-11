@@ -1,4 +1,4 @@
-package iotdevice.com.iot_device.model;
+package iotdevice.com.iotDevice.model;
 
 public class EmailList {
     String id;

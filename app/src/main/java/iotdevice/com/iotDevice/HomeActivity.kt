@@ -1,13 +1,17 @@
-package iotdevice.com.iot_device
+package iotdevice.com.iotDevice
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.strongloop.android.loopback.AccessToken
+import com.strongloop.android.loopback.callbacks.ObjectCallback
 import com.strongloop.android.remoting.adapters.Adapter
-import iotdevice.com.iot_device.draw.BarChartActivity
-import iotdevice.com.iot_device.model.CustomerModel
-import iotdevice.com.iot_device.repository.CustomerRepository
-import iotdevice.com.iot_device.repository.DeviceStatusRepository
+import iotdevice.com.iotDevice.draw.BarChartActivity
+import iotdevice.com.iotDevice.model.CustomerModel
+import iotdevice.com.iotDevice.model.DeviceStatusModel
+import iotdevice.com.iotDevice.repository.CustomerRepository
+import iotdevice.com.iotDevice.repository.DeviceStatusRepository
+import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.activity_home.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
@@ -61,19 +65,19 @@ class HomeActivity : AppCompatActivity(), AnkoLogger {
 //        })
         info("click button")
 
-//        repository.findById(8, object : ObjectCallback<DeviceStatusModel> {
-//            override fun onSuccess(deviceStatus: DeviceStatusModel) {
-//                // found!
-//                info("onsuccess device status " + deviceStatus)
-//
-//                info("boot time is " + deviceStatus.bootTime)
-//            }
-//
-//            override fun onError(t: Throwable) {
-//                // handle the error
-//                info("onError device status " + t)
-//            }
-//        })
+        repository.findById(8, object : ObjectCallback<DeviceStatusModel> {
+            override fun onSuccess(deviceStatus: DeviceStatusModel) {
+                // found!
+                info("onsuccess device status " + deviceStatus)
+
+                info("boot time is " + deviceStatus.bootTime)
+            }
+
+            override fun onError(t: Throwable) {
+                // handle the error
+                info("onError device status " + t)
+            }
+        })
 
 
 //        repository.filter(1, object : ListCallback<DeviceStatusModel> {
@@ -103,18 +107,18 @@ class HomeActivity : AppCompatActivity(), AnkoLogger {
         //    as an example; making it more efficient is left as a rewarding exercise for the reader.
         val customerRepo = adapter.createRepository(CustomerRepository::class.java)
 
-//        customerRepo.loginUser("william30101@gmail.com", "1qaz@WSX",
-//                object : CustomerRepository.LoginCallback {
-//                    override fun onSuccess(token: AccessToken?, currentUser: CustomerModel?) {
-//                        info("currentUser :" + currentUser?.username + " AccessToken" + token)
-//                    }
-//
-//                    override fun onError(t: Throwable) {
-//                        // login failed
-//                        info("loginfail " + t)
-//                    }
-//                }
-//        )
+        customerRepo.loginUser("william30101@gmail.com", "1qaz@WSX",
+                object : CustomerRepository.LoginCallback {
+                    override fun onSuccess(token: AccessToken?, currentUser: CustomerModel?) {
+                        info("currentUser :" + currentUser?.username + " AccessToken" + token)
+                    }
+
+                    override fun onError(t: Throwable) {
+                        // login failed
+                        info("loginfail " + t)
+                    }
+                }
+        )
 
 //        {
 //            "lincenNo": "123",

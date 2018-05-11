@@ -1,9 +1,8 @@
-package iotdevice.com.iot_device.model;
+package iotdevice.com.iotDevice.model;
 
 public class CustomerAddress {
     String city;
     String state;
-    long id;
 
     public String getCity() {
         return city;
@@ -21,11 +20,4 @@ public class CustomerAddress {
         this.state = state;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }
