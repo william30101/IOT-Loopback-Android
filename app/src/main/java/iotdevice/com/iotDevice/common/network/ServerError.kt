@@ -1,6 +1,6 @@
 package iotdevice.com.iotDevice.common.network
 
-class GMServerError {
+class ServerError {
 
     private var mError =""
 
@@ -8,7 +8,7 @@ class GMServerError {
 
     private var mStatusCode = 0
 
-    fun GMServerError(err: String, desc: String, statusCode: Int) {
+    fun ServerError(err: String, desc: String, statusCode: Int) {
         mError = err
         mErrorDescription = desc
         mStatusCode = statusCode

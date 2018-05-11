@@ -4,7 +4,7 @@ import android.accounts.AccountAuthenticatorResponse
 import android.accounts.AccountManager
 import android.os.Bundle
 
-class AccountAuthenticatorActivity : BaseActivity() {
+open class AccountAuthenticatorActivity : BaseActivity() {
     private var mAccountAuthenticatorResponse: AccountAuthenticatorResponse? = null
     private var mResultBundle: Bundle? = null
 
