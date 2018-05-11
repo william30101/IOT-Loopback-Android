@@ -4,9 +4,9 @@ import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.Intent
 import android.os.Bundle
-import iotdevice.com.iotDevice.authenticator.AuthUtil
-import iotdevice.com.iotDevice.common.AccountAuthenticatorActivity
 import iotdevice.com.iotDevice.member.TokenManager
+import iotdevice.com.iotDevice.member.auth.AccountAuthenticatorActivity
+import iotdevice.com.iotDevice.member.auth.AuthUtil
 import iotdevice.com.iotDevice.model.CustomerModel
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.activity_login.*

@@ -1,8 +1,9 @@
-package iotdevice.com.iotDevice.common
+package iotdevice.com.iotDevice.member.auth
 
 import android.accounts.AccountAuthenticatorResponse
 import android.accounts.AccountManager
 import android.os.Bundle
+import iotdevice.com.iotDevice.common.BaseActivity
 
 open class AccountAuthenticatorActivity : BaseActivity() {
     private var mAccountAuthenticatorResponse: AccountAuthenticatorResponse? = null

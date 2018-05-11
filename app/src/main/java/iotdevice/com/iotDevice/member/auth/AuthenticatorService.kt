@@ -1,4 +1,4 @@
-package iotdevice.com.iotDevice.authenticator
+package iotdevice.com.iotDevice.member.auth
 
 import android.app.Service
 import android.content.Intent

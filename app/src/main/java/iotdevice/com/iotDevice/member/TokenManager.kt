@@ -8,7 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import iotdevice.com.iotDevice.App
-import iotdevice.com.iotDevice.authenticator.AuthUtil
+import iotdevice.com.iotDevice.member.auth.AuthUtil
 import iotdevice.com.iotDevice.login.LoginActivity
 import iotdevice.com.iotDevice.model.CustomerModel
 import iotdevice.com.iot_device.BuildConfig
