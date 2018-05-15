@@ -8,10 +8,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import iotdevice.com.iotDevice.App
-import iotdevice.com.iotDevice.member.auth.AuthUtil
 import iotdevice.com.iotDevice.login.LoginActivity
+import iotdevice.com.iotDevice.member.auth.AuthUtil
 import iotdevice.com.iotDevice.model.CustomerModel
-import iotdevice.com.iot_device.BuildConfig
+import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.AnkoLogger
@@ -21,7 +21,6 @@ import java.sql.Timestamp
 object TokenManager: AuthenticationSessionFacade, AnkoLogger {
 
     private var mAccountManager: AccountManager? = null
-    private const val ACCOUNT_TYPE = BuildConfig.APPLICATION_ID
 
     private var mLoggedIn: Boolean = false          // Is a user logged in
     private var mUsername: String? = null           // User name for currently logged in user
@@ -32,7 +31,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
     private var mTokenAvailableListener: GMTokenAvailableListener? = null
 
     private fun getAccount(): Account? {
-        val accounts = mAccountManager?.getAccountsByType(ACCOUNT_TYPE)
+        val accounts = mAccountManager?.getAccountsByType(AuthUtil.ACCOUNT_TYPE_NAME)
 
         return if (accounts?.size == 0) null else accounts?.get(0)
     }
@@ -47,9 +46,9 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
         val a = getAccount()
 
         if (a != null) {
-            val future = mAccountManager?.getAuthToken(a, LoginActivity.ARG_ACCOUNT_TYPE, null, null, null, null)
+            val future = mAccountManager?.getAuthToken(a, AuthUtil.AUTH_TOKEN_TYPE_NAME, null, null, null, null)
 
-            launch(UI) {
+            launch(CommonPool) {
                 try {
                     val bnd = future?.result
 
@@ -80,12 +79,29 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
 
     }
 
+    interface RegisterListener {
+
+        fun onRegisterComplete(result: Any?)
+
+        fun onRegisterError(err: Throwable)
+
+    }
+
     fun performLoginRequest(authParams: Bundle?, userName: String, password: String, loginListener: LoginListener) {
 
         val memberRequestService = MemberRequestService()
 
         launch(UI) {
             memberRequestService.signIn(userName, password, loginListener)
+        }
+    }
+
+    fun performRegisterRequest(authParams: Bundle?, email: String, userName: String, password: String, resiterListener: RegisterListener) {
+
+        val memberRequestService = MemberRequestService()
+
+        launch(UI) {
+            memberRequestService.register(email, password, userName, resiterListener)
         }
     }
 
@@ -103,18 +119,18 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
             var isLoggedIn = false
             val account = getAccount()
 //            val isTokenFresh = mExpiryTimestamp.after(Timestamp(System.currentTimeMillis()))
-            var isGlobalProfile = false
+//            var isGlobalProfile = false
 
-            if (account != null) {
-                val isGlobalProfileStr = mAccountManager?.getUserData(account, LoginActivity.KEY_IS_GLOBAL_PROFILE)
-                isGlobalProfile = java.lang.Boolean.valueOf(isGlobalProfileStr)
-            }
+//            if (account != null) {
+//                val isGlobalProfileStr = mAccountManager?.getUserData(account, LoginActivity.KEY_IS_GLOBAL_PROFILE)
+//                isGlobalProfile = java.lang.Boolean.valueOf(isGlobalProfileStr)
+//            }
 
             // is user logged in, account still exists, timestamp's good & has global profile
             if (mLoggedIn &&
-                    account != null &&
-//                    isTokenFresh &&
-                    isGlobalProfile) {
+                    account != null
+//                    isTokenFresh
+                ) {
 
                 isLoggedIn = true
                 info("currently logged in")
@@ -133,7 +149,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
 
         val intent = Intent(App.sInstance.context, LoginActivity::class.java)
 
-        intent.putExtra(LoginActivity.ARG_ACCOUNT_TYPE, ACCOUNT_TYPE)
+        intent.putExtra(LoginActivity.ARG_ACCOUNT_TYPE, AuthUtil.ACCOUNT_TYPE_NAME)
         intent.putExtra(LoginActivity.ARG_AUTH_TOKEN_TYPE, AuthUtil.AUTH_TOKEN_TYPE_NAME)
 
         if (destinationIntent != null)
@@ -161,7 +177,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
             return
         }
 
-        mAccountManager?.getAuthToken(account, LoginActivity.ARG_AUTH_TOKEN_TYPE, null, null,
+        mAccountManager?.getAuthToken(account, AuthUtil.AUTH_TOKEN_TYPE_NAME, null, null,
                 AccountManagerCallback { future ->
                     try {
                         val bnd = future.result

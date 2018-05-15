@@ -4,15 +4,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
-
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
         android:name="iotdevice.com.iotDevice.App"
@@ -22,17 +20,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="iotdevice.com.iotDevice.HomeActivity">
-        </activity>
+        <activity
+            android:name="iotdevice.com.iotDevice.home.HomeActivity"
+            android:label="@string/title_activity_home" />
         <activity android:name="iotdevice.com.iotDevice.draw.BarChartActivity" />
-        <activity android:name="iotdevice.com.iotDevice.login.LoginActivity" >
+        <activity android:name="iotdevice.com.iotDevice.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name="iotdevice.com.iotDevice.register.RegisgterActivity" />
+        <activity android:name="iotdevice.com.iotDevice.DeviceAction.AddDevicesActivity" />
 
         <service
             android:name="iotdevice.com.iotDevice.member.auth.AuthenticatorService"
@@ -48,10 +48,10 @@
                 android:resource="@xml/authenticator" /> <!-- We haven't defined this -->
         </service>
 
-
-
+        <activity
+            android:name="iotdevice.com.iotDevice.home.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
-
-
 
 </manifest>

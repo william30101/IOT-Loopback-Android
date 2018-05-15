@@ -1,18 +1,16 @@
 package iotdevice.com.iotDevice
 
+import android.accounts.AccountManager
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.strongloop.android.loopback.AccessToken
 import com.strongloop.android.loopback.callbacks.ObjectCallback
 import com.strongloop.android.remoting.adapters.Adapter
-import iotdevice.com.iotDevice.draw.BarChartActivity
 import iotdevice.com.iotDevice.model.CustomerModel
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import iotdevice.com.iotDevice.repository.CustomerRepository
 import iotdevice.com.iotDevice.repository.DeviceStatusRepository
-import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.activity_home.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 
@@ -21,15 +19,15 @@ class HomeActivity : AppCompatActivity(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
-
-        sendRequest.setOnClickListener({ view -> sendRequest() })
-
-        barChartBtn.setOnClickListener({ view ->
-            val intent = Intent(this, BarChartActivity::class.java)
-            // start your next activity
-            startActivity(intent)
-        })
+//        setContentView(R.layout.activity_home)
+//
+//        sendRequest.setOnClickListener({ view -> sendRequest() })
+//
+//        barChartBtn.setOnClickListener({ view ->
+//            val intent = Intent(this, BarChartActivity::class.java)
+//            // start your next activity
+//            startActivity(intent)
+//        })
     }
 
     private fun sendRequest() {
@@ -164,5 +162,19 @@ class HomeActivity : AppCompatActivity(), AnkoLogger {
 //        }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        // get destination intent if there is one
+        val destinationIntent = intent.getParcelableExtra<Intent>(AccountManager.KEY_INTENT)
+
+        // trigger success screen
+//        val intent = Intent(this, RegisterSuccessfulActivity::class.java)
+//        intent.putExtra(RegisterSuccessfulFragment.USER_NAME, name)
+//        intent.putExtra(RegisterSuccessfulFragment.USER_EMAIL, email)
+//        intent.putExtra(RegisterSuccessfulFragment.USER_DOB, dob)
+//        intent.putExtra(RegisterSuccessfulFragment.USER_GENDER, gender)
+//        intent.putExtra(RegisterSuccessfulFragment.INTENT, destinationIntent)
+//        startActivity(intent)
+    }
 }

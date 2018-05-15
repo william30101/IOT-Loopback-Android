@@ -7,8 +7,8 @@ class CustomerModel : User() {
     var username: String = ""
     var emailVerified: Boolean = false
     // TODO: fix the loopback bug, can't use array now.
-//    var customerAddress: CustomerAddress  = CustomerAddress()
-//    var emailList: Array<EmailList> = emptyArray()
+    var customerAddress: CustomerAddress  = CustomerAddress()
+    var emailList: Array<EmailList> = emptyArray()
     var id: String = ""
 
 }

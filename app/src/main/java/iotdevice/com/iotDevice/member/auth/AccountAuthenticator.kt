@@ -10,7 +10,6 @@ import android.os.Bundle
 import iotdevice.com.iotDevice.login.LoginActivity
 import iotdevice.com.iotDevice.login.LoginActivity.Companion.ARG_IS_ADDING_NEW_ACCOUNT
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 
 
 class AccountAuthenticator(ctx: Context) : AbstractAccountAuthenticator(ctx), AnkoLogger {
@@ -33,25 +32,25 @@ class AccountAuthenticator(ctx: Context) : AbstractAccountAuthenticator(ctx), An
         // Extract the username and password from the Account Manager, and ask
         // the server for an appropriate AuthToken.
 
-        info(" enter getAuthToken")
-        return Bundle()
-
+//        info(" enter getAuthToken")
+//
+//
 //        val am = AccountManager.get(context)
 //
 //        var authToken: String? = am.peekAuthToken(account, authTokenType)
 //
 //        // Lets give another try to authenticate the user
-//        if (null != authToken) {
-//            if (authToken.isEmpty()) {
-//                val password = am.getPassword(account)
-//                if (password != null) {
-//                    launch(CommonPool) {
-//                        authToken = AuthUtil.mServerAuthenticator.signIn(account?.name?:"", password)
-//
-//                    }
-//                }
-//            }
-//        }
+////        if (null != authToken) {
+////            if (authToken.isEmpty()) {
+////                val password = am.getPassword(account)
+////                if (password != null) {
+////                    launch(CommonPool) {
+////                        authToken = AuthUtil.mServerAuthenticator.signIn(account?.name?:"", password)
+////
+////                    }
+////                }
+////            }
+////        }
 //
 //        // If we get an authToken - we return it
 //        if (null != authToken) {
@@ -80,10 +79,10 @@ class AccountAuthenticator(ctx: Context) : AbstractAccountAuthenticator(ctx), An
 //            intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, account.name)
 //        }
 //
-//        val bundle = Bundle()
+        val bundle = Bundle()
 //        bundle.putParcelable(AccountManager.KEY_INTENT, intent)
-//
-//        return bundle
+
+        return bundle
     }
 
     override fun hasFeatures(response: AccountAuthenticatorResponse?, account: Account?, features: Array<out String>?): Bundle {
@@ -97,8 +96,8 @@ class AccountAuthenticator(ctx: Context) : AbstractAccountAuthenticator(ctx), An
     override fun addAccount(response: AccountAuthenticatorResponse?, accountType: String?,
                             authTokenType: String?, requiredFeatures: Array<out String>?, options: Bundle?): Bundle {
         val intent = Intent(context, LoginActivity::class.java)
-        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, accountType)
-        intent.putExtra(AuthUtil.AUTH_TOKEN_TYPE_NAME, authTokenType)
+        intent.putExtra(LoginActivity.ARG_ACCOUNT_TYPE, accountType)
+        intent.putExtra(LoginActivity.ARG_AUTH_TOKEN_TYPE, authTokenType)
         intent.putExtra(ARG_IS_ADDING_NEW_ACCOUNT, true)
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response)
 

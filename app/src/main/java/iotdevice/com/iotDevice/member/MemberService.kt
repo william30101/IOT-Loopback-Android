@@ -19,4 +19,7 @@ interface MemberService {
      */
     suspend fun signIn(email: String, password: String, loginListener: TokenManager.LoginListener)
 
+    suspend fun register(email: String, password: String, username: String,
+                         registerListener: TokenManager.RegisterListener?)
+
 }
