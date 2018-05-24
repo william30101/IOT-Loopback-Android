@@ -209,6 +209,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
                             destinationIntent.setExtrasClassLoader(App::class.java.classLoader)
                             destinationIntent.putExtra("token", mAuthToken)
                             launchingActivity.startActivity(destinationIntent)
+                            launchingActivity.finish()
                         }
 //                } else {
 //                   info( "Token has expired, deleting account and requesting new login")
