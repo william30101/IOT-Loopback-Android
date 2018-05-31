@@ -17,7 +17,7 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 
 
-class LoginActivity: AccountAuthenticatorActivity(), AnkoLogger, TokenManager.LoginListener {
+class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.LoginListener {
 
     var mAccountManager: AccountManager? = null
 
@@ -39,9 +39,9 @@ class LoginActivity: AccountAuthenticatorActivity(), AnkoLogger, TokenManager.Lo
         loginBtn.setOnClickListener({ _ ->
             TokenManager.performLoginRequest(intent.extras, loginUserName.text.toString(),
                     loginPassword.text.toString(), this)
-            })
+        })
 
-        registerTextView.setOnClickListener( { _ ->
+        registerTextView.setOnClickListener({ _ ->
             startActivity(RegisterActivityIntent())
         })
 
@@ -52,7 +52,7 @@ class LoginActivity: AccountAuthenticatorActivity(), AnkoLogger, TokenManager.Lo
 
     fun Context.RegisterActivityIntent(): Intent {
         return Intent(this, RegisgterActivity::class.java).apply {
-//            putExtra(INTENT_USER_ID, user.id)
+            //            putExtra(INTENT_USER_ID, user.id)
         }
     }
 
@@ -63,7 +63,7 @@ class LoginActivity: AccountAuthenticatorActivity(), AnkoLogger, TokenManager.Lo
         val accountPassword = loginPassword.text.toString()
         val account = Account(accountName, AuthUtil.ACCOUNT_TYPE_NAME)
 
-        info("authToken : $authToken" )
+        info("authToken : $authToken")
         if (intent.getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, true)) {
             // Creating the account on the device and setting the auth token we got
             // (Not setting the auth token will cause another call to the server to authenticate the user)
@@ -72,8 +72,7 @@ class LoginActivity: AccountAuthenticatorActivity(), AnkoLogger, TokenManager.Lo
         } else {
             mAccountManager?.setPassword(account, accountPassword)
         }
-
-        val intent = Intent()
+        val intent = Intent(this, HomeActivity::class.java)
 //        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, accountName)
 //        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, AuthUtil.AUTH_TOKEN_TYPE_NAME)
         intent.putExtra(AccountManager.KEY_AUTHTOKEN, authToken)
@@ -81,7 +80,7 @@ class LoginActivity: AccountAuthenticatorActivity(), AnkoLogger, TokenManager.Lo
         setResult(RESULT_OK, intent)
 
 
-
+        startActivity(intent)
         finish()
     }
 

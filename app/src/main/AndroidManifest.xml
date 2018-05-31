@@ -23,7 +23,9 @@
         <activity
             android:name="iotdevice.com.iotDevice.home.HomeActivity"
             android:label="@string/title_activity_home"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask">
+
+        </activity>
 
         <activity android:name="iotdevice.com.iotDevice.draw.BarChartActivity" />
         <activity android:name="iotdevice.com.iotDevice.login.LoginActivity">
@@ -49,11 +51,6 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" /> <!-- We haven't defined this -->
         </service>
-
-        <activity
-            android:name="iotdevice.com.iotDevice.home.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

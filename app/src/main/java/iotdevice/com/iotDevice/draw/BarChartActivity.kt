@@ -17,6 +17,10 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
+import com.strongloop.android.loopback.callbacks.ListCallback
+import iotdevice.com.iotDevice.App
+import iotdevice.com.iotDevice.model.DeviceStatusModel
+import iotdevice.com.iotDevice.repository.DeviceStatusRepository
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.barchart.*
 import org.jetbrains.anko.AnkoLogger
@@ -31,10 +35,17 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
     lateinit var mTfRegular: Typeface
     lateinit var mTfLight: Typeface
 
+    var deviceId: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.barchart)
+
+
+        val deviceId = this.intent.getBundleExtra("homeBundle").getLong("deviceId")
+        info("deviceId : $deviceId")
+
 
         mTfRegular = Typeface.createFromAsset(assets, "OpenSans-Regular.ttf")
         mTfLight = Typeface.createFromAsset(assets, "OpenSans-Light.ttf")
@@ -104,8 +115,23 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
         mv.chartView = mBarChart // For bounds control
         mBarChart.marker = mv // Set the marker to the chart
 
-        setData(12, 50f)
+        getDeviceStatus(deviceId)
+    }
 
+    fun getDeviceStatus(deviceId: Long?) {
+        val adapter = App.sInstance.loopBackAdapter
+        val deviceStatusRepository = adapter.createRepository(DeviceStatusRepository::class.java)
+
+        deviceStatusRepository.findNewestStatus(deviceId, object: ListCallback<DeviceStatusModel> {
+            override fun onSuccess(objects: MutableList<DeviceStatusModel>?) {
+                info("bootime is :" + objects!![0].bootTime)
+                setData(12, 50f, objects[0])
+            }
+
+            override fun onError(t: Throwable?) {
+                info("error : $t")
+            }
+        })
 
     }
 
@@ -131,22 +157,26 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
         MPPointF.recycleInstance(position)
     }
 
-    private fun setData(count: Int, range: Float) {
+    private fun setData(count: Int, range: Float, deviceStatus: DeviceStatusModel) {
 
         val start = 1f
 
         val yVals1 = ArrayList<BarEntry>()
 
         var i = start.toInt()
-        while (i < start + count.toFloat() + 1f) {
-            val mult = range + 1
-            val dataVal = (Math.random() * mult).toFloat()
+        while (i < start + count.toFloat()) {
 
-            if (Math.random() * 100 < 25) {
-                yVals1.add(BarEntry(i.toFloat(), dataVal, resources.getDrawable(R.drawable.star, null)))
-            } else {
-                yVals1.add(BarEntry(i.toFloat(), dataVal))
-            }
+            yVals1.add(BarEntry(i.toFloat(), deviceStatus.productivity0.toFloat(), null, null))
+
+
+//            val mult = range + 1
+//            val dataVal = (Math.random() * mult).toFloat()
+//
+//            if (Math.random() * 100 < 25) {
+//                yVals1.add(BarEntry(i.toFloat(), dataVal, resources.getDrawable(R.drawable.star, null)))
+//            } else {
+//                yVals1.add(BarEntry(i.toFloat(), dataVal))
+//            }
             i++
         }
 

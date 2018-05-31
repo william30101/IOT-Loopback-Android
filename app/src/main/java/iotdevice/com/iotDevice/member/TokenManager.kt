@@ -173,7 +173,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
         val account = getAccount()
 
         if (!isLoggedIn) {  // no accounts, request login and create new
-            requestLogin(launchingActivity, destinationIntent)
+//            requestLogin(launchingActivity, destinationIntent)
             return
         }
 
@@ -207,6 +207,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
                         // Launch next activity if there is one
                         if (destinationIntent != null) {
                             destinationIntent.setExtrasClassLoader(App::class.java.classLoader)
+                            destinationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                             destinationIntent.putExtra("token", mAuthToken)
                             launchingActivity.startActivity(destinationIntent)
                             launchingActivity.finish()
