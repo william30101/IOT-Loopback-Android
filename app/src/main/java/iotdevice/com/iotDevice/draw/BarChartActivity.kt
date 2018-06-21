@@ -17,6 +17,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
+import com.strongloop.android.loopback.RestAdapter
 import com.strongloop.android.loopback.callbacks.ListCallback
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.model.DeviceStatusModel
@@ -37,6 +38,9 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
 
     var deviceId: Long = 0
 
+    private val adapter: RestAdapter by lazy { App.sInstance.loopBackAdapter }
+    private val deviceStatusRepository: DeviceStatusRepository by lazy { adapter.createRepository(DeviceStatusRepository::class.java) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -56,6 +60,7 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
 
         mBarChart.setDrawBarShadow(false)
         mBarChart.setDrawValueAboveBar(true)
+        mBarChart.isDoubleTapToZoomEnabled = false
 
         mBarChart.description.isEnabled = false
 
@@ -115,17 +120,103 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
         mv.chartView = mBarChart // For bounds control
         mBarChart.marker = mv // Set the marker to the chart
 
-        getDeviceStatus(deviceId)
+
+//        getMonthStatus(deviceId)
+//        getTodayStatus(deviceId)
+//        getMonthOperationStatus(deviceId)
+        getMonthPCSStatus(deviceId)
     }
 
-    fun getDeviceStatus(deviceId: Long?) {
-        val adapter = App.sInstance.loopBackAdapter
-        val deviceStatusRepository = adapter.createRepository(DeviceStatusRepository::class.java)
-
-        deviceStatusRepository.findNewestStatus(deviceId, object: ListCallback<DeviceStatusModel> {
+    fun getTodayStatus(deviceId: Long?) {
+        deviceStatusRepository.findTodayStatus(deviceId, object: ListCallback<DeviceStatusModel> {
             override fun onSuccess(objects: MutableList<DeviceStatusModel>?) {
-                info("bootime is :" + objects!![0].bootTime)
-                setData(12, 50f, objects[0])
+
+                // TODO: Put each login to different place
+                val todayStatus = objects!![0]
+
+                val deviceStatusList : HashMap<Int, Float>  = hashMapOf(
+                        0 to todayStatus.productivity0.toFloat(),
+                        1 to todayStatus.productivity1.toFloat(),
+                        2 to todayStatus.productivity2.toFloat(),
+                        3 to todayStatus.productivity3.toFloat(),
+                        4 to todayStatus.productivity4.toFloat(),
+                        5 to todayStatus.productivity5.toFloat(),
+                        6 to todayStatus.productivity6.toFloat(),
+                        7 to todayStatus.productivity7.toFloat(),
+                        8 to todayStatus.productivity8.toFloat(),
+                        9 to todayStatus.productivity9.toFloat(),
+                        10 to todayStatus.productivity10.toFloat(),
+                        11 to todayStatus.productivity11.toFloat(),
+                        12 to todayStatus.productivity12.toFloat(),
+                        13 to todayStatus.productivity13.toFloat(),
+                        14 to todayStatus.productivity14.toFloat(),
+                        15 to todayStatus.productivity15.toFloat(),
+                        16 to todayStatus.productivity16.toFloat(),
+                        17 to todayStatus.productivity17.toFloat(),
+                        18 to todayStatus.productivity18.toFloat(),
+                        19 to todayStatus.productivity19.toFloat(),
+                        20 to todayStatus.productivity20.toFloat(),
+                        21 to todayStatus.productivity21.toFloat(),
+                        22 to todayStatus.productivity22.toFloat(),
+                        23 to todayStatus.productivity23.toFloat())
+
+
+                setOutputData(deviceStatusList, "HourOutput")
+            }
+
+            override fun onError(t: Throwable?) {
+                info("error : $t")
+            }
+        })
+
+
+
+
+    }
+
+    fun getMonthStatus(deviceId: Long?) {
+
+        deviceStatusRepository.findMonthStatus(deviceId, object: ListCallback<DeviceStatusModel> {
+            override fun onSuccess(objects: MutableList<DeviceStatusModel>?) {
+
+                val dayTotalList: HashMap<Int, Float> = hashMapOf()
+
+                objects!!.forEach {
+
+                    val dayTotal =
+                            it.productivity0 +
+                            it.productivity1 +
+                            it.productivity2 +
+                            it.productivity3 +
+                            it.productivity4 +
+                            it.productivity5 +
+                            it.productivity6 +
+                            it.productivity7 +
+                            it.productivity8 +
+                            it.productivity9 +
+                            it.productivity10 +
+                            it.productivity11 +
+                            it.productivity12 +
+                            it.productivity13 +
+                            it.productivity14 +
+                            it.productivity15 +
+                            it.productivity16 +
+                            it.productivity17 +
+                            it.productivity18 +
+                            it.productivity19 +
+                            it.productivity20 +
+                            it.productivity21 +
+                            it.productivity22 +
+                            it.productivity23
+
+
+                    val calendar = Calendar.getInstance()
+                    calendar.timeInMillis = it.timeStamp!!.toLong()
+
+                    dayTotalList[calendar.get(Calendar.DAY_OF_MONTH)] = dayTotal.toFloat()
+                }
+
+                setOutputData(dayTotalList, "DayOutput")
             }
 
             override fun onError(t: Throwable?) {
@@ -135,8 +226,89 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
 
     }
 
+    fun getMonthOperationStatus(deviceId: Long?) {
+
+        deviceStatusRepository.findMonthStatus(deviceId, object: ListCallback<DeviceStatusModel> {
+            override fun onSuccess(objects: MutableList<DeviceStatusModel>?) {
+
+                val dayTotalList: HashMap<Int, Float> = hashMapOf()
+
+                objects!!.forEach {
+
+                    val dayTotal = it.operationTime
+                    val calendar = Calendar.getInstance()
+                    calendar.timeInMillis = it.timeStamp!!.toLong()
+
+                    dayTotalList[calendar.get(Calendar.DAY_OF_MONTH)] = dayTotal.toFloat()
+                }
+
+                setOutputData(dayTotalList, "DayOperationTime")
+            }
+
+            override fun onError(t: Throwable?) {
+                info("error : $t")
+            }
+        })
+
+    }
+
+    fun getMonthPCSStatus(deviceId: Long?) {
+
+        deviceStatusRepository.findMonthStatus(deviceId, object: ListCallback<DeviceStatusModel> {
+            override fun onSuccess(objects: MutableList<DeviceStatusModel>?) {
+
+                val dayTotalList: HashMap<Int, Float> = hashMapOf()
+
+                objects!!.forEach {
+
+
+                    val dayOutputPCS =
+                            it.productivity0 +
+                                    it.productivity1 +
+                                    it.productivity2 +
+                                    it.productivity3 +
+                                    it.productivity4 +
+                                    it.productivity5 +
+                                    it.productivity6 +
+                                    it.productivity7 +
+                                    it.productivity8 +
+                                    it.productivity9 +
+                                    it.productivity10 +
+                                    it.productivity11 +
+                                    it.productivity12 +
+                                    it.productivity13 +
+                                    it.productivity14 +
+                                    it.productivity15 +
+                                    it.productivity16 +
+                                    it.productivity17 +
+                                    it.productivity18 +
+                                    it.productivity19 +
+                                    it.productivity20 +
+                                    it.productivity21 +
+                                    it.productivity22 +
+                                    it.productivity23
+
+                    val dayOperationTime = it.operationTime
+                    val calendar = Calendar.getInstance()
+                    calendar.timeInMillis = it.timeStamp!!.toLong()
+
+                    val avgProduction = dayOutputPCS / dayOperationTime
+
+                    dayTotalList[calendar.get(Calendar.DAY_OF_MONTH)] = avgProduction.toFloat()
+                }
+
+                setOutputData(dayTotalList, "DayAverageOutput")
+            }
+
+            override fun onError(t: Throwable?) {
+                info("error : $t")
+            }
+        })
+
+    }
+
+
     override fun onNothingSelected() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onValueSelected(e: Entry?, h: Highlight?) {
@@ -157,28 +329,12 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
         MPPointF.recycleInstance(position)
     }
 
-    private fun setData(count: Int, range: Float, deviceStatus: DeviceStatusModel) {
-
-        val start = 1f
+    private fun setOutputData(statusList: HashMap<Int, Float>, labelName: String) {
 
         val yVals1 = ArrayList<BarEntry>()
 
-        var i = start.toInt()
-        while (i < start + count.toFloat()) {
 
-            yVals1.add(BarEntry(i.toFloat(), deviceStatus.productivity0.toFloat(), null, null))
-
-
-//            val mult = range + 1
-//            val dataVal = (Math.random() * mult).toFloat()
-//
-//            if (Math.random() * 100 < 25) {
-//                yVals1.add(BarEntry(i.toFloat(), dataVal, resources.getDrawable(R.drawable.star, null)))
-//            } else {
-//                yVals1.add(BarEntry(i.toFloat(), dataVal))
-//            }
-            i++
-        }
+        statusList.forEach { yVals1.add(BarEntry(it.key.toFloat(),it.value)) }
 
         val set1: BarDataSet
 
@@ -188,7 +344,7 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
             mBarChart.data.notifyDataChanged()
             mBarChart.notifyDataSetChanged()
         } else {
-            set1 = BarDataSet(yVals1, "The year 2017")
+            set1 = BarDataSet(yVals1, labelName)
 
 //            set1.setDrawIcons(false)
 

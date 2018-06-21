@@ -28,7 +28,9 @@ public class App extends Application {
             adapter = new RestAdapter(
 //                    getApplicationContext(), "http://192.168.0.191:3000/api");
                     //getApplicationContext(), "http://192.168.0.22:3000/api");
-            getApplicationContext(), "http://172.20.10.3:3000/api");
+//            getApplicationContext(), "http://172.20.10.3:3000/api");
+            getApplicationContext(), "http://192.168.0.15:3000/api");
+
 
 
 
