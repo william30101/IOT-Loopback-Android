@@ -16,14 +16,14 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 
 
-class AddDevicesActivity: AppCompatActivity(), AnkoLogger {
+class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_add_device)
 
-        addDeviceBtn.setOnClickListener( { _ ->
+        addDeviceBtn.setOnClickListener({ _ ->
             val adapter = App.sInstance.loopBackAdapter
 
             // 2. Instantiate our NoteRepository. For the intrepid, notice that we could create this
@@ -36,14 +36,14 @@ class AddDevicesActivity: AppCompatActivity(), AnkoLogger {
             val customerRepository = adapter.createRepository(CustomerRepository::class.java)
 
             deviceRepository.filter(deviceCodeEditText.text.toString().toInt(), devicePasswordEditText.text.toString().toInt(),
-                    object: ListCallback<DeviceModel> {
+                    object : ListCallback<DeviceModel> {
                         override fun onSuccess(objects: MutableList<DeviceModel>?) {
                             toast("success : $objects")
 
                             customerDeviceRepository.add(objects?.get(0)?.getId().toString(),
-                                                            customerRepository.currentUserId.toString(),
-                                                            deviceDisplayNameEditText.text.toString(),
-                                    object: ObjectCallback<CustomerDeviceModel> {
+                                    customerRepository.currentUserId.toString(),
+                                    deviceDisplayNameEditText.text.toString(),
+                                    object : ObjectCallback<CustomerDeviceModel> {
 
                                         override fun onSuccess(res: CustomerDeviceModel?) {
                                             toast("success : $res")
@@ -71,7 +71,6 @@ class AddDevicesActivity: AppCompatActivity(), AnkoLogger {
 //    fun getDeviceList: ListCallback<DeviceModel> {
 //        info("test")
 //    }
-
 
 
 }

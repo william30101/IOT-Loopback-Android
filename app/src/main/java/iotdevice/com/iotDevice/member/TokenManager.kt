@@ -11,7 +11,6 @@ import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.login.LoginActivity
 import iotdevice.com.iotDevice.member.auth.AuthUtil
 import iotdevice.com.iotDevice.model.CustomerModel
-import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.AnkoLogger
@@ -20,14 +19,17 @@ import java.sql.Timestamp
 
 object TokenManager: AuthenticationSessionFacade, AnkoLogger {
 
+    var passwordFromManager = ""
+    var mUsername = ""           // User name for currently logged in user
+
+
     private var mAccountManager: AccountManager? = null
 
+
     private var mLoggedIn: Boolean = false          // Is a user logged in
-    private var mUsername: String? = null           // User name for currently logged in user
     private var mAuthToken: String? = null          // Auth token for currently logged in user
     private var mRefreshToken: String? = null       // Refresh token for currently logged in user
     private var mExpiryTimestamp: Timestamp? = null // Expiry timestamp for auth token
-
     private var mTokenAvailableListener: GMTokenAvailableListener? = null
 
     private fun getAccount(): Account? {
@@ -46,24 +48,24 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
         val a = getAccount()
 
         if (a != null) {
-            val future = mAccountManager?.getAuthToken(a, AuthUtil.AUTH_TOKEN_TYPE_NAME, null, null, null, null)
+//            val future = mAccountManager?.getAuthToken(a, AuthUtil.AUTH_TOKEN_TYPE_NAME, null, null, null, null)
 
-            launch(CommonPool) {
+//            launch(CommonPool) {
                 try {
-                    val bnd = future?.result
 
-                    val authToken = bnd?.getString(AccountManager.KEY_AUTHTOKEN) ?: ""
-                    val userName = bnd?.getString(AccountManager.KEY_ACCOUNT_NAME) ?: ""
+//                    val authToken = future!!.result
+                    val accountName = mAccountManager!!.accounts[0].name
+                    val password = mAccountManager!!.getPassword(a)
 
                     // TODO: get expire time in the future, currently, we use unlimited date.
                     mExpiryTimestamp = Timestamp.valueOf("2099-12-30 23:59:59")
                     val refreshToken = ""
-                    setLoginStatus(true, userName, mExpiryTimestamp!!, authToken, refreshToken)
+                    setLoginStatus(true, accountName, mExpiryTimestamp!!, refreshToken, password)
 
                 } catch (e: Exception) {
                     info("getAuthToken failed: " + e.message)
                 }
-            }
+//            }
 
         } else if (!isLoggedIn) {
             // TODO: maybe we should generate anonymous token for guest.
@@ -87,7 +89,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
 
     }
 
-    fun performLoginRequest(authParams: Bundle?, userName: String, password: String, loginListener: LoginListener) {
+    fun performLoginRequest( userName: String, password: String, loginListener: LoginListener) {
 
         val memberRequestService = MemberRequestService()
 
@@ -106,12 +108,14 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
     }
 
     private fun setLoginStatus(loggedIn: Boolean, userName: String, expiry: Timestamp,
-                       authToken: String, refreshToken: String) {
+                        refreshToken: String, password: String) {
         mLoggedIn = loggedIn
         mUsername = userName
         mExpiryTimestamp = expiry
-        mAuthToken = authToken
         mRefreshToken = refreshToken
+        passwordFromManager = password
+
+        info("======= set Login status")
     }
 
     override val isLoggedIn: Boolean
@@ -172,6 +176,8 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
         mTokenAvailableListener = tokenListener
         val account = getAccount()
 
+        info(" ==== check login status")
+
         if (!isLoggedIn) {  // no accounts, request login and create new
 //            requestLogin(launchingActivity, destinationIntent)
             return
@@ -180,10 +186,11 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
         mAccountManager?.getAuthToken(account, AuthUtil.AUTH_TOKEN_TYPE_NAME, null, null,
                 AccountManagerCallback { future ->
                     try {
-                        val bnd = future.result
+//                        val bnd = future.result
 
-                        mAuthToken = bnd.getString(AccountManager.KEY_AUTHTOKEN)
-                        mUsername = bnd.getString(AccountManager.KEY_ACCOUNT_NAME)
+//                        val authToken = bnd.getString(AccountManager.KEY_AUTHTOKEN)
+//                        val userName = bnd.getString(AccountManager.KEY_ACCOUNT_NAME)
+//                        val password = bnd.getString(AccountManager.KEY_PASSWORD)
 
 //                val expires = mAccountManager.getUserData(account, AuthenticatorActivity.KEY_TOKEN_EXPIRY_TIMESTAMP)
 //                mExpiryTimestamp = Timestamp.valueOf(expires)
@@ -196,13 +203,14 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
 
                         // store login status
 //                    setLoginStatus(true, mUsername, mExpiryTimestamp, mAuthToken, refreshToken)
-                        setLoginStatus(true, mUsername!!, mExpiryTimestamp!!, mAuthToken!!, "false")
+//                        setLoginStatus(true, userName, mExpiryTimestamp!!, "false", password)
 
-
-                        if (mTokenAvailableListener != null) {
-                            mTokenAvailableListener?.OnLoginTokenAvailable(mAuthToken!!)
-                            mTokenAvailableListener = null
-                        }
+//
+                        // Verify Token available later
+//                        if (mTokenAvailableListener != null) {
+//                            mTokenAvailableListener?.OnLoginTokenAvailable(mAuthToken!!)
+//                            mTokenAvailableListener = null
+//                        }
 
                         // Launch next activity if there is one
                         if (destinationIntent != null) {

@@ -10,19 +10,22 @@ import android.view.ViewGroup
 import com.strongloop.android.loopback.callbacks.ListCallback
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.DeviceAction.AddDevicesActivity
-import iotdevice.com.iotDevice.draw.BarChartActivity
+import iotdevice.com.iotDevice.chart.ChartActivity
+import iotdevice.com.iotDevice.member.TokenManager
 import iotdevice.com.iotDevice.model.CustomerDeviceModel
+import iotdevice.com.iotDevice.model.CustomerModel
 import iotdevice.com.iotDevice.model.relateview.ImageModel
 import iotdevice.com.iotDevice.repository.CustomerDeviceRepository
 import iotdevice.com.iotDevice.repository.CustomerRepository
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.apache.http.client.HttpResponseException
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
+import java.net.HttpURLConnection
 
 
-
-class HomeFragment : Fragment() , AnkoLogger {
+class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
 
     private var imageList : MutableList<ImageModel> = mutableListOf()
 
@@ -53,7 +56,7 @@ class HomeFragment : Fragment() , AnkoLogger {
 
             override fun onItemClick(position: Int, v: View) {
                 info("onItemClick position: $position , deviceId : ${imageList[position].deviceId}")
-                val intent = Intent(activity, BarChartActivity::class.java)
+                val intent = Intent(activity, ChartActivity::class.java)
                 val bundle = Bundle()
                 bundle.putLong("deviceId", imageList[position].deviceId.toLong())
                 intent.putExtra("homeBundle", bundle)
@@ -80,12 +83,37 @@ class HomeFragment : Fragment() , AnkoLogger {
 
             override fun onError(t: Throwable?) {
                 info("error : $t")
+
+                // Status Code 401
+                // if (t.st)
+                if(t is HttpResponseException) {
+                    when(t.statusCode) {
+                        HttpURLConnection.HTTP_UNAUTHORIZED -> {
+                            // the token expired, redirect to login page
+//                            val intent = Intent(activity, LoginActivity::class.java)
+//                            val bundle = Bundle()
+//                            bundle.putLong("deviceId", )
+//                            intent.putExtra("homeBundle", bundle)
+//                            startActivity(intent)
+
+
+                            TokenManager.performLoginRequest(TokenManager.mUsername,
+                                    TokenManager.passwordFromManager , HomeFragment())
+                        }
+                    }
+                }
+//                HttpURLConnection.HTTP_UNSUPPORTED_TYPE
+//                t as HttpResponseException .statusCode
             }
 
         })
+    }
 
+    override fun onLoginComplete(result: CustomerModel) {
+        info("completed $result")
+    }
 
-
-
+    override fun onLoginError(err: Throwable) {
+        info("login fail $err")
     }
 }

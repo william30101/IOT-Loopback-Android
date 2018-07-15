@@ -37,7 +37,7 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
 //        val loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
         loginBtn.setOnClickListener({ _ ->
-            TokenManager.performLoginRequest(intent.extras, loginUserName.text.toString(),
+            TokenManager.performLoginRequest(loginUserName.text.toString(),
                     loginPassword.text.toString(), this)
         })
 
@@ -69,6 +69,7 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
             // (Not setting the auth token will cause another call to the server to authenticate the user)
             mAccountManager?.addAccountExplicitly(account, accountPassword, null)
             mAccountManager?.setAuthToken(account, AuthUtil.AUTH_TOKEN_TYPE_NAME, authToken)
+            mAccountManager?.setPassword(account, accountPassword)
         } else {
             mAccountManager?.setPassword(account, accountPassword)
         }
@@ -76,6 +77,7 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
 //        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, accountName)
 //        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, AuthUtil.AUTH_TOKEN_TYPE_NAME)
         intent.putExtra(AccountManager.KEY_AUTHTOKEN, authToken)
+        intent.putExtra(AccountManager.KEY_PASSWORD, accountPassword)
         setAccountAuthenticatorResult(intent.extras)
         setResult(RESULT_OK, intent)
 

@@ -168,10 +168,6 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
                 info("error : $t")
             }
         })
-
-
-
-
     }
 
     fun getMonthStatus(deviceId: Long?) {
@@ -209,7 +205,6 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
                             it.productivity22 +
                             it.productivity23
 
-
                     val calendar = Calendar.getInstance()
                     calendar.timeInMillis = it.timeStamp!!.toLong()
 
@@ -223,7 +218,6 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
                 info("error : $t")
             }
         })
-
     }
 
     fun getMonthOperationStatus(deviceId: Long?) {
@@ -249,7 +243,6 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
                 info("error : $t")
             }
         })
-
     }
 
     fun getMonthPCSStatus(deviceId: Long?) {
@@ -264,29 +257,29 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
 
                     val dayOutputPCS =
                             it.productivity0 +
-                                    it.productivity1 +
-                                    it.productivity2 +
-                                    it.productivity3 +
-                                    it.productivity4 +
-                                    it.productivity5 +
-                                    it.productivity6 +
-                                    it.productivity7 +
-                                    it.productivity8 +
-                                    it.productivity9 +
-                                    it.productivity10 +
-                                    it.productivity11 +
-                                    it.productivity12 +
-                                    it.productivity13 +
-                                    it.productivity14 +
-                                    it.productivity15 +
-                                    it.productivity16 +
-                                    it.productivity17 +
-                                    it.productivity18 +
-                                    it.productivity19 +
-                                    it.productivity20 +
-                                    it.productivity21 +
-                                    it.productivity22 +
-                                    it.productivity23
+                            it.productivity1 +
+                            it.productivity2 +
+                            it.productivity3 +
+                            it.productivity4 +
+                            it.productivity5 +
+                            it.productivity6 +
+                            it.productivity7 +
+                            it.productivity8 +
+                            it.productivity9 +
+                            it.productivity10 +
+                            it.productivity11 +
+                            it.productivity12 +
+                            it.productivity13 +
+                            it.productivity14 +
+                            it.productivity15 +
+                            it.productivity16 +
+                            it.productivity17 +
+                            it.productivity18 +
+                            it.productivity19 +
+                            it.productivity20 +
+                            it.productivity21 +
+                            it.productivity22 +
+                            it.productivity23
 
                     val dayOperationTime = it.operationTime
                     val calendar = Calendar.getInstance()
@@ -304,9 +297,7 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
                 info("error : $t")
             }
         })
-
     }
-
 
     override fun onNothingSelected() {
     }
@@ -329,22 +320,21 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
         MPPointF.recycleInstance(position)
     }
 
-    private fun setOutputData(statusList: HashMap<Int, Float>, labelName: String) {
+    private fun setOutputData(dataList: HashMap<Int, Float>, labelName: String) {
 
-        val yVals1 = ArrayList<BarEntry>()
+        val yValueList = ArrayList<BarEntry>()
 
-
-        statusList.forEach { yVals1.add(BarEntry(it.key.toFloat(),it.value)) }
+        dataList.forEach { yValueList.add(BarEntry(it.key.toFloat(),it.value)) }
 
         val set1: BarDataSet
 
         if (mBarChart.data != null && mBarChart.data.dataSetCount > 0) {
             set1 = mBarChart.data.getDataSetByIndex(0) as BarDataSet
-            set1.values = yVals1
+            set1.values = yValueList
             mBarChart.data.notifyDataChanged()
             mBarChart.notifyDataSetChanged()
         } else {
-            set1 = BarDataSet(yVals1, labelName)
+            set1 = BarDataSet(yValueList, labelName)
 
 //            set1.setDrawIcons(false)
 
@@ -361,6 +351,4 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
             mBarChart.data = data
         }
     }
-
-
 }

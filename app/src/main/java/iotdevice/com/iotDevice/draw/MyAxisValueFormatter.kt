@@ -9,6 +9,6 @@ class MyAxisValueFormatter : IAxisValueFormatter {
     private val mFormat: DecimalFormat = DecimalFormat("###,###,###,##0.0")
 
     override fun getFormattedValue(value: Float, axis: AxisBase): String {
-        return mFormat.format(value.toDouble()) + " $"
+        return mFormat.format(value.toDouble()) + " H"
     }
 }
