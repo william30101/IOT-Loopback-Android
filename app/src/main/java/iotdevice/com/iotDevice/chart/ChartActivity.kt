@@ -15,6 +15,12 @@ class ChartActivity: AppCompatActivity(), AnkoLogger {
         changeFragmentTo()
     }
 
+    override fun onBackPressed() {
+        if (manager.backStackEntryCount ==1) {
+            finish()
+        }
+    }
+
 
     private fun changeFragmentTo() {
         val transaction = manager.beginTransaction()

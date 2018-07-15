@@ -65,4 +65,10 @@ class HomeActivity : BaseActivity(), AnkoLogger {
         // Open home fragment
         changeFragmentTo(FragmentType.home)
     }
+
+    override fun onBackPressed() {
+        if (manager.backStackEntryCount ==1) {
+            finish()
+        }
+    }
 }
