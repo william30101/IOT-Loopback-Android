@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="boot_time">開機時間</string>
+    <string name="boot_time_today">開機歷時(當天)</string>
+    <string name="operation_time_total">運轉歷時</string>
+    <string name="output_productivity">目前生產效率</string>
+
+    <string name="hour_output_title">每小時產出</string>
+    <string name="hour_output_description">當日每小時產出</string>
+    <string name="day_output_title">日產出</string>
+    <string name="day_output_description">當月日產出</string>
+    <string name="operation_time_title">運轉時數</string>
+    <string name="operation_time_description">當月運轉時數</string>
+    <string name="average_output_title">平均產速</string>
+    <string name="average_output_description">當月平均產速</string>
+</resources>

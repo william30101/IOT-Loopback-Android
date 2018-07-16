@@ -38,7 +38,7 @@ class DeviceStatusRepository : ModelRepository<DeviceStatusModel>("DeviceStatus"
 
 //        val findJson = JSONObject("""{"where":{"deviceId" : $id }, "order" : "id DESC", "limit" : "1"}""")
 
-        val findJson = JSONObject("""{"where" : { "timeStamp" : { "between" : [$todayTimeStamp,$tomorrowTimeStamp]}}}""")
+        val findJson = JSONObject("""{"where" : { "and" : [{"deviceId" : $id}, { "timeStamp" : { "between" : [$todayTimeStamp,$tomorrowTimeStamp]}}]}}""")
 
         invokeStaticMethod("all",
                 mapOf("filter" to findJson),
@@ -71,7 +71,7 @@ class DeviceStatusRepository : ModelRepository<DeviceStatusModel>("DeviceStatus"
 
 //        val findJson = JSONObject("""{"where":{"deviceId" : $id }, "order" : "id DESC", "limit" : "1"}""")
 
-        val findJson = JSONObject("""{"where" : { "timeStamp" : { "between" : [$todayTimeStamp,$nextMothTimeStamp]}}}""")
+        val findJson = JSONObject("""{"where" : { "and" : [{"deviceId" : $id}, { "timeStamp" : { "between" : [$todayTimeStamp,$nextMothTimeStamp]}}]}}""")
 
         invokeStaticMethod("all",
                 mapOf("filter" to findJson),

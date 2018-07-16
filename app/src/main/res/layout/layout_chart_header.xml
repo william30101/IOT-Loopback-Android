@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/border_quadrangle"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/boot_time_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/boot_time"
+
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/boot_time_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tool:text="4000" />
+
+    <TextView
+        android:id="@+id/boot_time_today_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/boot_time_today"
+        app:layout_constraintStart_toStartOf="@+id/boot_time_title"
+        app:layout_constraintTop_toBottomOf="@+id/boot_time_title" />
+
+    <TextView
+        android:id="@+id/boot_time_today_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/boot_time_value"
+        app:layout_constraintTop_toTopOf="@+id/boot_time_today_title"
+        tool:text="20" />
+
+    <TextView
+        android:id="@+id/operation_time_total_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/operation_time_total"
+        app:layout_constraintStart_toStartOf="@+id/boot_time_today_title"
+        app:layout_constraintTop_toBottomOf="@+id/boot_time_today_title" />
+
+    <TextView
+        android:id="@+id/operation_time_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/boot_time_today_value"
+        app:layout_constraintTop_toBottomOf="@+id/boot_time_today_value"
+        tool:text="3344" />
+
+    <TextView
+        android:id="@+id/output_productivity_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/output_productivity"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/operation_time_total_title"
+        app:layout_constraintTop_toBottomOf="@+id/operation_time_total_title" />
+
+    <TextView
+        android:id="@+id/output_productivity_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/operation_time_value"
+        app:layout_constraintTop_toBottomOf="@+id/operation_time_value"
+        tool:text="888" />
+
+</android.support.constraint.ConstraintLayout>

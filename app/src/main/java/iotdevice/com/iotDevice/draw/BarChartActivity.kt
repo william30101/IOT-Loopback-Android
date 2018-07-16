@@ -48,6 +48,10 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
 
 
         val deviceId = this.intent.getBundleExtra("homeBundle").getLong("deviceId")
+        val itemTitle = this.intent.getBundleExtra("homeBundle").getString("itemTitle")
+
+
+
         info("deviceId : $deviceId")
 
 
@@ -121,10 +125,17 @@ class BarChartActivity: AppCompatActivity(), AnkoLogger, OnChartValueSelectedLis
         mBarChart.marker = mv // Set the marker to the chart
 
 
+        when(itemTitle) {
+            resources.getString(R.string.hour_output_title) -> getTodayStatus(deviceId)
+            resources.getString(R.string.day_output_title) -> getMonthStatus(deviceId)
+            resources.getString(R.string.operation_time_title) -> getMonthOperationStatus(deviceId)
+            resources.getString(R.string.average_output_title) -> getMonthPCSStatus(deviceId)
+        }
+
 //        getMonthStatus(deviceId)
 //        getTodayStatus(deviceId)
 //        getMonthOperationStatus(deviceId)
-        getMonthPCSStatus(deviceId)
+//        getMonthPCSStatus(deviceId)
     }
 
     fun getTodayStatus(deviceId: Long?) {

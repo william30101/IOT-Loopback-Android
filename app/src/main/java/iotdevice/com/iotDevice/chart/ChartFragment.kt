@@ -23,8 +23,11 @@ class ChartFragment: Fragment(), AnkoLogger {
     }
 
     fun addChartListItem(deviceId: Long) {
-        charItemList.add(ChartListItem("test1", null, "description 1", deviceId))
-        charItemList.add(ChartListItem("test2", null, "description 2", deviceId))
+//        charItemList.add(ChartListItem("header", null, "header", deviceId))
+        charItemList.add(ChartListItem(resources.getString(R.string.hour_output_title), null, resources.getString(R.string.hour_output_description), deviceId))
+        charItemList.add(ChartListItem(resources.getString(R.string.day_output_title), null, resources.getString(R.string.day_output_description), deviceId))
+        charItemList.add(ChartListItem(resources.getString(R.string.operation_time_title), null, resources.getString(R.string.operation_time_description), deviceId))
+        charItemList.add(ChartListItem(resources.getString(R.string.average_output_title), null, resources.getString(R.string.average_output_description), deviceId))
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -37,7 +40,18 @@ class ChartFragment: Fragment(), AnkoLogger {
 
         chartAdapter = ChartAdapter(context, charItemList)
 
-        chartRecyclerView.layoutManager = GridLayoutManager(context, 2)
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.recycle_dimen)
+        chartRecyclerView.addItemDecoration(GridLayoutDivider(2, spacingInPixels, true, 1))
+
+        val manager = GridLayoutManager(context, 2)
+
+        chartRecyclerView.layoutManager = manager
+
+        manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (chartAdapter.isHeader(position)) manager.spanCount else 1
+            }
+        }
 
         chartRecyclerView.adapter = chartAdapter
         chartRecyclerView.adapter.notifyDataSetChanged()

@@ -7,4 +7,18 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_main">MainActivity</string>
 
+    <string name="boot_time">Boot Time</string>
+    <string name="boot_time_today">Boot Time Today</string>
+    <string name="operation_time_total">Operation time Total</string>
+    <string name="output_productivity">Productivity</string>
+
+    <string name="hour_output_title">hour output</string>
+    <string name="hour_output_description">hour output of day</string>
+    <string name="day_output_title">day output</string>
+    <string name="day_output_description">day ourput of month</string>
+    <string name="operation_time_title">opeation time</string>
+    <string name="operation_time_description">operation time of month</string>
+    <string name="average_output_title">average output</string>
+    <string name="average_output_description">average output of month</string>
+
 </resources>
