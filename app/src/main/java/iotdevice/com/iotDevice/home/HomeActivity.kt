@@ -2,6 +2,7 @@ package iotdevice.com.iotDevice.home
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.FragmentTransaction
 import iotdevice.com.iotDevice.common.BaseActivity
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.activity_home.*
@@ -35,11 +36,15 @@ class HomeActivity : BaseActivity(), AnkoLogger {
         val transaction = manager.beginTransaction()
         when(type) {
             FragmentType.home -> {
-                title = "Home"
-                val homeFragment = HomeFragment()
-                transaction.replace(R.id.baseFragment, homeFragment)
+                if (manager.fragments.isEmpty() || !manager.findFragmentByTag("Home").isVisible) {
+                    title = "Home"
+                    val homeFragment = HomeFragment()
+                    transaction.replace(R.id.baseFragment, homeFragment, "Home")
+                    commitFragment(transaction)
+                }
             }
 
+            // TODO: should add other view
 //            FragmentType.dashboard -> {
 //                val dashboardFragment = DashboardFragment()
 //                transaction.replace(R.id.baseFragment, dashboardFragment)
@@ -50,7 +55,14 @@ class HomeActivity : BaseActivity(), AnkoLogger {
 //                transaction.replace(R.id.baseFragment, notificationFragment)
 //            }
 
+            else -> {
+
+            }
         }
+
+    }
+
+    fun commitFragment(transaction: FragmentTransaction) {
         transaction.addToBackStack(null)
         transaction.commit()
     }
@@ -69,6 +81,8 @@ class HomeActivity : BaseActivity(), AnkoLogger {
     override fun onBackPressed() {
         if (manager.backStackEntryCount ==1) {
             finish()
+        } else {
+            super.onBackPressed()
         }
     }
 }

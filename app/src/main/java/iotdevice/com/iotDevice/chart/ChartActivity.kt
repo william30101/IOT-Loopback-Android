@@ -18,6 +18,8 @@ class ChartActivity: AppCompatActivity(), AnkoLogger {
     override fun onBackPressed() {
         if (manager.backStackEntryCount ==1) {
             finish()
+        } else {
+            super.onBackPressed()
         }
     }
 
