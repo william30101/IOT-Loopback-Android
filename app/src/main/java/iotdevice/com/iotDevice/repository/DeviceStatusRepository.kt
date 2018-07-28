@@ -79,6 +79,15 @@ class DeviceStatusRepository : ModelRepository<DeviceStatusModel>("DeviceStatus"
 
     }
 
+    fun findTotalOperationTime(id: Long?, callback: ListCallback<DeviceStatusModel>) {
+
+        val findJson = JSONObject("""{"where" :{"deviceId" : $id}}""")
+
+        invokeStaticMethod("all",
+                mapOf("filter" to findJson),
+                JsonArrayParser<DeviceStatusModel>(this, callback))
+    }
+
 
     private fun resetTimeOfMonthHourMinuteSecond(gregorianCal: GregorianCalendar) {
 

@@ -3,6 +3,7 @@ package iotdevice.com.iotDevice.home
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,8 @@ import android.view.ViewGroup
 import com.strongloop.android.loopback.callbacks.ListCallback
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.DeviceAction.AddDevicesActivity
-import iotdevice.com.iotDevice.chart.ChartActivity
+import iotdevice.com.iotDevice.chart.ChartFragment
+import iotdevice.com.iotDevice.common.Utils.Companion.transmitFragment
 import iotdevice.com.iotDevice.member.TokenManager
 import iotdevice.com.iotDevice.model.CustomerDeviceModel
 import iotdevice.com.iotDevice.model.CustomerModel
@@ -20,6 +22,7 @@ import iotdevice.com.iotDevice.repository.CustomerRepository
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.apache.http.client.HttpResponseException
+import org.apache.http.conn.ConnectTimeoutException
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import java.net.HttpURLConnection
@@ -56,11 +59,10 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
 
             override fun onItemClick(position: Int, v: View) {
                 info("onItemClick position: $position , deviceId : ${imageList[position].deviceId}")
-                val intent = Intent(activity, ChartActivity::class.java)
+                val chartFragment = ChartFragment()
                 val bundle = Bundle()
                 bundle.putLong("deviceId", imageList[position].deviceId.toLong())
-                intent.putExtra("homeBundle", bundle)
-                startActivity(intent)
+                transmitFragment(fragmentManager, chartFragment, bundle)
             }
         })
 
@@ -101,12 +103,28 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
                                     TokenManager.passwordFromManager , HomeFragment())
                         }
                     }
+                } else if (t is ConnectTimeoutException) {
+                    info("time out , need to check server config")
+                    createAlertDialog()
+
                 }
 //                HttpURLConnection.HTTP_UNSUPPORTED_TYPE
 //                t as HttpResponseException .statusCode
             }
 
         })
+    }
+
+    fun createAlertDialog() {
+
+        val builder = AlertDialog.Builder(context).apply {
+            this.setTitle("NetworkError")
+            this.setMessage("Please Check your connection status")
+            this.setPositiveButton("OK"){_, _-> }
+        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
     override fun onLoginComplete(result: CustomerModel) {

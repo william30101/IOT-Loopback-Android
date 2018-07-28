@@ -8,6 +8,7 @@ class DeviceStatusModel: Model() {
     var timeStamp: String? = null
     var deviceTimeStamp: String? = null
     var deviceId: Long = 0
+    val productivityLit: MutableList<Long> = mutableListOf()
     var productivity0: Long = 0
     var productivity1: Long = 0
     var productivity2: Long = 0

@@ -2,6 +2,7 @@ package iotdevice.com.iotDevice.home
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import iotdevice.com.iotDevice.common.BaseActivity
 import iotdevice.com.iot_device.R
@@ -13,19 +14,16 @@ class HomeActivity : BaseActivity(), AnkoLogger {
     val manager = supportFragmentManager
 
     enum class FragmentType {
-        home, dashboard, notification
+        Home, Settings
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                changeFragmentTo(FragmentType.home)
+                changeFragmentTo(FragmentType.Home)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_dashboard -> {
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_notifications -> {
+            R.id.navigation_settings -> {
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -35,9 +33,12 @@ class HomeActivity : BaseActivity(), AnkoLogger {
     private fun changeFragmentTo(type: FragmentType) {
         val transaction = manager.beginTransaction()
         when(type) {
-            FragmentType.home -> {
+            FragmentType.Home -> {
                 if (manager.fragments.isEmpty() || !manager.findFragmentByTag("Home").isVisible) {
                     title = "Home"
+
+                    // Remove entire back stack when user pressed home button.
+                    manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     val homeFragment = HomeFragment()
                     transaction.replace(R.id.baseFragment, homeFragment, "Home")
                     commitFragment(transaction)
@@ -45,12 +46,8 @@ class HomeActivity : BaseActivity(), AnkoLogger {
             }
 
             // TODO: should add other view
-//            FragmentType.dashboard -> {
-//                val dashboardFragment = DashboardFragment()
-//                transaction.replace(R.id.baseFragment, dashboardFragment)
-//            }
-//
-//            FragmentType.notification -> {
+
+//            FragmentType.Notification -> {
 //                val notificationFragment = NotificationDashboard()
 //                transaction.replace(R.id.baseFragment, notificationFragment)
 //            }
@@ -74,8 +71,8 @@ class HomeActivity : BaseActivity(), AnkoLogger {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        // Open home fragment
-        changeFragmentTo(FragmentType.home)
+        // Open Home fragment
+        changeFragmentTo(FragmentType.Home)
     }
 
     override fun onBackPressed() {

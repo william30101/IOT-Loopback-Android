@@ -26,8 +26,6 @@
             android:launchMode="singleTask">
 
         </activity>
-        <activity android:name="iotdevice.com.iotDevice.chart.ChartActivity" />
-        <activity android:name="iotdevice.com.iotDevice.draw.BarChartActivity" />
         <activity android:name="iotdevice.com.iotDevice.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
