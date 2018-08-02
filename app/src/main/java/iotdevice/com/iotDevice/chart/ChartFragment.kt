@@ -8,7 +8,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import iotdevice.com.iotDevice.common.Utils
+import iotdevice.com.iotDevice.common.ChartUtils
 import iotdevice.com.iotDevice.draw.BarChartFragment
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.fragment_chart.*
@@ -77,6 +77,6 @@ class ChartFragment: Fragment(), AnkoLogger, ChartListener {
 
     override fun onChartClick(bundle: Bundle) {
         val barChartFragment = BarChartFragment()
-        Utils.transmitFragment(fragmentManager, barChartFragment, bundle)
+        ChartUtils.transmitFragment(fragmentManager, barChartFragment, bundle)
     }
 }

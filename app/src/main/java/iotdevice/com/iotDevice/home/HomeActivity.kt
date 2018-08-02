@@ -45,7 +45,7 @@ class HomeActivity : BaseActivity(), AnkoLogger {
                 }
             }
 
-            // TODO: should add other view
+            // TODO: Should Add user info fragment
 
 //            FragmentType.Notification -> {
 //                val notificationFragment = NotificationDashboard()

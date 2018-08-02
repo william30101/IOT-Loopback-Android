@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.strongloop.android.loopback.callbacks.ListCallback
 import iotdevice.com.iotDevice.App
-import iotdevice.com.iotDevice.common.Utils
+import iotdevice.com.iotDevice.common.ChartUtils
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import iotdevice.com.iotDevice.repository.DeviceStatusRepository
 import org.jetbrains.anko.AnkoLogger
@@ -38,7 +38,7 @@ class ChartViewModel: ViewModel(), AnkoLogger {
                         info("Today's boot time ${it.bootTime}")
                         bootTimeToday = it.bootTime
                         val hour = now.get(Calendar.HOUR_OF_DAY)
-                        Utils.combineProductivityToList(it)
+                        ChartUtils.combineProductivityToList(it)
                         currentProducitivity = it.productivityLit[hour]
                         if (currentProducitivity > 0) {
                             info("Today's boot time $currentProducitivity")

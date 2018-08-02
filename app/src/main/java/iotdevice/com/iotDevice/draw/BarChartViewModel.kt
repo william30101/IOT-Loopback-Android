@@ -17,7 +17,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
     private val adapter: RestAdapter by lazy { App.sInstance.loopBackAdapter }
     private val deviceStatusRepository: DeviceStatusRepository by lazy { adapter.createRepository(DeviceStatusRepository::class.java) }
 
-    val yAxisData: MutableLiveData<ArrayList<BarEntry>> = MutableLiveData()
+    val yAxisData: MutableLiveData<ChartData> = MutableLiveData()
 
     fun getTodayStatus(deviceId: Long?) {
         deviceStatusRepository.findTodayStatus(deviceId, object: ListCallback<DeviceStatusModel> {
@@ -53,7 +53,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
                         23 to todayStatus.productivity23.toFloat())
 
 
-                setOutputData(deviceStatusList, "HourOutput")
+                setOutputData("HourOutput", deviceStatusList)
             }
 
             override fun onError(t: Throwable?) {
@@ -103,7 +103,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
                     dayTotalList[calendar.get(Calendar.DAY_OF_MONTH)] = dayTotal.toFloat()
                 }
 
-                setOutputData(dayTotalList, "DayOutput")
+                setOutputData("DayOutput", dayTotalList)
             }
 
             override fun onError(t: Throwable?) {
@@ -128,7 +128,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
                     dayTotalList[calendar.get(Calendar.DAY_OF_MONTH)] = dayTotal.toFloat()
                 }
 
-                setOutputData(dayTotalList, "DayOperationTime")
+                setOutputData("OperationTime", dayTotalList)
             }
 
             override fun onError(t: Throwable?) {
@@ -182,7 +182,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
                     dayTotalList[calendar.get(Calendar.DAY_OF_MONTH)] = avgProduction.toFloat()
                 }
 
-                setOutputData(dayTotalList, "DayAverageOutput")
+                setOutputData("AverageOutput", dayTotalList)
             }
 
             override fun onError(t: Throwable?) {
@@ -191,13 +191,13 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
         })
     }
 
-    private fun setOutputData(dataList: HashMap<Int, Float>, labelName: String) {
+    private fun setOutputData(chartName: String, dataList: HashMap<Int, Float>) {
 
         val yValueList = ArrayList<BarEntry>()
 
         dataList.forEach { yValueList.add(BarEntry(it.key.toFloat(),it.value)) }
 
-        yAxisData.value = yValueList
+        yAxisData.value = ChartData(chartName, yValueList)
 
 //        val set1: BarDataSet
 //
@@ -225,3 +225,5 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
 //        }
     }
 }
+
+data class ChartData(val chartName: String, val dataList: ArrayList<BarEntry>)

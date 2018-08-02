@@ -6,8 +6,17 @@ import android.support.v4.app.FragmentManager
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import iotdevice.com.iot_device.R
 
-class Utils {
+class ChartUtils {
     companion object {
+
+
+        private val axisMapping = listOf(
+                AxisName("HourOutput", AxisXType.Hour, "PCS"),
+                AxisName("DayOutput", AxisXType.Month, "PCS"),
+                AxisName("OperationTime", AxisXType.Month, "H"),
+                AxisName("AverageOutput", AxisXType.Month, "PCS/MIN")
+        )
+
         fun combineProductivityToList(item: DeviceStatusModel) {
             item.productivityLit.add(0 ,item.productivity0)
             item.productivityLit.add(1 ,item.productivity1)
@@ -45,5 +54,13 @@ class Utils {
                 commit()
             }
         }
+
+        fun getMappingAxis(chartName: String):AxisName? {
+            return axisMapping.find { it.chartName == chartName }
+        }
     }
+
+    enum class AxisXType { Hour, Month }
+    data class AxisName(val chartName: String, val xAxisType: AxisXType, val yAxisUnit: String)
+
 }

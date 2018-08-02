@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.strongloop.android.loopback.RestAdapter
 import iotdevice.com.iotDevice.member.TokenManager
+import iotdevice.com.iot_device.BuildConfig
 import kotlin.properties.Delegates
 
 class App : Application() {
@@ -24,8 +25,13 @@ class App : Application() {
     val loopBackAdapter: RestAdapter
         get() {
             if (adapter == null) {
-                adapter = RestAdapter(
-                        applicationContext, "http://192.168.0.101:3000/api")
+                adapter = if (BuildConfig.BUILD_TYPE == "release" || BuildConfig.BUILD_TYPE == "debugincloud") {
+                    RestAdapter(
+                            applicationContext, "http://35.194.235.166:3000/api")
+                } else {
+                    RestAdapter(
+                            applicationContext, "http://192.168.0.103:3000/api")
+                }
             }
             return adapter!!
         }

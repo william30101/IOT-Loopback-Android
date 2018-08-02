@@ -12,7 +12,7 @@ import com.strongloop.android.loopback.callbacks.ListCallback
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.DeviceAction.AddDevicesActivity
 import iotdevice.com.iotDevice.chart.ChartFragment
-import iotdevice.com.iotDevice.common.Utils.Companion.transmitFragment
+import iotdevice.com.iotDevice.common.ChartUtils.Companion.transmitFragment
 import iotdevice.com.iotDevice.member.TokenManager
 import iotdevice.com.iotDevice.model.CustomerDeviceModel
 import iotdevice.com.iotDevice.model.CustomerModel
