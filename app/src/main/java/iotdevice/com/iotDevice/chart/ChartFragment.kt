@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import iotdevice.com.iotDevice.common.ChartUtils
+import iotdevice.com.iotDevice.common.RecycleViewListener
 import iotdevice.com.iotDevice.draw.BarChartFragment
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.fragment_chart.*
@@ -16,7 +17,7 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 
 
-class ChartFragment: Fragment(), AnkoLogger, ChartListener {
+class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
 
 
     private lateinit  var chartAdapter: ChartAdapter
@@ -75,7 +76,7 @@ class ChartFragment: Fragment(), AnkoLogger, ChartListener {
         chartViewModel.fetchHeaderItem(deviceId)
     }
 
-    override fun onChartClick(bundle: Bundle) {
+    override fun onClick(bundle: Bundle) {
         val barChartFragment = BarChartFragment()
         ChartUtils.transmitFragment(fragmentManager, barChartFragment, bundle)
     }

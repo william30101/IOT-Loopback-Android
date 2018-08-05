@@ -3,7 +3,7 @@
     <string name="account_type">iotDevice</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_settings">Settings</string>
+    <string name="title_more">More</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="boot_time">Boot Time</string>
@@ -22,5 +22,7 @@
 
     <string name="chart_list_title">Title</string>
     <string name="chart_list_description">description</string>
+
+    <string name="more_title">Hi</string>
 
 </resources>

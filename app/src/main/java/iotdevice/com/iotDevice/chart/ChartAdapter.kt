@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import iotdevice.com.iotDevice.common.RecycleViewListener
 import iotdevice.com.iot_device.R
 import iotdevice.com.iot_device.databinding.LayoutChartHeaderBinding
 import iotdevice.com.iot_device.databinding.LayoutImageChartListBinding
@@ -14,7 +15,7 @@ import org.jetbrains.anko.AnkoLogger
 
 class ChartAdapter(val context: Context, val chartViewModel: ChartViewModel, val charItemList: List<ChartListItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.OnClickListener, AnkoLogger {
 
-    var listener: ChartListener? = null
+    var listener: RecycleViewListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when(viewType) {
@@ -32,7 +33,7 @@ class ChartAdapter(val context: Context, val chartViewModel: ChartViewModel, val
         return charItemList.size + 1
     }
 
-    fun setChartListener(listener: ChartListener) {
+    fun setChartListener(listener: RecycleViewListener) {
         this.listener = listener
     }
 
@@ -64,7 +65,7 @@ class ChartAdapter(val context: Context, val chartViewModel: ChartViewModel, val
         bundle.putLong("deviceId", chartListItem.deviceId)
         bundle.putString("itemTitle", chartListItem.title)
 
-        listener?.onChartClick(bundle)
+        listener?.onClick(bundle)
     }
 
     inner class ItemViewHolder(val context: Context, itemView: View): RecyclerView.ViewHolder(itemView) {
