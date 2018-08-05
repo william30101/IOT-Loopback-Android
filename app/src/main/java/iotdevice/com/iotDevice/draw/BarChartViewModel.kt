@@ -26,7 +26,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
                 // TODO: Put each login to different place
                 val todayStatus = objects!![0]
 
-                val deviceStatusList : HashMap<Int, Float> = hashMapOf(
+                val deviceStatusList : Map<Int, Float> = mapOf(
                         0 to todayStatus.productivity0.toFloat(),
                         1 to todayStatus.productivity1.toFloat(),
                         2 to todayStatus.productivity2.toFloat(),
@@ -67,35 +67,35 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
         deviceStatusRepository.findMonthStatus(deviceId, object: ListCallback<DeviceStatusModel> {
             override fun onSuccess(objects: MutableList<DeviceStatusModel>?) {
 
-                val dayTotalList: HashMap<Int, Float> = hashMapOf()
+                val dayTotalList: MutableMap<Int, Float> = mutableMapOf()
 
                 objects!!.forEach {
 
                     val dayTotal =
                             it.productivity0 +
-                                    it.productivity1 +
-                                    it.productivity2 +
-                                    it.productivity3 +
-                                    it.productivity4 +
-                                    it.productivity5 +
-                                    it.productivity6 +
-                                    it.productivity7 +
-                                    it.productivity8 +
-                                    it.productivity9 +
-                                    it.productivity10 +
-                                    it.productivity11 +
-                                    it.productivity12 +
-                                    it.productivity13 +
-                                    it.productivity14 +
-                                    it.productivity15 +
-                                    it.productivity16 +
-                                    it.productivity17 +
-                                    it.productivity18 +
-                                    it.productivity19 +
-                                    it.productivity20 +
-                                    it.productivity21 +
-                                    it.productivity22 +
-                                    it.productivity23
+                            it.productivity1 +
+                            it.productivity2 +
+                            it.productivity3 +
+                            it.productivity4 +
+                            it.productivity5 +
+                            it.productivity6 +
+                            it.productivity7 +
+                            it.productivity8 +
+                            it.productivity9 +
+                            it.productivity10 +
+                            it.productivity11 +
+                            it.productivity12 +
+                            it.productivity13 +
+                            it.productivity14 +
+                            it.productivity15 +
+                            it.productivity16 +
+                            it.productivity17 +
+                            it.productivity18 +
+                            it.productivity19 +
+                            it.productivity20 +
+                            it.productivity21 +
+                            it.productivity22 +
+                            it.productivity23
 
                     val calendar = Calendar.getInstance()
                     calendar.timeInMillis = it.timeStamp!!.toLong()
@@ -117,7 +117,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
         deviceStatusRepository.findMonthStatus(deviceId, object: ListCallback<DeviceStatusModel> {
             override fun onSuccess(objects: MutableList<DeviceStatusModel>?) {
 
-                val dayTotalList: HashMap<Int, Float> = hashMapOf()
+                val dayTotalList: MutableMap<Int, Float> = mutableMapOf()
 
                 objects!!.forEach {
 
@@ -142,36 +142,36 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
         deviceStatusRepository.findMonthStatus(deviceId, object: ListCallback<DeviceStatusModel> {
             override fun onSuccess(objects: MutableList<DeviceStatusModel>?) {
 
-                val dayTotalList: HashMap<Int, Float> = hashMapOf()
+                val dayTotalList: MutableMap<Int, Float> = mutableMapOf()
 
                 objects!!.forEach {
 
 
                     val dayOutputPCS =
                             it.productivity0 +
-                                    it.productivity1 +
-                                    it.productivity2 +
-                                    it.productivity3 +
-                                    it.productivity4 +
-                                    it.productivity5 +
-                                    it.productivity6 +
-                                    it.productivity7 +
-                                    it.productivity8 +
-                                    it.productivity9 +
-                                    it.productivity10 +
-                                    it.productivity11 +
-                                    it.productivity12 +
-                                    it.productivity13 +
-                                    it.productivity14 +
-                                    it.productivity15 +
-                                    it.productivity16 +
-                                    it.productivity17 +
-                                    it.productivity18 +
-                                    it.productivity19 +
-                                    it.productivity20 +
-                                    it.productivity21 +
-                                    it.productivity22 +
-                                    it.productivity23
+                            it.productivity1 +
+                            it.productivity2 +
+                            it.productivity3 +
+                            it.productivity4 +
+                            it.productivity5 +
+                            it.productivity6 +
+                            it.productivity7 +
+                            it.productivity8 +
+                            it.productivity9 +
+                            it.productivity10 +
+                            it.productivity11 +
+                            it.productivity12 +
+                            it.productivity13 +
+                            it.productivity14 +
+                            it.productivity15 +
+                            it.productivity16 +
+                            it.productivity17 +
+                            it.productivity18 +
+                            it.productivity19 +
+                            it.productivity20 +
+                            it.productivity21 +
+                            it.productivity22 +
+                            it.productivity23
 
                     val dayOperationTime = it.operationTime
                     val calendar = Calendar.getInstance()
@@ -191,38 +191,11 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
         })
     }
 
-    private fun setOutputData(chartName: String, dataList: HashMap<Int, Float>) {
+    private fun setOutputData(chartName: String, dataList: Map<Int, Float>) {
 
         val yValueList = ArrayList<BarEntry>()
-
         dataList.forEach { yValueList.add(BarEntry(it.key.toFloat(),it.value)) }
-
         yAxisData.value = ChartData(chartName, yValueList)
-
-//        val set1: BarDataSet
-//
-//        if (mBarChart.data != null && mBarChart.data.dataSetCount > 0) {
-//            set1 = mBarChart.data.getDataSetByIndex(0) as BarDataSet
-//            set1.values = yValueList
-//            mBarChart.data.notifyDataChanged()
-//            mBarChart.notifyDataSetChanged()
-//        } else {
-//            set1 = BarDataSet(yValueList, labelName)
-//
-////            set1.setDrawIcons(false)
-//
-//            set1.setColors(*ColorTemplate.MATERIAL_COLORS)
-//
-//            val dataSets = ArrayList<IBarDataSet>()
-//            dataSets.add(set1)
-//
-//            val data = BarData(dataSets)
-//            data.setValueTextSize(10f)
-//            data.setValueTypeface(mTfLight)
-//            data.barWidth = 0.9f
-//
-//            mBarChart.data = data
-//        }
     }
 }
 

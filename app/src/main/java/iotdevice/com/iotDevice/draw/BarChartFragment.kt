@@ -60,6 +60,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
         bar_chart.description.isEnabled = false
 
+
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
         bar_chart.setMaxVisibleValueCount(60)
@@ -68,7 +69,6 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         bar_chart.setPinchZoom(false)
 
         bar_chart.setDrawGridBackground(false)
-
 
         val xAxisFormatter = DayAxisValueFormatter(bar_chart)
 
@@ -94,14 +94,6 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         axisRight.setDrawLabels(false)
         axisRight.setDrawGridLines(false)
 
-//        val rightAxis = mBarChart.axisRight
-//        rightAxis.setDrawGridLines(false)
-//        rightAxis.typeface = mTfLight
-//        rightAxis.setLabelCount(8, false)
-//        rightAxis.valueFormatter = custom
-//        rightAxis.spaceTop = 15f
-//        rightAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
-
         val legend = bar_chart.legend
         legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
@@ -111,14 +103,6 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         legend.formSize = 9f
         legend.textSize = 11f
         legend.xEntrySpace = 4f
-        // l.setExtra(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
-        // "def", "ghj", "ikl", "mno" });
-        // l.setCustom(ColorTemplate.VORDIPLOM_COLORS, new String[] { "abc",
-        // "def", "ghj", "ikl", "mno" });
-
-        val mv = XYMarkerView(activity, xAxisFormatter)
-        mv.chartView = bar_chart // For bounds control
-        bar_chart.marker = mv // Set the marker to the chart
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -143,15 +127,24 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
                 axisItem?.let {
                     when(it.xAxisType) {
-                        ChartUtils.AxisXType.Hour -> setXaxisFormatter(HourAxisValueFormatter(bar_chart))
-                        ChartUtils.AxisXType.Month -> setXaxisFormatter(DayAxisValueFormatter(bar_chart))
+                        ChartUtils.AxisXType.Hour -> {
+                            setAxisXFormatter(HourAxisValueFormatter(bar_chart))
+                            val mv = XYMarkerView(activity, HourAxisValueFormatter(bar_chart))
+                            mv.chartView = bar_chart // For bounds control
+                            bar_chart.marker = mv // Set the marker to the chart
+                        }
+                        ChartUtils.AxisXType.Month -> {
+                            setAxisXFormatter(DayAxisValueFormatter(bar_chart))
+                            val mv = XYMarkerView(activity, DayAxisValueFormatter(bar_chart))
+                            mv.chartView = bar_chart // For bounds control
+                            bar_chart.marker = mv // Set the marker to the chart
+                        }
                     }
-
-                    val custom = MyAxisValueFormatter(it.yAxisUnit)
-                    val leftAxis = bar_chart.axisLeft
-                    leftAxis.valueFormatter = custom
                 }
             }
+
+
+
 
             if (bar_chart.data != null && bar_chart.data.dataSetCount > 0) {
                 set1 = bar_chart.data.getDataSetByIndex(0) as BarDataSet
@@ -161,8 +154,6 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
             } else {
                 set1 = BarDataSet(it?.dataList, itemTitle)
-
-//              set1.setDrawIcons(false)
 
                 set1.setColors(*ColorTemplate.MATERIAL_COLORS)
 
@@ -176,6 +167,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
                 bar_chart.data = data
             }
 
+            bar_chart.data.isHighlightEnabled = true
             bar_chart.invalidate()
         })
 
@@ -187,7 +179,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         }
     }
 
-    fun setXaxisFormatter(formatter: IAxisValueFormatter) {
+    fun setAxisXFormatter(formatter: IAxisValueFormatter) {
         val xAxis = bar_chart.xAxis
         xAxis.valueFormatter = formatter
     }
@@ -203,9 +195,6 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         val bounds = mOnValueSelectedRectF
         bar_chart.getBarBounds(e as BarEntry, bounds)
         val position = bar_chart.getPosition(e, YAxis.AxisDependency.LEFT)
-
-        info(bounds.toString())
-        info( position.toString())
 
         info("low: " + bar_chart.lowestVisibleX + ", high: "
                 + bar_chart.highestVisibleX)
