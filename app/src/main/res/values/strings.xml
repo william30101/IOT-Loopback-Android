@@ -23,6 +23,9 @@
     <string name="chart_list_title">Title</string>
     <string name="chart_list_description">description</string>
 
+    <!-- More page -->
     <string name="more_title">Hi</string>
+    <string name="log_out">LogOut</string>
+
 
 </resources>

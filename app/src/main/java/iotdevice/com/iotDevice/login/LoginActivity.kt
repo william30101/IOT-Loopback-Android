@@ -5,6 +5,7 @@ import android.accounts.AccountManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import iotdevice.com.iotDevice.common.IOTPreference
 import iotdevice.com.iotDevice.home.HomeActivity
 import iotdevice.com.iotDevice.member.TokenManager
 import iotdevice.com.iotDevice.member.auth.AccountAuthenticatorActivity
@@ -33,7 +34,6 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         mAccountManager = AccountManager.get(this)
-
 //        val loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
         loginBtn.setOnClickListener({ _ ->
@@ -81,7 +81,7 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
         setAccountAuthenticatorResult(intent.extras)
         setResult(RESULT_OK, intent)
 
-
+        IOTPreference.saveUserName(accountName)
         startActivity(intent)
         finish()
     }

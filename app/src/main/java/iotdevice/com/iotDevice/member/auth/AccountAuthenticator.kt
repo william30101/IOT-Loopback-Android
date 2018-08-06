@@ -107,4 +107,10 @@ class AccountAuthenticator(ctx: Context) : AbstractAccountAuthenticator(ctx), An
         return bundle
     }
 
+    override fun getAccountRemovalAllowed(response: AccountAuthenticatorResponse?, account: Account?): Bundle {
+        val result = Bundle()
+        val allowed = true // or whatever logic you want here
+        result.putBoolean(AccountManager.KEY_BOOLEAN_RESULT, allowed)
+        return result
+    }
 }
