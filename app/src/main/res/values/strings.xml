@@ -11,6 +11,7 @@
     <string name="operation_time_total">Operation time Total</string>
     <string name="output_productivity">Productivity</string>
 
+    <!-- Bar Chart page -->
     <string name="hour_output_title">hour output</string>
     <string name="hour_output_description">hour output of day</string>
     <string name="day_output_title">day output</string>
@@ -19,6 +20,24 @@
     <string name="operation_time_description">operation time of month</string>
     <string name="average_output_title">average output</string>
     <string name="average_output_description">average output of month</string>
+
+    <string name="total_of_day_title">Total output</string>
+    <string name="maximum_productivity_of_day_title">Maximum output productivity</string>
+    <string name="maximum_hour_of_day_title">The hour of maximum output productivity</string>
+    <string name="current_productivity_of_day_title">Current output productivity</string>
+
+    <string name="total_of_month_title">Total output</string>
+    <string name="maximum_productivity_of_month_title">Maximum output productivity</string>
+    <string name="maximum_day_of_month_title">The day of maximum output</string>
+    <string name="current_productivity_of_month_title">Current output productivity</string>
+
+    <string name="total_operation_time_of_month_title">Total operation time</string>
+    <string name="maximum_operation_time_of_month_title">The day of maximum operation time</string>
+    <string name="current_operation_time_of_month_title">Current operation time</string>
+
+    <string name="maximum_operation_speed_of_month_title">Maximum operation speed</string>
+    <string name="maximum_operation_speed_day_of_month_title">The day of maximum operation speed</string>
+    <string name="current_operation_speed_of_month_title">Current operation speed</string>
 
     <string name="chart_list_title">Title</string>
     <string name="chart_list_description">description</string>

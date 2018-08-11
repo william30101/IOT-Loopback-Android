@@ -24,6 +24,8 @@ class DeviceStatusRepository : ModelRepository<DeviceStatusModel>("DeviceStatus"
     fun findTodayStatus(id: Long?, callback: ListCallback<DeviceStatusModel>) {
         // {"where" : { "timeStamp" : {"between" : [1527984000,1528070399 ]}}}
 
+
+
         val gcToday = GregorianCalendar()
         resetTimeOfHourMinuteSecond(gcToday)
 
@@ -48,7 +50,7 @@ class DeviceStatusRepository : ModelRepository<DeviceStatusModel>("DeviceStatus"
 
 
     private fun resetTimeOfHourMinuteSecond(gregorianCal: GregorianCalendar) {
-        gregorianCal.set(GregorianCalendar.HOUR, 0)
+        gregorianCal.set(GregorianCalendar.HOUR_OF_DAY, 0)
         gregorianCal.set(GregorianCalendar.MINUTE, 0)
         gregorianCal.set(GregorianCalendar.SECOND, 0)
     }

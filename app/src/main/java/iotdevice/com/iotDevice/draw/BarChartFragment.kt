@@ -1,6 +1,7 @@
 package iotdevice.com.iotDevice.draw
 
 import android.arch.lifecycle.ViewModelProviders
+import android.databinding.DataBindingUtil
 import android.graphics.RectF
 import android.graphics.Typeface
 import android.os.Bundle
@@ -23,7 +24,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import iotdevice.com.iotDevice.common.ChartUtils
 import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.barchart.*
+import iotdevice.com.iot_device.databinding.BarchartBinding
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 
@@ -32,6 +33,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
     var mOnValueSelectedRectF = RectF()
 
+    lateinit var binding: BarchartBinding
     lateinit var mTfRegular: Typeface
     lateinit var mTfLight: Typeface
 
@@ -39,10 +41,9 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
     lateinit var barChartViewModel: BarChartViewModel
 
-
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.barchart, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.barchart, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -51,28 +52,26 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         mTfRegular = Typeface.createFromAsset(activity.assets, "OpenSans-Regular.ttf")
         mTfLight = Typeface.createFromAsset(activity.assets, "OpenSans-Light.ttf")
 
-//        mBarChart = view!!.findViewById(R.id.chart1)
-        bar_chart.setOnChartValueSelectedListener(this)
+        binding.barChart.setOnChartValueSelectedListener(this)
 
-        bar_chart.setDrawBarShadow(false)
-        bar_chart.setDrawValueAboveBar(true)
-        bar_chart.isDoubleTapToZoomEnabled = false
-
-        bar_chart.description.isEnabled = false
+        binding.barChart.setDrawBarShadow(false)
+        binding.barChart.setDrawValueAboveBar(true)
+        binding.barChart.isDoubleTapToZoomEnabled = false
+        binding.barChart.description.isEnabled = false
 
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
-        bar_chart.setMaxVisibleValueCount(60)
+        binding.barChart.setMaxVisibleValueCount(60)
 
         // scaling can now only be done on x- and y-axis separately
-        bar_chart.setPinchZoom(false)
+        binding.barChart.setPinchZoom(false)
 
-        bar_chart.setDrawGridBackground(false)
+        binding.barChart.setDrawGridBackground(false)
 
-        val xAxisFormatter = DayAxisValueFormatter(bar_chart)
+        val xAxisFormatter = DayAxisValueFormatter(binding.barChart)
 
-        val xAxis = bar_chart.xAxis
+        val xAxis = binding.barChart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.typeface = mTfLight
         xAxis.setDrawGridLines(false)
@@ -82,7 +81,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
         val custom = MyAxisValueFormatter("H")
 
-        val leftAxis = bar_chart.axisLeft
+        val leftAxis = binding.barChart.axisLeft
         leftAxis.typeface = mTfLight
         leftAxis.setLabelCount(8, false)
         leftAxis.valueFormatter = custom
@@ -90,11 +89,11 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         leftAxis.spaceTop = 15f
         leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
-        val axisRight = bar_chart.axisRight
+        val axisRight = binding.barChart.axisRight
         axisRight.setDrawLabels(false)
         axisRight.setDrawGridLines(false)
 
-        val legend = bar_chart.legend
+        val legend = binding.barChart.legend
         legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
         legend.orientation = Legend.LegendOrientation.HORIZONTAL
@@ -120,55 +119,55 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         barChartViewModel.yAxisData.observe(this, android.arch.lifecycle.Observer {
             info("return data : $it")
 
-            val set1: BarDataSet
+//            val set1: BarDataSet
             it?.chartName?.apply {
 
                 val axisItem = ChartUtils.getMappingAxis(this)
 
-                axisItem?.let {
-                    when(it.xAxisType) {
+                axisItem?.run {
+                    when(this.xAxisType) {
                         ChartUtils.AxisXType.Hour -> {
-                            setAxisXFormatter(HourAxisValueFormatter(bar_chart))
-                            val mv = XYMarkerView(activity, HourAxisValueFormatter(bar_chart))
-                            mv.chartView = bar_chart // For bounds control
-                            bar_chart.marker = mv // Set the marker to the chart
+                            setAxisXFormatter(HourAxisValueFormatter(binding.barChart))
+                            val mv = XYMarkerView(activity, HourAxisValueFormatter(binding.barChart))
+                            mv.chartView = binding.barChart // For bounds control
+                            binding.barChart.marker = mv // Set the marker to the chart
                         }
                         ChartUtils.AxisXType.Month -> {
-                            setAxisXFormatter(DayAxisValueFormatter(bar_chart))
-                            val mv = XYMarkerView(activity, DayAxisValueFormatter(bar_chart))
-                            mv.chartView = bar_chart // For bounds control
-                            bar_chart.marker = mv // Set the marker to the chart
+                            setAxisXFormatter(DayAxisValueFormatter(binding.barChart))
+                            val mv = XYMarkerView(activity, DayAxisValueFormatter(binding.barChart))
+                            mv.chartView = binding.barChart // For bounds control
+                            binding.barChart.marker = mv // Set the marker to the chart
                         }
                     }
+
+                    if (binding.barChart.data != null && binding.barChart.data.dataSetCount > 0) {
+                        val set1 = binding.barChart.data.getDataSetByIndex(0) as BarDataSet
+                        set1.values = it.dataList
+                        binding.barChart.data.notifyDataChanged()
+                        binding.barChart.notifyDataSetChanged()
+
+                    } else {
+                        val set1 = BarDataSet(it.dataList, itemTitle)
+
+                        set1.setColors(*ColorTemplate.MATERIAL_COLORS)
+
+                        val dataSets = ArrayList<IBarDataSet>()
+                        dataSets.add(set1)
+
+                        val data = BarData(dataSets)
+                        data.setValueTextSize(10f)
+                        data.setValueTypeface(mTfLight)
+                        data.barWidth = 0.9f
+
+                        binding.barChart.data = data
+                    }
+
+                    binding.barChartBottomInfo = it.barChartBottomInfo
+
+                    binding.barChart.animateY(3000)
+                    binding.barChart.invalidate()
                 }
             }
-
-
-
-
-            if (bar_chart.data != null && bar_chart.data.dataSetCount > 0) {
-                set1 = bar_chart.data.getDataSetByIndex(0) as BarDataSet
-                set1.values = it?.dataList
-                bar_chart.data.notifyDataChanged()
-                bar_chart.notifyDataSetChanged()
-
-            } else {
-                set1 = BarDataSet(it?.dataList, itemTitle)
-
-                set1.setColors(*ColorTemplate.MATERIAL_COLORS)
-
-                val dataSets = ArrayList<IBarDataSet>()
-                dataSets.add(set1)
-
-                val data = BarData(dataSets)
-                data.setValueTextSize(10f)
-                data.setValueTypeface(mTfLight)
-                data.barWidth = 0.9f
-                bar_chart.data = data
-            }
-
-            bar_chart.data.isHighlightEnabled = true
-            bar_chart.invalidate()
         })
 
         when(itemTitle) {
@@ -180,7 +179,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
     }
 
     fun setAxisXFormatter(formatter: IAxisValueFormatter) {
-        val xAxis = bar_chart.xAxis
+        val xAxis = binding.barChart.xAxis
         xAxis.valueFormatter = formatter
     }
 
@@ -193,13 +192,12 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         }
 
         val bounds = mOnValueSelectedRectF
-        bar_chart.getBarBounds(e as BarEntry, bounds)
-        val position = bar_chart.getPosition(e, YAxis.AxisDependency.LEFT)
+        binding.barChart.getBarBounds(e as BarEntry, bounds)
+        val position = binding.barChart.getPosition(e, YAxis.AxisDependency.LEFT)
 
-        info("low: " + bar_chart.lowestVisibleX + ", high: "
-                + bar_chart.highestVisibleX)
+        info("low: " + binding.barChart.lowestVisibleX + ", high: "
+                + binding.barChart.highestVisibleX)
 
         MPPointF.recycleInstance(position)
     }
-
 }

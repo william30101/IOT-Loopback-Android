@@ -60,7 +60,7 @@ class ChartUtils {
         }
     }
 
-    enum class AxisXType { Hour, Month }
     data class AxisName(val chartName: String, val xAxisType: AxisXType, val yAxisUnit: String)
+    enum class AxisXType { Hour, Month }
 
 }

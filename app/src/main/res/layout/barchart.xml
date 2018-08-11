@@ -1,11 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout>
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/bar_chart"
+    <data>
+        <import type="android.view.View"/>
+        <import type="android.text.TextUtils"/>
+
+        <variable
+            name="barChartBottomInfo"
+            type="iotdevice.com.iotDevice.draw.BarChartBottomInfo" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bar_chart"
+            android:layout_width="match_parent"
+            android:layout_height="364dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/line1_title" />
+
+        <TextView
+            android:id="@+id/line1_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:text="@{barChartBottomInfo.line1Title}"
+            app:layout_constraintBottom_toTopOf="@+id/line2_title"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/line1_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@{barChartBottomInfo.line1Value}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/line1_title"
+            tools:text="3000" />
+
+        <TextView
+            android:id="@+id/line2_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@{barChartBottomInfo.line2Title}"
+            app:layout_constraintBottom_toTopOf="@+id/line3_title"
+            app:layout_constraintStart_toStartOf="@+id/line1_title" />
+
+        <TextView
+            android:id="@+id/line2_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{barChartBottomInfo.line2Value}"
+            app:layout_constraintStart_toStartOf="@+id/line1_value"
+            app:layout_constraintTop_toTopOf="@+id/line2_title"
+            tools:text="2000" />
+
+        <TextView
+            android:id="@+id/line3_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@{barChartBottomInfo.line3Title}"
+            app:layout_constraintBottom_toTopOf="@+id/line4_title"
+            app:layout_constraintStart_toStartOf="@+id/line2_title" />
+
+        <TextView
+            android:id="@+id/line3_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{barChartBottomInfo.line3Value}"
+            app:layout_constraintStart_toStartOf="@+id/line2_value"
+            app:layout_constraintTop_toTopOf="@+id/line3_title"
+            tools:text="10" />
+
+        <TextView
+            android:id="@+id/line4_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@{barChartBottomInfo.line4Title}"
+            android:visibility="@{TextUtils.isEmpty(barChartBottomInfo.line4Title) ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/line3_title" />
+
+        <TextView
+            android:id="@+id/line4_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{barChartBottomInfo.line4Value}"
+            android:visibility="@{TextUtils.isEmpty(barChartBottomInfo.line4Value) ? View.GONE : View.VISIBLE }"
+            app:layout_constraintStart_toStartOf="@+id/line3_value"
+            app:layout_constraintTop_toTopOf="@+id/line4_title"
+            tools:text="150" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
