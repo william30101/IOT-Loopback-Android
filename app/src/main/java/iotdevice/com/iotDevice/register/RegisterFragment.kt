@@ -39,9 +39,7 @@ class RegisterFragment: Fragment(), AnkoLogger {
         })
 
         registerViewModel.registerFail.observe(this, Observer<Throwable> {
-            DialogUtils.createAlertDialog(context, "Register", it.toString(), {
-                info ( it.toString() )
-            })
+            DialogUtils.createAlertDialog(context, getString(R.string.register_title), it.toString())
         })
 
             registerBtn?.setOnClickListener({ _ ->

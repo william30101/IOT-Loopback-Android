@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.activity_reset_password.*
 import org.jetbrains.anko.AnkoLogger
@@ -28,11 +29,18 @@ class ResetPasswordActivity: AppCompatActivity(), AnkoLogger {
 
         resetPasswordViewModel.sendResetSuccess.observe(this, Observer<Boolean> {
             if (it == true) {
+
                 toast(getString(R.string.reset_word))
 
                 Timer().schedule(500) {
                     finish()
                 }
+            }
+        })
+
+        resetPasswordViewModel.sendResetFail.observe(this, Observer<Boolean> {
+            if (it == true) {
+                DialogUtils.createAlertDialog( this, getString(R.string.reset_title))
             }
         })
     }

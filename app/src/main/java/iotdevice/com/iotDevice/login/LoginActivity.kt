@@ -5,6 +5,7 @@ import android.accounts.AccountManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iotDevice.common.IOTPreference
 import iotdevice.com.iotDevice.home.HomeActivity
 import iotdevice.com.iotDevice.member.TokenManager
@@ -96,6 +97,7 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
 
     override fun onLoginError(err: Throwable) {
         info("login error $err")
+        DialogUtils.createAlertDialog( this, getString(R.string.login_title), msg = err.message)
     }
 
     override fun onBackPressed() {

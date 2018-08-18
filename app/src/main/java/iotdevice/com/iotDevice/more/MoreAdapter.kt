@@ -83,7 +83,7 @@ class MoreAdapter(private val context: Context, private val userName: String): R
     }
 
     companion object {
-        private val ITEM_VIEW_TYPE_HEADER = 0
-        private val ITEM_VIEW_TYPE_ITEM = 1
+        private const val ITEM_VIEW_TYPE_HEADER = 0
+        private const val ITEM_VIEW_TYPE_ITEM = 1
     }
 }

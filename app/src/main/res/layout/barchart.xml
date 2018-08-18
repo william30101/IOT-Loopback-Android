@@ -18,9 +18,9 @@
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/bar_chart"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="364dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/line1_title" />
 
         <TextView

@@ -12,11 +12,26 @@
     <string name="operation_time_total">運轉歷時</string>
     <string name="output_productivity">目前生產效率</string>
 
+    <!-- Add Device -->
+    <string name="add_device_name">名稱</string>
+    <string name="add_device_name_hint">請輸入自訂名稱</string>
+    <string name="add_device_code">設備碼</string>
+    <string name="add_device_code_hint">請輸入設備碼</string>
+    <string name="add_device_password">密碼</string>
+    <string name="add_device_password_hint">請輸入密碼</string>
+    <string name="add_device_add_btn">新增</string>
+
+    <!-- Common -->
+    <string name="network_error">網路錯誤，請確認你的網路連線</string>
+    <string name="home_title">首頁</string>
+
     <!-- Reset Password -->
+    <string name="reset_title">重設密碼</string>
     <string name="reset_submit_btn">送出</string>
     <string name="reset_word">重設密碼已經寄出，請至信箱確認(也請至確認垃圾信箱)</string>
 
     <!-- Login -->
+    <string name="login_title">登入</string>
     <string name="email">信箱</string>
     <string name="email_hint">請輸入信箱</string>
     <string name="password">密碼</string>
@@ -26,12 +41,14 @@
     <string name="forgot_password_btn">忘記密碼</string>
 
     <!-- Register -->
+    <string name="register_title">註冊</string>
     <string name="user_name">帳號</string>
     <string name="user_name_hint">請輸入帳號</string>
     <string name="password_again_hint">請再輸入一次密碼</string>
     <string name="regiser_submit_btn">送出</string>
 
     <!-- Bar Chart page -->
+    <string name="chart_title">圖表</string>
     <string name="hour_output_title">每小時產出</string>
     <string name="hour_output_description">當日每小時產出</string>
     <string name="day_output_title">日產出</string>
@@ -63,8 +80,10 @@
     <string name="chart_list_description">描述</string>
 
     <!-- More page -->
-    <string name="more_title">你好</string>
+    <string name="more_title">更多</string>
+    <string name="more_welcome">你好</string>
     <string name="log_out">登出</string>
+    <string name="version_name">版本 %1$s</string>
 
 
 </resources>

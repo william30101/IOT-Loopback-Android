@@ -31,15 +31,15 @@ import org.jetbrains.anko.info
 
 class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
-    var mOnValueSelectedRectF = RectF()
+    private var mOnValueSelectedRectF = RectF()
 
     lateinit var binding: BarchartBinding
-    lateinit var mTfRegular: Typeface
-    lateinit var mTfLight: Typeface
+    private lateinit var mTfRegular: Typeface
+    private lateinit var mTfLight: Typeface
 
     var deviceId: Long = 0
 
-    lateinit var barChartViewModel: BarChartViewModel
+    private lateinit var barChartViewModel: BarChartViewModel
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.barchart, container, false)

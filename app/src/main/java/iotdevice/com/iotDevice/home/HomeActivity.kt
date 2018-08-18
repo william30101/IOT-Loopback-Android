@@ -37,7 +37,7 @@ class HomeActivity : BaseActivity(), AnkoLogger {
         when(type) {
             FragmentType.Home -> {
                 if (manager.fragments.isEmpty() || manager.findFragmentByTag("Home")?.isVisible != true) {
-                    title = "Home"
+                    title = getString(R.string.home_title)
 
                     // Remove entire back stack when user pressed home button.
                     manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
@@ -48,7 +48,7 @@ class HomeActivity : BaseActivity(), AnkoLogger {
             }
             FragmentType.More -> {
                 if (manager.fragments.isEmpty() || manager.findFragmentByTag("More")?.isVisible != true) {
-                    title = "More"
+                    title = getString(R.string.more_title)
 
                     // Remove entire back stack when user pressed home button.
                     manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)

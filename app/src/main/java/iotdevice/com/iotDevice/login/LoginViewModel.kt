@@ -29,9 +29,9 @@ class LoginViewModel : ViewModel(), AnkoLogger {
                         userData.value = currentUser
                     }
 
-                    override fun onError(t: Throwable) {
+                    override fun onError(throwObj: Throwable) {
                         // login failed
-                        info("loginfail " + t)
+                        info("loginfail $throwObj")
                     }
                 }
         )

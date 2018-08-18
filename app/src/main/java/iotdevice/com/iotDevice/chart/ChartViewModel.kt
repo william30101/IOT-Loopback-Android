@@ -13,6 +13,8 @@ import java.util.*
 
 class ChartViewModel: ViewModel(), AnkoLogger {
 
+    val errorGetChart: MutableLiveData<Any> = MutableLiveData()
+
     val headerItemLiveData: MutableLiveData<ChartHeaderItem> = MutableLiveData()
     val adapter = App.sInstance.loopBackAdapter
     val repository: DeviceStatusRepository? = adapter.createRepository(DeviceStatusRepository::class.java)
@@ -52,6 +54,7 @@ class ChartViewModel: ViewModel(), AnkoLogger {
 
             override fun onError(t: Throwable?) {
                 info("error : $t")
+                errorGetChart.value = t
             }
         })
     }

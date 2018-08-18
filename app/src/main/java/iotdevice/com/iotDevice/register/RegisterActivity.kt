@@ -17,7 +17,7 @@ class RegisterActivity: BaseActivity() {
 
         val transaction = manager.beginTransaction()
         if (manager.fragments.isEmpty() || manager.findFragmentByTag("Register")?.isVisible != true) {
-            title = "Register"
+            title = getString(R.string.register_title)
 
             // Remove entire back stack when user pressed home button.
             manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)

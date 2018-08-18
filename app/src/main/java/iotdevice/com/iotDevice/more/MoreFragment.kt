@@ -13,6 +13,7 @@ import iotdevice.com.iotDevice.chart.GridLayoutDivider
 import iotdevice.com.iotDevice.common.IOTPreference
 import iotdevice.com.iotDevice.common.RecycleViewListener
 import iotdevice.com.iotDevice.login.LoginActivity
+import iotdevice.com.iot_device.BuildConfig
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.fragment_more.*
 import org.jetbrains.anko.AnkoLogger
@@ -30,6 +31,9 @@ class MoreFragment: Fragment(), RecycleViewListener, AnkoLogger {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val version = getString(R.string.version_name)
+        version_number.text = String.format(version, BuildConfig.VERSION_NAME)
 
         moreItemList.add(resources.getString(R.string.log_out))
 

@@ -47,8 +47,6 @@ class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
 
                                         override fun onSuccess(res: CustomerDeviceModel?) {
                                             toast("success : $res")
-
-
                                         }
 
                                         override fun onError(t: Throwable?) {

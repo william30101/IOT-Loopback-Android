@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import iotdevice.com.iotDevice.common.ChartUtils
+import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iotDevice.common.RecycleViewListener
 import iotdevice.com.iotDevice.draw.BarChartFragment
 import iotdevice.com.iot_device.R
@@ -69,6 +70,11 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
 
         chartRecyclerView.adapter = chartAdapter
         chartRecyclerView.adapter.notifyDataSetChanged()
+
+        chartViewModel.errorGetChart.observe(this, Observer { _ ->
+            DialogUtils.createAlertDialog( activity, getString(R.string.chart_title))
+        })
+
     }
 
     override fun onResume() {

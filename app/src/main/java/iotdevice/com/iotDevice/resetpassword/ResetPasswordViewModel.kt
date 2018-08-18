@@ -11,7 +11,7 @@ import org.jetbrains.anko.info
 class ResetPasswordViewModel: ViewModel(), AnkoLogger {
 
     val sendResetSuccess: MutableLiveData<Boolean> = MutableLiveData()
-    val sendResetFail: MutableLiveData<Any> = MutableLiveData()
+    val sendResetFail: MutableLiveData<Boolean> = MutableLiveData()
 
     val adapter = App.sInstance.loopBackAdapter
     val repository: CustomerRepository? = adapter.createRepository(CustomerRepository::class.java)
@@ -26,9 +26,12 @@ class ResetPasswordViewModel: ViewModel(), AnkoLogger {
             // TODO : the API will return null even if success, need to handle this.
             override fun onError(t: Throwable?) {
                 info("fail")
-                sendResetSuccess.value = true
+                if (t?.message?.contains("null") == true) {
+                    sendResetSuccess.value = true
+                } else {
+                    sendResetFail.value = true
+                }
             }
         })
     }
-
 }

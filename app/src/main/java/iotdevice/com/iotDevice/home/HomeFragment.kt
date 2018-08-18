@@ -12,6 +12,7 @@ import com.strongloop.android.loopback.callbacks.ListCallback
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.chart.ChartFragment
 import iotdevice.com.iotDevice.common.ChartUtils.Companion.transmitFragment
+import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iotDevice.deviceAction.AddDevicesActivity
 import iotdevice.com.iotDevice.member.TokenManager
 import iotdevice.com.iotDevice.model.CustomerDeviceModel
@@ -22,7 +23,6 @@ import iotdevice.com.iotDevice.repository.CustomerRepository
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.apache.http.client.HttpResponseException
-import org.apache.http.conn.ConnectTimeoutException
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import java.net.HttpURLConnection
@@ -103,9 +103,8 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
                                     TokenManager.passwordFromManager , HomeFragment())
                         }
                     }
-                } else if (t is ConnectTimeoutException) {
-                    info("time out , need to check server config")
-                    createAlertDialog()
+                } else {
+                    DialogUtils.createAlertDialog( activity, getString(R.string.home_title))
 
                 }
 //                HttpURLConnection.HTTP_UNSUPPORTED_TYPE
