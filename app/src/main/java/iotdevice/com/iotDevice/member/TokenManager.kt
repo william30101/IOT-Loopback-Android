@@ -2,7 +2,6 @@ package iotdevice.com.iotDevice.member
 
 import android.accounts.Account
 import android.accounts.AccountManager
-import android.accounts.AccountManagerCallback
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -184,7 +183,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
         }
 
         mAccountManager?.getAuthToken(account, AuthUtil.AUTH_TOKEN_TYPE_NAME, null, null,
-                AccountManagerCallback { future ->
+                { future ->
                     try {
 //                        val bnd = future.result
 

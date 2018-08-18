@@ -168,7 +168,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
                 val dayTotalList: MutableMap<Int, Float> = mutableMapOf()
                 var operationTimeTotal = 0f
 
-                objects!!.forEach {
+                objects?.forEach {
 
                     val dayTotal = it.operationTime
                     val calendar = Calendar.getInstance()

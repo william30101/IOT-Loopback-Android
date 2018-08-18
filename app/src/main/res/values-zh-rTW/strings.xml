@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_name">佳因科技</string>
+    <string name="title_activity_home">首頁</string>
+    <string name="title_home">首頁</string>
+    <string name="title_more">更多</string>
+    <string name="title_activity_main">首頁</string>
+
     <string name="boot_time">開機時間</string>
     <string name="boot_time_today">開機歷時(當天)</string>
     <string name="operation_time_total">運轉歷時</string>
     <string name="output_productivity">目前生產效率</string>
 
+    <!-- Reset Password -->
+    <string name="reset_submit_btn">送出</string>
+    <string name="reset_word">重設密碼已經寄出，請至信箱確認(也請至確認垃圾信箱)</string>
+
+    <!-- Login -->
+    <string name="email">信箱</string>
+    <string name="email_hint">請輸入信箱</string>
+    <string name="password">密碼</string>
+    <string name="password_hint">請輸入密碼</string>
+    <string name="login_btn">登入</string>
+    <string name="register_btn">註冊</string>
+    <string name="forgot_password_btn">忘記密碼</string>
+
+    <!-- Register -->
+    <string name="user_name">帳號</string>
+    <string name="user_name_hint">請輸入帳號</string>
+    <string name="password_again_hint">請再輸入一次密碼</string>
+    <string name="regiser_submit_btn">送出</string>
+
+    <!-- Bar Chart page -->
     <string name="hour_output_title">每小時產出</string>
     <string name="hour_output_description">當日每小時產出</string>
     <string name="day_output_title">日產出</string>
@@ -14,4 +40,31 @@
     <string name="operation_time_description">當月運轉時數</string>
     <string name="average_output_title">平均產速</string>
     <string name="average_output_description">當月平均產速</string>
+
+    <string name="total_of_day_title">當日總產出</string>
+    <string name="maximum_productivity_of_day_title">最高時產出</string>
+    <string name="maximum_hour_of_day_title">最高產出時</string>
+    <string name="current_productivity_of_day_title">目前時產出</string>
+
+    <string name="total_of_month_title">當月總產出</string>
+    <string name="maximum_productivity_of_month_title">最高日產出</string>
+    <string name="maximum_day_of_month_title">最高產出日</string>
+    <string name="current_productivity_of_month_title">目前日產出</string>
+
+    <string name="total_operation_time_of_month_title">當月運轉總時數</string>
+    <string name="maximum_operation_time_of_month_title">最高運轉時數日</string>
+    <string name="current_operation_time_of_month_title">目前運轉時數</string>
+
+    <string name="maximum_operation_speed_of_month_title">日平均產速</string>
+    <string name="maximum_operation_speed_day_of_month_title">當月最高產速</string>
+    <string name="current_operation_speed_of_month_title">目前產速</string>
+
+    <string name="chart_list_title">圖表</string>
+    <string name="chart_list_description">描述</string>
+
+    <!-- More page -->
+    <string name="more_title">你好</string>
+    <string name="log_out">登出</string>
+
+
 </resources>

@@ -1,4 +1,4 @@
-package iotdevice.com.iotDevice.DeviceAction
+package iotdevice.com.iotDevice.deviceAction
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

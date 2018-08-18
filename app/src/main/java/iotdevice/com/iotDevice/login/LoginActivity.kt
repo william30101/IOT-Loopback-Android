@@ -11,11 +11,13 @@ import iotdevice.com.iotDevice.member.TokenManager
 import iotdevice.com.iotDevice.member.auth.AccountAuthenticatorActivity
 import iotdevice.com.iotDevice.member.auth.AuthUtil
 import iotdevice.com.iotDevice.model.CustomerModel
-import iotdevice.com.iotDevice.register.RegisgterActivity
+import iotdevice.com.iotDevice.register.RegisterActivity
+import iotdevice.com.iotDevice.resetpassword.ResetPasswordActivity
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
+import org.jetbrains.anko.startActivity
 
 
 class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.LoginListener {
@@ -38,20 +40,26 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
 
         loginBtn.setOnClickListener({ _ ->
             TokenManager.performLoginRequest(loginUserName.text.toString(),
-                    loginPassword.text.toString(), this)
+                    password_Edit.text.toString(), this)
         })
 
         registerTextView.setOnClickListener({ _ ->
             startActivity(RegisterActivityIntent())
         })
 
+        forgotPasswordTextView.setOnClickListener({ _ ->
+            startActivity<ResetPasswordActivity>()
+        })
+
         val intent = Intent(this, HomeActivity::class.java)
 
         TokenManager.loginIfNeeded(this, intent, null)
+
+
     }
 
     fun Context.RegisterActivityIntent(): Intent {
-        return Intent(this, RegisgterActivity::class.java).apply {
+        return Intent(this, RegisterActivity::class.java).apply {
             //            putExtra(INTENT_USER_ID, user.id)
         }
     }
@@ -60,7 +68,7 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
     override fun onLoginComplete(result: CustomerModel) {
         val authToken = result.id
         val accountName = loginUserName.text.toString()
-        val accountPassword = loginPassword.text.toString()
+        val accountPassword = password_Edit.text.toString()
         val account = Account(accountName, AuthUtil.ACCOUNT_TYPE_NAME)
 
         info("authToken : $authToken")
