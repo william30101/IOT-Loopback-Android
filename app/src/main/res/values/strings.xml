@@ -78,6 +78,8 @@
     <string name="chart_list_title">Title</string>
     <string name="chart_list_description">description</string>
 
+    <string name="no_date_str">No Data</string>
+
     <!-- More page -->
     <string name="more_title">More</string>
     <string name="more_welcome">Hi</string>

@@ -1,5 +1,6 @@
 package iotdevice.com.iotDevice.draw
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.graphics.RectF
@@ -23,8 +24,10 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import iotdevice.com.iotDevice.common.ChartUtils
+import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iot_device.R
 import iotdevice.com.iot_device.databinding.BarchartBinding
+import kotlinx.android.synthetic.main.fragment_chart.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 
@@ -36,6 +39,8 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
     lateinit var binding: BarchartBinding
     private lateinit var mTfRegular: Typeface
     private lateinit var mTfLight: Typeface
+
+    var itemTitle: String = ""
 
     var deviceId: Long = 0
 
@@ -102,6 +107,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         legend.formSize = 9f
         legend.textSize = 11f
         legend.xEntrySpace = 4f
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -109,15 +115,17 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
         val arguments = arguments
 
-        val deviceId = arguments.getLong("deviceId")
-        val itemTitle = arguments.getString("itemTitle")
+        deviceId = arguments.getLong("deviceId")
+        itemTitle = arguments.getString("itemTitle")
 
         info("deviceId : $deviceId")
 
         barChartViewModel = ViewModelProviders.of(this).get(BarChartViewModel::class.java)
 
         barChartViewModel.yAxisData.observe(this, android.arch.lifecycle.Observer {
-            info("return data : $it")
+//            info("return data : $it")
+
+            swipeRefreshLayout.isRefreshing = false
 
 //            val set1: BarDataSet
             it?.chartName?.apply {
@@ -170,6 +178,27 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
             }
         })
 
+        barChartViewModel.errorRes.observe(this, Observer {
+            swipeRefreshLayout.isRefreshing = false
+            if (it?.message?.contains("size is 0") == true) {
+                DialogUtils.createAlertDialog(context, getString(R.string.chart_title), getString(R.string.no_date_str))
+            } else {
+                DialogUtils.createAlertDialog(context, getString(R.string.chart_title))
+            }
+        })
+
+        swipeRefreshLayout.setOnRefreshListener({
+            onRefresh(itemTitle)
+        })
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        onRefresh(itemTitle)
+    }
+
+    private fun onRefresh(itemTitle : String) {
         when(itemTitle) {
             resources.getString(R.string.hour_output_title) -> barChartViewModel.getTodayStatus(deviceId)
             resources.getString(R.string.day_output_title) -> barChartViewModel.getMonthStatus(deviceId)
@@ -177,6 +206,8 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
             resources.getString(R.string.average_output_title) -> barChartViewModel.getMonthPCSStatus(deviceId)
         }
     }
+
+
 
     fun setAxisXFormatter(formatter: IAxisValueFormatter) {
         val xAxis = binding.barChart.xAxis

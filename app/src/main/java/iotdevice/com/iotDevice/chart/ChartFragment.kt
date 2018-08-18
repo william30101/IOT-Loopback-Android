@@ -43,10 +43,7 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
         super.onActivityCreated(savedInstanceState)
         chartViewModel = ViewModelProviders.of(this).get(ChartViewModel::class.java)
 
-        chartViewModel.headerItemLiveData.observe(this, Observer {
-            info("time return : $it")
 
-        })
         val arguments = arguments
         deviceId = arguments.getLong("deviceId")
         info("deviceId : $deviceId")
@@ -69,21 +66,34 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
         }
 
         chartRecyclerView.adapter = chartAdapter
-        chartRecyclerView.adapter.notifyDataSetChanged()
 
         chartViewModel.errorGetChart.observe(this, Observer { _ ->
+            swipeRefreshLayout.isRefreshing = false
             DialogUtils.createAlertDialog( activity, getString(R.string.chart_title))
         })
 
+        chartViewModel.headerItemLiveData.observe(this, Observer {
+            swipeRefreshLayout.isRefreshing = false
+            chartRecyclerView.adapter.notifyDataSetChanged()
+
+        })
+
+        swipeRefreshLayout.setOnRefreshListener({
+            onRefresh()
+        })
     }
 
     override fun onResume() {
         super.onResume()
-        chartViewModel.fetchHeaderItem(deviceId)
+        onRefresh()
     }
 
     override fun onClick(bundle: Bundle) {
         val barChartFragment = BarChartFragment()
         ChartUtils.transmitFragment(fragmentManager, barChartFragment, bundle)
+    }
+
+    private fun onRefresh() {
+        chartViewModel.fetchHeaderItem(deviceId)
     }
 }

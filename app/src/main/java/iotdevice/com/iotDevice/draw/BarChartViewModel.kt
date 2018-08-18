@@ -19,6 +19,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
     private val deviceStatusRepository: DeviceStatusRepository by lazy { adapter.createRepository(DeviceStatusRepository::class.java) }
 
     val yAxisData: MutableLiveData<ChartData> = MutableLiveData()
+    val errorRes: MutableLiveData<Throwable> = MutableLiveData()
 
 
     fun getTodayStatus(deviceId: Long?) {
@@ -95,6 +96,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
 
             override fun onError(t: Throwable?) {
                 info("error : $t")
+                errorRes.value = t
             }
         })
     }
@@ -156,6 +158,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
 
             override fun onError(t: Throwable?) {
                 info("error : $t")
+                errorRes.value = t
             }
         })
     }
@@ -192,6 +195,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
 
             override fun onError(t: Throwable?) {
                 info("error : $t")
+                errorRes.value = t
             }
         })
     }
@@ -253,6 +257,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
 
             override fun onError(t: Throwable?) {
                 info("error : $t")
+                errorRes.value = t
             }
         })
     }
