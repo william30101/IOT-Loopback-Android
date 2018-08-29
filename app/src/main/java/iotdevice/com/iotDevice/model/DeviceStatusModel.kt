@@ -4,6 +4,7 @@ import com.strongloop.android.loopback.Model
 
 class DeviceStatusModel: Model() {
     var bootTime: Long = 0
+    var bootTimeSoFar: Long = 0
     var operationTime: Long = 0
     var timeStamp: String? = null
     var deviceTimeStamp: String? = null

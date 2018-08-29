@@ -9,11 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.strongloop.android.loopback.callbacks.ListCallback
+import com.strongloop.android.loopback.callbacks.ObjectCallback
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.chart.ChartFragment
 import iotdevice.com.iotDevice.common.ChartUtils.Companion.transmitFragment
 import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iotDevice.deviceAction.AddDevicesActivity
+import iotdevice.com.iotDevice.deviceAction.EditDeviceActivity
 import iotdevice.com.iotDevice.member.TokenManager
 import iotdevice.com.iotDevice.model.CustomerDeviceModel
 import iotdevice.com.iotDevice.model.CustomerModel
@@ -25,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import org.apache.http.client.HttpResponseException
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
+import org.jetbrains.anko.startActivity
 import java.net.HttpURLConnection
 
 
@@ -33,6 +36,12 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
     private var imageList : MutableList<ImageModel> = mutableListOf()
 
     private lateinit  var imageAdapter: ImageListAdapter
+    private lateinit var customerDeviceRepository: CustomerDeviceRepository
+    private lateinit var customerRepository: CustomerRepository
+    val adapter = App.sInstance.loopBackAdapter.apply {
+        customerDeviceRepository = this.createRepository(CustomerDeviceRepository::class.java)
+        customerRepository = this.createRepository(CustomerRepository::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater!!.inflate(R.layout.fragment_home, container, false)
@@ -64,23 +73,38 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
                 bundle.putLong("deviceId", imageList[position].deviceId.toLong())
                 transmitFragment(fragmentManager, chartFragment, bundle)
             }
+
+            override fun onEditClick(position: Int, v: View) {
+                activity.startActivity<EditDeviceActivity>("deviceId" to imageList[position].deviceId, "deviceName" to imageList[position].displayName)
+            }
+
+            override fun onDelClick(position: Int, v: View) {
+                DialogUtils.createConfirmDialog(activity, getString(R.string.del_device_title), getString(R.string.del_device_desc)) {
+
+                    customerDeviceRepository.delDevice(imageList[position].id, object : ObjectCallback<CustomerDeviceModel> {
+                        override fun onSuccess(myObj: CustomerDeviceModel?) {
+                            getDevice()
+                        }
+
+                        override fun onError(t: Throwable?) {
+                            DialogUtils.createAlertDialog(activity, getString(R.string.del_device_title), t?.message.toString())
+                        }
+                    })
+                }
+            }
         })
 
         getDevice()
     }
 
     fun getDevice() {
-        val adapter = App.sInstance.loopBackAdapter
 
-        val customerDeviceRepository = adapter.createRepository(CustomerDeviceRepository::class.java)
-        val customerRepository = adapter.createRepository(CustomerRepository::class.java)
+        imageList.clear()
 
         customerDeviceRepository.findDevice(customerRepository.currentUserId as Int, object: ListCallback<CustomerDeviceModel> {
             override fun onSuccess(objects: MutableList<CustomerDeviceModel>?) {
-                objects!!.forEach {  imageList.add(ImageModel(it.deviceId, "img_1", it.displayName)) }
-                if (imageList.isNotEmpty()) {
-                    imageAdapter.notifyDataSetChanged()
-                }
+                objects?.forEach {  imageList.add(ImageModel(it.id, it.deviceId, "img_1", it.displayName)) }
+                imageAdapter.notifyDataSetChanged()
             }
 
             override fun onError(t: Throwable?) {

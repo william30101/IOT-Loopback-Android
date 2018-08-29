@@ -30,11 +30,9 @@
             android:id="@+id/boot_time_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
             android:text="@{chartViewModel.headerItemLiveData.bootTime}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@+id/boot_time_title"
+            app:layout_constraintStart_toStartOf="@+id/boot_time_today_value"
             tool:text="4000" />
 
         <TextView
@@ -51,8 +49,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{chartViewModel.headerItemLiveData.bootTimeToday}"
-            app:layout_constraintStart_toStartOf="@+id/boot_time_value"
-            app:layout_constraintTop_toTopOf="@+id/boot_time_today_title"
+            app:layout_constraintBaseline_toBaselineOf="@+id/boot_time_today_title"
+            app:layout_constraintStart_toStartOf="@+id/operation_time_value"
             tool:text="20" />
 
         <TextView
@@ -69,9 +67,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{chartViewModel.headerItemLiveData.operationTimeTotal}"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/boot_time_today_value"
-            app:layout_constraintTop_toBottomOf="@+id/boot_time_today_value"
+            app:layout_constraintBaseline_toBaselineOf="@+id/operation_time_total_title"
+            app:layout_constraintStart_toStartOf="@+id/output_productivity_value"
             tool:text="3344" />
 
         <TextView
@@ -89,11 +86,14 @@
             android:id="@+id/output_productivity_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{chartViewModel.headerItemLiveData.Productivity}"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/operation_time_value"
+            android:text="@{chartViewModel.headerItemLiveData.Productivity}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/operation_time_value"
-            tool:text="888" />
+            tool:text="2000 pcs/min" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

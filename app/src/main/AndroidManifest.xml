@@ -35,6 +35,7 @@
         <activity android:name="iotdevice.com.iotDevice.register.RegisterActivity" />
         <activity android:name="iotdevice.com.iotDevice.deviceAction.AddDevicesActivity" />
         <activity android:name="iotdevice.com.iotDevice.resetpassword.ResetPasswordActivity" />
+        <activity android:name="iotdevice.com.iotDevice.deviceAction.EditDeviceActivity" />
 
         <service
             android:name="iotdevice.com.iotDevice.member.auth.AuthenticatorService"
@@ -49,6 +50,7 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" /> <!-- We haven't defined this -->
         </service>
+        <meta-data android:name="net.hockeyapp.android.appIdentifier" android:value="${HOCKEYAPP_APP_ID}" />
     </application>
 
 </manifest>

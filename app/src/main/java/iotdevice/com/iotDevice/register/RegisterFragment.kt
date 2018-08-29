@@ -11,8 +11,8 @@ import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.fragment_register.*
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.info
+import org.jetbrains.anko.toast
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -31,7 +31,7 @@ class RegisterFragment: Fragment(), AnkoLogger {
         registerViewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
 
         registerViewModel.registerSuccess.observe(this, Observer<Any> {
-            snackbar(view!!, "Register Success")
+            activity.toast("Register Success")
             Timer().schedule(1000){
                 //do something
                 activity.finish()

@@ -2,54 +2,66 @@ package iotdevice.com.iotDevice.chart
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.content.res.Resources
 import com.strongloop.android.loopback.callbacks.ListCallback
 import iotdevice.com.iotDevice.App
-import iotdevice.com.iotDevice.common.ChartUtils
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import iotdevice.com.iotDevice.repository.DeviceStatusRepository
+import iotdevice.com.iot_device.R
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
-import java.util.*
 
-class ChartViewModel: ViewModel(), AnkoLogger {
+class ChartViewModel : ViewModel(), AnkoLogger {
 
     val errorGetChart: MutableLiveData<Any> = MutableLiveData()
 
     val headerItemLiveData: MutableLiveData<ChartHeaderItem> = MutableLiveData()
     val adapter = App.sInstance.loopBackAdapter
     val repository: DeviceStatusRepository? = adapter.createRepository(DeviceStatusRepository::class.java)
+    private val resource: Resources by lazy { App.sInstance.resources }
+
 
     fun fetchHeaderItem(deviceId: Long) {
-        repository?.findTotalOperationTime(deviceId,  object: ListCallback<DeviceStatusModel> {
+
+        repository?.findTodayStatus(deviceId, object : ListCallback<DeviceStatusModel> {
             override fun onSuccess(objects: MutableList<DeviceStatusModel>?) {
+                val todayStatus = objects!![0]
+                val bootTime = todayStatus.bootTime
+                val bootTimeSoFar = todayStatus.bootTimeSoFar
+                val operationTime = todayStatus.operationTime
 
+                val totalOfDay = todayStatus.productivity0 +
+                        todayStatus.productivity1 +
+                        todayStatus.productivity2 +
+                        todayStatus.productivity3 +
+                        todayStatus.productivity4 +
+                        todayStatus.productivity5 +
+                        todayStatus.productivity6 +
+                        todayStatus.productivity7 +
+                        todayStatus.productivity8 +
+                        todayStatus.productivity9 +
+                        todayStatus.productivity10 +
+                        todayStatus.productivity11 +
+                        todayStatus.productivity12 +
+                        todayStatus.productivity13 +
+                        todayStatus.productivity14 +
+                        todayStatus.productivity15 +
+                        todayStatus.productivity16 +
+                        todayStatus.productivity17 +
+                        todayStatus.productivity18 +
+                        todayStatus.productivity19 +
+                        todayStatus.productivity20 +
+                        todayStatus.productivity21 +
+                        todayStatus.productivity22 +
+                        todayStatus.productivity23
 
-                val now = Calendar.getInstance()
-                val itemCalendar = Calendar.getInstance()
-                var operationTimeTotal: Long = 0
-                var bootTimeTotal: Long = 0
-                var currentProducitivity: Long = 0
-                var bootTimeToday: Long = 0
+                headerItemLiveData.value = ChartHeaderItem(
+                        calHourAndMinutes(bootTime),
+                        calHourAndMinutes(bootTimeSoFar),
+                        operationTime.toString()+ resource.getString(R.string.hour_unit),
+                        (totalOfDay / operationTime).toString() + resource.getString(R.string.average_productvity_unit)
 
-                objects?.forEach {
-                    operationTimeTotal += it.operationTime
-                    bootTimeTotal += it.bootTime
-
-                    itemCalendar.timeInMillis = it.timeStamp!!.toLong()
-                    if (now.get(Calendar.DATE) == itemCalendar.get(Calendar.DATE) ) {
-                        info("Today's boot time ${it.bootTime}")
-                        bootTimeToday = it.bootTime
-                        val hour = now.get(Calendar.HOUR_OF_DAY)
-                        ChartUtils.combineProductivityToList(it)
-                        currentProducitivity = it.productivityLit[hour]
-                        if (currentProducitivity > 0) {
-                            info("Today's boot time $currentProducitivity")
-                        }
-                    }
-                }
-
-                headerItemLiveData.value = ChartHeaderItem(bootTimeTotal.toString(),bootTimeToday.toString(),
-                        operationTimeTotal.toString(),bootTimeTotal.toString())
+                )
             }
 
             override fun onError(t: Throwable?) {
@@ -57,6 +69,13 @@ class ChartViewModel: ViewModel(), AnkoLogger {
                 errorGetChart.value = t
             }
         })
+    }
+
+    fun calHourAndMinutes(totalMinutes: Long): String {
+        val hour = (totalMinutes / 60).toString()
+        val minutes = (totalMinutes % 60).toString()
+        return hour + resource.getString(R.string.hour_unit) +
+                minutes + resource.getString(R.string.minute_unit)
     }
 
 }

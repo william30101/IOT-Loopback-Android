@@ -12,7 +12,22 @@
     <string name="operation_time_total">運轉歷時</string>
     <string name="output_productivity">目前生產效率</string>
 
+    <!-- Home -->
+    <string name="list_device_name">設備名</string>
+    <string name="del_device_desc">你想要移除這設備嗎？</string>
+    <string name="del_device_title">設備刪除</string>
+
+
+    <!-- Edit Device -->
+    <string name="edit_device_title">設備修改</string>
+    <string name="original_device_name_title">原始名稱</string>
+    <string name="edit_device_name_hint">改變設備名稱</string>
+    <string name="edit_device_name_btn">確認</string>
+    <string name="edit_device_description">如果不想改變，請保留空白</string>
+    <string name="edit_device_success">修改設備成功，返回首頁</string>
+
     <!-- Add Device -->
+    <string name="add_device_title">新增設備</string>
     <string name="add_device_name">名稱</string>
     <string name="add_device_name_hint">請輸入自訂名稱</string>
     <string name="add_device_code">設備碼</string>
@@ -20,10 +35,15 @@
     <string name="add_device_password">密碼</string>
     <string name="add_device_password_hint">請輸入密碼</string>
     <string name="add_device_add_btn">新增</string>
+    <string name="add_device_success">新增設備成功，返回首頁</string>
+    <string name="add_device_check_msg">請填入所有欄位</string>
 
     <!-- Common -->
     <string name="network_error">網路錯誤，請確認你的網路連線</string>
     <string name="home_title">首頁</string>
+    <string name="hour_unit">時</string>
+    <string name="minute_unit">分</string>
+    <string name="day_unit">號</string>
 
     <!-- Reset Password -->
     <string name="reset_title">重設密碼</string>
@@ -72,8 +92,8 @@
     <string name="maximum_operation_time_of_month_title">最高運轉時數日</string>
     <string name="current_operation_time_of_month_title">目前運轉時數</string>
 
-    <string name="maximum_operation_speed_of_month_title">日平均產速</string>
-    <string name="maximum_operation_speed_day_of_month_title">當月最高產速</string>
+    <string name="maximum_operation_speed_of_month_title">當月最高產速</string>
+    <string name="maximum_operation_speed_day_of_month_title">當月最高產速日</string>
     <string name="current_operation_speed_of_month_title">目前產速</string>
 
     <string name="chart_list_title">圖表</string>

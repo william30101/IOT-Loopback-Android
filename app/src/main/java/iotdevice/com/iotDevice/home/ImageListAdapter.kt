@@ -32,6 +32,8 @@ class ImageListAdapter(val feedModelItems: List<ImageModel>) : RecyclerView.Adap
     }
 
     interface ClickListener {
+        fun onDelClick(position: Int, v: View)
+        fun onEditClick(position: Int, v: View)
         fun onItemClick(position: Int, v: View)
         fun onItemLongClick(position: Int, v: View)
     }
@@ -51,6 +53,14 @@ class ImageListAdapter(val feedModelItems: List<ImageModel>) : RecyclerView.Adap
             // set displayName
             itemView.descriptionTextView.text = imageModel.displayName
 
+            itemView.editDevice.setOnClickListener({
+                clickListener.onEditClick( adapterPosition, itemView)
+            })
+
+            itemView.delDevice.setOnClickListener({
+                clickListener.onDelClick ( adapterPosition, itemView)
+            })
+
             // set image
             when(imageModel.imageName){
                 "img_1" -> itemView.imageView.setImageResource(R.drawable.ic_baseline_computer_24px)
@@ -62,6 +72,10 @@ class ImageListAdapter(val feedModelItems: List<ImageModel>) : RecyclerView.Adap
         override fun onClick(v: View?) {
             clickListener.onItemClick( adapterPosition, v!!)
         }
+
+
+
+
     }
 
 }

@@ -57,6 +57,7 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
         TokenManager.loginIfNeeded(this, intent, null)
 
 
+
     }
 
     fun Context.RegisterActivityIntent(): Intent {

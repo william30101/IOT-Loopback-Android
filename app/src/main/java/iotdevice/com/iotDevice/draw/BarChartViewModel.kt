@@ -2,6 +2,7 @@ package iotdevice.com.iotDevice.draw
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.content.res.Resources
 import com.github.mikephil.charting.data.BarEntry
 import com.strongloop.android.loopback.RestAdapter
 import com.strongloop.android.loopback.callbacks.ListCallback
@@ -17,6 +18,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
 
     private val adapter: RestAdapter by lazy { App.sInstance.loopBackAdapter }
     private val deviceStatusRepository: DeviceStatusRepository by lazy { adapter.createRepository(DeviceStatusRepository::class.java) }
+    private val resource: Resources by lazy { App.sInstance.resources }
 
     val yAxisData: MutableLiveData<ChartData> = MutableLiveData()
     val errorRes: MutableLiveData<Throwable> = MutableLiveData()
@@ -84,12 +86,16 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
 
                 val currentHour = GregorianCalendar().get(Calendar.HOUR_OF_DAY)
 
-                val bottomInfo = BarChartBottomInfo(App.sInstance.resources.getString(R.string.total_of_day_title), totalOfDay.toString(),
-                        App.sInstance.resources.getString(R.string.maximum_productivity_of_day_title), maxData?.value.toString(),
-                        App.sInstance.resources.getString(R.string.maximum_hour_of_day_title), maxData?.key.toString(),
-                        App.sInstance.resources.getString(R.string.current_productivity_of_day_title), deviceStatusList[currentHour].toString())
-
-
+                val bottomInfo = BarChartBottomInfo(
+                        resource.getString(R.string.total_of_day_title),
+                        totalOfDay.toString() + resource.getString(R.string.productvity_unit),
+                        resource.getString(R.string.maximum_productivity_of_day_title),
+                        maxData?.value.toString()  + resource.getString(R.string.productvity_unit),
+                        resource.getString(R.string.maximum_hour_of_day_title),
+                        maxData?.key.toString()  +resource.getString(R.string.hour_unit),
+                        resource.getString(R.string.current_productivity_of_day_title),
+                        deviceStatusList[currentHour].toString()  +resource.getString(R.string.productvity_unit)
+                )
 
                 setOutputData("HourOutput", deviceStatusList, bottomInfo)
             }
@@ -148,10 +154,14 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
 
                 val currentDate = GregorianCalendar().get(Calendar.DAY_OF_MONTH)
 
-                val bottomInfo = BarChartBottomInfo(App.sInstance.resources.getString(R.string.total_of_month_title), totalOfMonth.toString(),
-                        App.sInstance.resources.getString(R.string.maximum_productivity_of_month_title), maxDate?.value.toString(),
-                        App.sInstance.resources.getString(R.string.maximum_day_of_month_title), maxDate?.key.toString(),
-                        App.sInstance.resources.getString(R.string.current_productivity_of_month_title), dayTotalList[currentDate].toString())
+                val bottomInfo = BarChartBottomInfo(resource.getString(R.string.total_of_month_title),
+                        totalOfMonth.toString() + resource.getString(R.string.productvity_unit),
+                        resource.getString(R.string.maximum_productivity_of_month_title),
+                        maxDate?.value.toString() + resource.getString(R.string.productvity_unit),
+                        resource.getString(R.string.maximum_day_of_month_title),
+                        maxDate?.key.toString() + resource.getString(R.string.day_unit),
+                        resource.getString(R.string.current_productivity_of_month_title),
+                        dayTotalList[currentDate].toString() + resource.getString(R.string.productvity_unit))
 
                 setOutputData("DayOutput", dayTotalList, bottomInfo)
             }
@@ -182,13 +192,15 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
                 }
 
                 val maxDate = dayTotalList.maxBy { it.value }
-
                 val currentDate = GregorianCalendar().get(Calendar.DAY_OF_MONTH)
 
                 val bottomInfo = BarChartBottomInfo(
-                        App.sInstance.resources.getString(R.string.total_operation_time_of_month_title), operationTimeTotal.toString(),
-                        App.sInstance.resources.getString(R.string.maximum_operation_time_of_month_title), maxDate?.value.toString(),
-                        App.sInstance.resources.getString(R.string.current_operation_time_of_month_title), dayTotalList[currentDate].toString())
+                        resource.getString(R.string.total_operation_time_of_month_title),
+                        operationTimeTotal.toString() + resource.getString(R.string.hour_unit),
+                        resource.getString(R.string.maximum_operation_time_of_month_title),
+                        maxDate?.value.toString() + resource.getString(R.string.hour_unit),
+                        resource.getString(R.string.current_operation_time_of_month_title),
+                        dayTotalList[currentDate].toString() + resource.getString(R.string.hour_unit))
 
                 setOutputData("OperationTime", dayTotalList, bottomInfo)
             }
@@ -248,9 +260,12 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
                 val currentDate = GregorianCalendar().get(Calendar.DAY_OF_MONTH)
 
                 val bottomInfo = BarChartBottomInfo(
-                        App.sInstance.resources.getString(R.string.maximum_operation_speed_of_month_title), maxDate?.value.toString(),
-                        App.sInstance.resources.getString(R.string.maximum_operation_speed_day_of_month_title), maxDate?.key.toString(),
-                        App.sInstance.resources.getString(R.string.current_operation_speed_of_month_title), dayTotalList[currentDate].toString())
+                        resource.getString(R.string.maximum_operation_speed_of_month_title),
+                        maxDate?.value.toString() + resource.getString(R.string.average_productvity_unit),
+                        resource.getString(R.string.maximum_operation_speed_day_of_month_title),
+                        maxDate?.key.toString() + resource.getString(R.string.day_unit),
+                        resource.getString(R.string.current_operation_speed_of_month_title),
+                        dayTotalList[currentDate].toString() + resource.getString(R.string.average_productvity_unit))
 
                 setOutputData("AverageOutput", dayTotalList, bottomInfo)
             }

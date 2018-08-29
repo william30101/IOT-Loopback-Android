@@ -8,7 +8,11 @@ import iotdevice.com.iotDevice.common.BaseActivity
 import iotdevice.com.iotDevice.more.MoreFragment
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.activity_home.*
+import net.hockeyapp.android.CrashManager
+import net.hockeyapp.android.UpdateManager
 import org.jetbrains.anko.AnkoLogger
+
+
 
 class HomeActivity : BaseActivity(), AnkoLogger {
 
@@ -74,6 +78,7 @@ class HomeActivity : BaseActivity(), AnkoLogger {
 
         // Open Home fragment
         changeFragmentTo(FragmentType.Home)
+        checkForUpdates()
     }
 
     override fun onBackPressed() {
@@ -82,5 +87,33 @@ class HomeActivity : BaseActivity(), AnkoLogger {
         } else {
             super.onBackPressed()
         }
+    }
+
+    private fun checkForCrashes() {
+        CrashManager.register(this)
+    }
+
+    private fun checkForUpdates() {
+        // Remove this for store builds!
+        UpdateManager.register(this)
+    }
+
+    private fun unregisterManagers() {
+        UpdateManager.unregister()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkForCrashes()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterManagers()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterManagers()
     }
 }

@@ -10,8 +10,22 @@
     <string name="boot_time_today">Boot Time Today</string>
     <string name="operation_time_total">Operation time Total</string>
     <string name="output_productivity">Productivity</string>
+    
+    <!-- Home -->
+    <string name="list_device_name">DeviceName</string>
+    <string name="del_device_desc">Do you want to delete the device?</string>
+    <string name="del_device_title">Delete Device</string>
+
+    <!-- Edit Device -->
+    <string name="edit_device_title">Edit Device</string>
+    <string name="original_device_name_title">Original Name</string>
+    <string name="edit_device_name_hint">Change Customized name</string>
+    <string name="edit_device_name_btn">Confirm</string>
+    <string name="edit_device_description">If you won\'t change it, keep blank</string>
+    <string name="edit_device_success">Edit device success, back to home page</string>
 
     <!-- Add Device -->
+    <string name="add_device_title">Add Device</string>
     <string name="add_device_name">Name</string>
     <string name="add_device_name_hint">Enter Customized Name</string>
     <string name="add_device_code">Code</string>
@@ -19,10 +33,17 @@
     <string name="add_device_password">Password</string>
     <string name="add_device_password_hint">Enter device password</string>
     <string name="add_device_add_btn">Add</string>
+    <string name="add_device_success">A device success, back to home page</string>
+    <string name="add_device_check_msg">Please fill whole the fields</string>
 
     <!-- Common -->
     <string name="network_error">Network Error, Please check your network connection</string>
     <string name="home_title">Home</string>
+    <string name="hour_unit">hr(s)</string>
+    <string name="minute_unit">min(s)</string>
+    <string name="day_unit">th</string>
+    <string name="productvity_unit" translatable="false">\u0020pcs</string>
+    <string name="average_productvity_unit" translatable="false">\u0020pcs/min</string>
 
     <!-- Reset Password -->
     <string name="reset_title">Reset</string>
@@ -57,22 +78,22 @@
     <string name="average_output_title">average output</string>
     <string name="average_output_description">average output of month</string>
 
-    <string name="total_of_day_title">Total output</string>
-    <string name="maximum_productivity_of_day_title">Maximum output productivity</string>
-    <string name="maximum_hour_of_day_title">The hour of maximum output productivity</string>
-    <string name="current_productivity_of_day_title">Current output productivity</string>
+    <string name="total_of_day_title">Total productivity</string>
+    <string name="maximum_productivity_of_day_title">Maximum productivity today</string>
+    <string name="maximum_hour_of_day_title">Maximum productivity hour</string>
+    <string name="current_productivity_of_day_title">Current productivity</string>
 
-    <string name="total_of_month_title">Total output</string>
-    <string name="maximum_productivity_of_month_title">Maximum output productivity</string>
-    <string name="maximum_day_of_month_title">The day of maximum output</string>
-    <string name="current_productivity_of_month_title">Current output productivity</string>
+    <string name="total_of_month_title">Total productivity this month</string>
+    <string name="maximum_productivity_of_month_title">Maximum productivity</string>
+    <string name="maximum_day_of_month_title">Maximum productivity day</string>
+    <string name="current_productivity_of_month_title">Current productivity</string>
 
     <string name="total_operation_time_of_month_title">Total operation time</string>
-    <string name="maximum_operation_time_of_month_title">The day of maximum operation time</string>
+    <string name="maximum_operation_time_of_month_title">Maximum operation time day</string>
     <string name="current_operation_time_of_month_title">Current operation time</string>
 
     <string name="maximum_operation_speed_of_month_title">Maximum operation speed</string>
-    <string name="maximum_operation_speed_day_of_month_title">The day of maximum operation speed</string>
+    <string name="maximum_operation_speed_day_of_month_title">Maximum operate speed</string>
     <string name="current_operation_speed_of_month_title">Current operation speed</string>
 
     <string name="chart_list_title">Title</string>

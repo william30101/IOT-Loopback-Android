@@ -7,8 +7,11 @@ import com.strongloop.android.loopback.callbacks.JsonObjectParser
 import com.strongloop.android.loopback.callbacks.ListCallback
 import com.strongloop.android.loopback.callbacks.ObjectCallback
 import iotdevice.com.iotDevice.model.CustomerDeviceModel
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
+import org.json.JSONObject
 
-class CustomerDeviceRepository : ModelRepository<CustomerDeviceModel>("CustomerDevice", "CustomerDevices", CustomerDeviceModel::class.java) {
+class CustomerDeviceRepository : ModelRepository<CustomerDeviceModel>("CustomerDevice", "CustomerDevices", CustomerDeviceModel::class.java), AnkoLogger {
     fun add(deviceId: String, customerId: String, displayName: String = "", callback: ObjectCallback<CustomerDeviceModel>) {
 
 //        val createRelation = JSONObject("""{"customerId":$customerId, "deviceId": $deviceId }""")
@@ -33,10 +36,32 @@ class CustomerDeviceRepository : ModelRepository<CustomerDeviceModel>("CustomerD
                 JsonArrayParser(this, callback))
     }
 
-//
-//    fun findAllDevice(deviceId: Int, callback: ListCallback<Device>) {
-//
-//    }
+    fun editDevice(customerId: Int, deviceId: Int, newName: String, callback: ObjectCallback<CustomerDeviceModel>) {
 
+        if (deviceId > 0) {
+            val findJson = JSONObject("""{"where": { "and" : [{"customerId" : $customerId }, {"deviceId" : $deviceId}] }}""")
 
+            invokeStaticMethod("all",
+                    mapOf("filter" to findJson),
+                    JsonArrayParser<CustomerDeviceModel>(this, object: ListCallback<CustomerDeviceModel> {
+                        override fun onSuccess(objects: MutableList<CustomerDeviceModel>?) {
+                            if (objects?.isNotEmpty() == true) {
+                                invokeStaticMethod("prototype.save", mapOf("id" to objects[0].id, "customerId" to customerId, "deviceId" to deviceId, "displayName" to newName),
+                                        JsonObjectParser(this@CustomerDeviceRepository, callback))
+                            }
+                        }
+
+                        override fun onError(t: Throwable?) {
+                            info("fail")
+                        }
+                    }))
+        }
+    }
+
+    fun delDevice(id: Int, callback: ObjectCallback<CustomerDeviceModel>) {
+        if (id > 0) {
+            invokeStaticMethod("prototype.remove", mapOf("id" to id),
+                    JsonObjectParser(this@CustomerDeviceRepository, callback))
+        }
+    }
 }
