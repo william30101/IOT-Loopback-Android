@@ -24,8 +24,8 @@ android {
         applicationId "iotdevice.com.iot_device"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "6dbf1006606b4e21b3a4f115ee3f7c3d"]
     }
@@ -59,10 +59,11 @@ kapt {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //    implementation project(':loopback-sdk-android')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    implementation 'com.strongloop:loopback-sdk-android:1.5.2'
+    //    implementation 'com.strongloop:loopback-sdk-android:1.5.2'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     // ViewModel and LiveData
     implementation 'android.arch.lifecycle:extensions:1.1.1'
@@ -78,7 +79,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
     //HockyApp
     compile 'net.hockeyapp.android:HockeySDK:5.1.1'
+    implementation project(':loopback-sdk-android')
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">佳因科技</string>
+    <string name="app_name">佳因</string>
     <string name="title_activity_home">首頁</string>
     <string name="title_home">首頁</string>
     <string name="title_more">更多</string>
@@ -40,6 +40,9 @@
 
     <!-- Common -->
     <string name="network_error">網路錯誤，請確認你的網路連線</string>
+    <string name="no_data_error">沒有任何資料</string>
+    <string name="loginin_field_not_completed">請輸入帳號及密碼</string>
+
     <string name="home_title">首頁</string>
     <string name="hour_unit">時</string>
     <string name="minute_unit">分</string>
@@ -62,10 +65,15 @@
 
     <!-- Register -->
     <string name="register_title">註冊</string>
+    <string name="register_success">註冊成功</string>
     <string name="user_name">帳號</string>
     <string name="user_name_hint">請輸入帳號</string>
     <string name="password_again_hint">請再輸入一次密碼</string>
     <string name="regiser_submit_btn">送出</string>
+    <string name="password_not_match">密碼不相符</string>
+    <string name="email_not_filled">請確認信箱格式</string>
+    <string name="username_not_filled">請確認帳號已輸入</string>
+    <string name="duplicate_account">已經相同帳號或信簡，請更換</string>
 
     <!-- Bar Chart page -->
     <string name="chart_title">圖表</string>
@@ -89,7 +97,8 @@
     <string name="current_productivity_of_month_title">目前日產出</string>
 
     <string name="total_operation_time_of_month_title">當月運轉總時數</string>
-    <string name="maximum_operation_time_of_month_title">最高運轉時數日</string>
+    <string name="maximum_day_operation_time_of_month_title">最高運轉時數日</string>
+    <string name="maximum_operation_time_of_month_title">最高運轉時數</string>
     <string name="current_operation_time_of_month_title">目前運轉時數</string>
 
     <string name="maximum_operation_speed_of_month_title">當月最高產速</string>

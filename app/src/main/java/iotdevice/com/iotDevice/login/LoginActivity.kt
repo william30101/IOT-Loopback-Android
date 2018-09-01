@@ -40,8 +40,7 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
 //        val loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
         loginBtn.setOnClickListener({ _ ->
-            TokenManager.performLoginRequest(loginUserName.text.toString(),
-                    password_Edit.text.toString(), this)
+            checkUserInput()
         })
 
         registerTextView.setOnClickListener({ _ ->
@@ -104,5 +103,15 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
     override fun onBackPressed() {
         setResult(RESULT_CANCELED)
         super.onBackPressed()
+    }
+
+    private fun checkUserInput() {
+        if (loginUserName.text.toString().isNotEmpty() &&
+                password_Edit.text.toString().isNotEmpty()) {
+            TokenManager.performLoginRequest(loginUserName.text.toString(),
+                    password_Edit.text.toString(), this)
+        } else {
+            DialogUtils.createAlertDialog( this, getString(R.string.login_title), msg = resources.getString(R.string.loginin_field_not_completed))
+        }
     }
 }

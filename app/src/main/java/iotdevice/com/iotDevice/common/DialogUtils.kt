@@ -18,6 +18,10 @@ class DialogUtils {
 
             displayMsg = if (msg?.contains(networkError) == true) {
                 context.getString(R.string.network_error)
+            } else if (msg?.contains("size is 0") == true) {
+                context.getString(R.string.no_data_error)
+            }  else if (msg?.contains("Unprocessable Entity") == true) {
+                context.getString(R.string.duplicate_account)
             } else {
                 msg
             }

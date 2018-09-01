@@ -1,0 +1,47 @@
+group = 'com.strongloop'
+
+apply plugin: 'com.android.library'
+apply plugin: 'signing'
+
+buildscript {
+  repositories {
+      mavenCentral()
+  }
+  dependencies {
+      classpath 'commons-io:commons-io:2.4'
+  }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+
+}
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 22
+    }
+    compileOptions {
+        encoding 'UTF-8'
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+    buildTypes {
+        debugincloud {
+            debuggable true
+        }
+        release {
+            minifyEnabled false
+        }
+    }
+}
+
+dependencies {
+    compile 'org.atteo:evo-inflector:1.2'
+    compile 'com.google.guava:guava:18.0'
+    compile 'com.loopj.android:android-async-http:1.4.6'
+}

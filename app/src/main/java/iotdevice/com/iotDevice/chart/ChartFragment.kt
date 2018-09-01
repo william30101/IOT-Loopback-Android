@@ -67,9 +67,9 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
 
         chartRecyclerView.adapter = chartAdapter
 
-        chartViewModel.errorGetChart.observe(this, Observer { _ ->
+        chartViewModel.errorGetChart.observe(this, Observer { errMsg ->
             swipeRefreshLayout.isRefreshing = false
-            DialogUtils.createAlertDialog( activity, getString(R.string.chart_title))
+            DialogUtils.createAlertDialog( activity, getString(R.string.chart_title), errMsg.toString() )
         })
 
         chartViewModel.headerItemLiveData.observe(this, Observer {

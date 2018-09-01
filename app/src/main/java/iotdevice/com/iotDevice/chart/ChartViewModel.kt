@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.content.res.Resources
 import com.strongloop.android.loopback.callbacks.ListCallback
 import iotdevice.com.iotDevice.App
+import iotdevice.com.iotDevice.common.ChartUtils.Companion.calHourAndMinutes
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import iotdevice.com.iotDevice.repository.DeviceStatusRepository
 import iotdevice.com.iot_device.R
@@ -58,7 +59,7 @@ class ChartViewModel : ViewModel(), AnkoLogger {
                 headerItemLiveData.value = ChartHeaderItem(
                         calHourAndMinutes(bootTime),
                         calHourAndMinutes(bootTimeSoFar),
-                        operationTime.toString()+ resource.getString(R.string.hour_unit),
+                        calHourAndMinutes(operationTime),
                         (totalOfDay / operationTime).toString() + resource.getString(R.string.average_productvity_unit)
 
                 )
@@ -70,12 +71,4 @@ class ChartViewModel : ViewModel(), AnkoLogger {
             }
         })
     }
-
-    fun calHourAndMinutes(totalMinutes: Long): String {
-        val hour = (totalMinutes / 60).toString()
-        val minutes = (totalMinutes % 60).toString()
-        return hour + resource.getString(R.string.hour_unit) +
-                minutes + resource.getString(R.string.minute_unit)
-    }
-
 }

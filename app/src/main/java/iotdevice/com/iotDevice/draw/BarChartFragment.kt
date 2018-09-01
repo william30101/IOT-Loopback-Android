@@ -24,6 +24,9 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import iotdevice.com.iotDevice.common.ChartUtils
+import iotdevice.com.iotDevice.common.ChartUtils.Companion.averageProductvityUnit
+import iotdevice.com.iotDevice.common.ChartUtils.Companion.hourUnit
+import iotdevice.com.iotDevice.common.ChartUtils.Companion.productivityUnit
 import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iot_device.R
 import iotdevice.com.iot_device.databinding.BarchartBinding
@@ -107,7 +110,6 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         legend.formSize = 9f
         legend.textSize = 11f
         legend.xEntrySpace = 4f
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -200,16 +202,32 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
     private fun onRefresh(itemTitle : String) {
         when(itemTitle) {
-            resources.getString(R.string.hour_output_title) -> barChartViewModel.getTodayStatus(deviceId)
-            resources.getString(R.string.day_output_title) -> barChartViewModel.getMonthStatus(deviceId)
-            resources.getString(R.string.operation_time_title) -> barChartViewModel.getMonthOperationStatus(deviceId)
-            resources.getString(R.string.average_output_title) -> barChartViewModel.getMonthPCSStatus(deviceId)
+            resources.getString(R.string.hour_output_title) -> {
+                setLeftUnit(productivityUnit)
+                barChartViewModel.getTodayStatus(deviceId)
+            }
+            resources.getString(R.string.day_output_title) -> {
+                setLeftUnit(productivityUnit)
+                barChartViewModel.getMonthStatus(deviceId)
+            }
+            resources.getString(R.string.operation_time_title) -> {
+                setLeftUnit(hourUnit)
+                barChartViewModel.getMonthOperationStatus(deviceId)
+            }
+            resources.getString(R.string.average_output_title) -> {
+                setLeftUnit(averageProductvityUnit)
+                barChartViewModel.getMonthPCSStatus(deviceId)
+            }
         }
     }
 
 
+    private fun setLeftUnit(unit: String) {
+        val leftAxis = binding.barChart.axisLeft
+        leftAxis.valueFormatter = MyAxisValueFormatter(unit)
+    }
 
-    fun setAxisXFormatter(formatter: IAxisValueFormatter) {
+    private fun setAxisXFormatter(formatter: IAxisValueFormatter) {
         val xAxis = binding.barChart.xAxis
         xAxis.valueFormatter = formatter
     }

@@ -1,0 +1,9 @@
+{
+  "assets": {
+    "/img": "docs/img",
+    "/api": "docs/api"
+  },
+  "content": [
+    "docs/index.md"
+  ]
+}

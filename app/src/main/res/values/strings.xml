@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">IOT-device</string>
+    <string name="app_name">FineCause</string>
     <string name="account_type">iotDevice</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
@@ -38,6 +38,9 @@
 
     <!-- Common -->
     <string name="network_error">Network Error, Please check your network connection</string>
+    <string name="no_data_error">Don\'t have any data</string>
+    <string name="loginin_field_not_completed">Please input user name and password</string>
+
     <string name="home_title">Home</string>
     <string name="hour_unit">hr(s)</string>
     <string name="minute_unit">min(s)</string>
@@ -62,10 +65,16 @@
 
     <!-- Register -->
     <string name="register_title">Register</string>
+    <string name="register_success">Register success</string>
     <string name="user_name">UserName</string>
     <string name="user_name_hint">Enter UserName</string>
     <string name="password_again_hint">Enter Password Again</string>
     <string name="regiser_submit_btn">Submit</string>
+    <string name="password_not_match">Password not match</string>
+    <string name="email_not_filled">Please check the email format</string>
+    <string name="username_not_filled">Please fill the account</string>
+    <string name="duplicate_account">Duplicate email or account, please change it</string>
+
 
     <!-- Bar Chart page -->
     <string name="chart_title">Chart</string>
@@ -88,9 +97,11 @@
     <string name="maximum_day_of_month_title">Maximum productivity day</string>
     <string name="current_productivity_of_month_title">Current productivity</string>
 
-    <string name="total_operation_time_of_month_title">Total operation time</string>
-    <string name="maximum_operation_time_of_month_title">Maximum operation time day</string>
-    <string name="current_operation_time_of_month_title">Current operation time</string>
+    <string name="total_operation_time_of_month_title">Total operation hours</string>
+    <string name="maximum_day_operation_time_of_month_title">Maximum operation hours day</string>
+    <string name="maximum_operation_time_of_month_title">Maximum operation hours</string>
+
+    <string name="current_operation_time_of_month_title">Current operation hours</string>
 
     <string name="maximum_operation_speed_of_month_title">Maximum operation speed</string>
     <string name="maximum_operation_speed_day_of_month_title">Maximum operate speed</string>

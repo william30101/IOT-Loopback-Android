@@ -1,14 +1,29 @@
 package iotdevice.com.iotDevice.common
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import iotdevice.com.iot_device.R
 
 class ChartUtils {
     companion object {
 
+        var hourUnit = ""
+        var minuteUnit = ""
+        var productivityUnit = ""
+        var dayUnit = ""
+        var averageProductvityUnit = ""
+
+        val resource: Resources  = App.sInstance.resources.apply {
+            hourUnit = this.getString(R.string.hour_unit)
+            minuteUnit = this.getString(R.string.minute_unit)
+            productivityUnit = this.getString(R.string.productvity_unit)
+            dayUnit = this.getString(R.string.day_unit)
+            averageProductvityUnit = this.getString(R.string.average_productvity_unit)
+        }
 
         private val axisMapping = listOf(
                 AxisName("HourOutput", AxisXType.Hour, "PCS"),
@@ -58,9 +73,21 @@ class ChartUtils {
         fun getMappingAxis(chartName: String):AxisName? {
             return axisMapping.find { it.chartName == chartName }
         }
+
+        fun calHourAndMinutes(totalMinutes: Long): String {
+            val hour = (totalMinutes / 60).toString()
+            val minutes = (totalMinutes % 60).toString()
+            return hour + resource.getString(R.string.hour_unit) +
+                    minutes + resource.getString(R.string.minute_unit)
+        }
     }
 
     data class AxisName(val chartName: String, val xAxisType: AxisXType, val yAxisUnit: String)
     enum class AxisXType { Hour, Month }
+
+
+
+
+
 
 }

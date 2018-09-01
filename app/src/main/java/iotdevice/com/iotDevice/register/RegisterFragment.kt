@@ -31,7 +31,7 @@ class RegisterFragment: Fragment(), AnkoLogger {
         registerViewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
 
         registerViewModel.registerSuccess.observe(this, Observer<Any> {
-            activity.toast("Register Success")
+            activity.toast(resources.getString(R.string.register_success))
             Timer().schedule(1000){
                 //do something
                 activity.finish()
@@ -52,12 +52,26 @@ class RegisterFragment: Fragment(), AnkoLogger {
         })
     }
 
-    fun checkField(): Boolean {
+    private fun checkField(): Boolean {
+        val email = emailEditText.text.toString()
+        if (!email.contains("@")) {
+            DialogUtils.createAlertDialog(context, resources.getString(R.string.register_title), resources.getString(R.string.email_not_filled), {
+                info ( "clicked" )
+            })
+            return false
+        }
+        val username = usernameEditText.text.toString()
+        if (username.isEmpty()) {
+            DialogUtils.createAlertDialog(context, resources.getString(R.string.register_title), resources.getString(R.string.username_not_filled), {
+                info ( "clicked" )
+            })
+            return false
+        }
         val firstPassword = passwordEditText.text.toString()
         val secondPassword = passwordAgainEditText.text.toString()
         if (firstPassword != secondPassword) {
 
-            DialogUtils.createAlertDialog(context, "Register", "Password not match", {
+            DialogUtils.createAlertDialog(context, resources.getString(R.string.register_title), resources.getString(R.string.password_not_match), {
                 info ( "clicked" )
             })
             return false
@@ -65,6 +79,4 @@ class RegisterFragment: Fragment(), AnkoLogger {
 
         return true
     }
-
-
 }
