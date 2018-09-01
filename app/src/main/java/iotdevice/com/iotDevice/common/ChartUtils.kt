@@ -64,7 +64,7 @@ class ChartUtils {
             fragment.arguments = bundle
 
             fragmentManager.beginTransaction().apply {
-                replace(R.id.baseFragment, fragment)
+                add(R.id.baseFragment, fragment)
                 addToBackStack(null)
                 commit()
             }

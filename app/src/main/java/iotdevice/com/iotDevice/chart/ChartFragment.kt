@@ -8,10 +8,10 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import iotdevice.com.iotDevice.barchart.BarChartFragment
 import iotdevice.com.iotDevice.common.ChartUtils
 import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iotDevice.common.RecycleViewListener
-import iotdevice.com.iotDevice.draw.BarChartFragment
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.fragment_chart.*
 import org.jetbrains.anko.AnkoLogger
