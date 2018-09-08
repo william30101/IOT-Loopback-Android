@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FineCause</string>
+    <string name="app_name">Fine Cause</string>
     <string name="account_type">iotDevice</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
@@ -82,7 +82,7 @@
     <string name="hour_output_description">hour output of day</string>
     <string name="day_output_title">day output</string>
     <string name="day_output_description">day ourput of month</string>
-    <string name="operation_time_title">opeation time</string>
+    <string name="operation_time_title">operation time</string>
     <string name="operation_time_description">operation time of month</string>
     <string name="average_output_title">average output</string>
     <string name="average_output_description">average output of month</string>

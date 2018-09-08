@@ -11,6 +11,11 @@ import iotdevice.com.iot_device.R
 class ChartUtils {
     companion object {
 
+        const val HOUR_OUTPUT = "HourOutput"
+        const val DAY_OUTPUT =  "DayOutput"
+        const val OPERATION_TIME = "OperationTime"
+        const val AVERAGE_OUTPUT = "AverageOutput"
+
         var hourUnit = ""
         var minuteUnit = ""
         var productivityUnit = ""
@@ -26,10 +31,10 @@ class ChartUtils {
         }
 
         private val axisMapping = listOf(
-                AxisName("HourOutput", AxisXType.Hour, "PCS"),
-                AxisName("DayOutput", AxisXType.Month, "PCS"),
-                AxisName("OperationTime", AxisXType.Month, "H"),
-                AxisName("AverageOutput", AxisXType.Month, "PCS/MIN")
+                AxisName(HOUR_OUTPUT, AxisXType.Hour, "PCS"),
+                AxisName(DAY_OUTPUT, AxisXType.Month, "PCS"),
+                AxisName(OPERATION_TIME, AxisXType.Month, "H"),
+                AxisName(AVERAGE_OUTPUT, AxisXType.Month, "PCS/MIN")
         )
 
         fun combineProductivityToList(item: DeviceStatusModel) {
@@ -64,7 +69,7 @@ class ChartUtils {
             fragment.arguments = bundle
 
             fragmentManager.beginTransaction().apply {
-                add(R.id.baseFragment, fragment)
+                replace(R.id.baseFragment, fragment)
                 addToBackStack(null)
                 commit()
             }

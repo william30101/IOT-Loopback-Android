@@ -5,6 +5,7 @@ import android.content.Context
 import com.strongloop.android.loopback.RestAdapter
 import iotdevice.com.iotDevice.member.TokenManager
 import iotdevice.com.iot_device.BuildConfig
+import net.hockeyapp.android.metrics.MetricsManager
 import kotlin.properties.Delegates
 
 class App : Application() {
@@ -43,6 +44,9 @@ class App : Application() {
         super.onCreate()
         sInstance = this
         TokenManager.initialize(this)
+        if (!BuildConfig.DEBUG) {
+            MetricsManager.register(this)
+        }
     }
 
     companion object {

@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import iotdevice.com.iotDevice.barchart.BarChartFragment
 import iotdevice.com.iotDevice.common.ChartUtils
-import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iotDevice.common.RecycleViewListener
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.fragment_chart.*
@@ -69,7 +68,12 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
 
         chartViewModel.errorGetChart.observe(this, Observer { errMsg ->
             swipeRefreshLayout.isRefreshing = false
-            DialogUtils.createAlertDialog( activity, getString(R.string.chart_title), errMsg.toString() )
+            chartRecyclerView.adapter.notifyDataSetChanged()
+
+            // We don't display error here.
+            // Fill each filed to 0
+//            DialogUtils.createAlertDialog( activity, getString(R.string.chart_title), errMsg.toString() )
+
         })
 
         chartViewModel.headerItemLiveData.observe(this, Observer {

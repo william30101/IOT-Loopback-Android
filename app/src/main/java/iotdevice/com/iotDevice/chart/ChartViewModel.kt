@@ -67,6 +67,11 @@ class ChartViewModel : ViewModel(), AnkoLogger {
 
             override fun onError(t: Throwable?) {
                 info("error : $t")
+                headerItemLiveData.value = ChartHeaderItem(
+                        calHourAndMinutes(0),
+                        calHourAndMinutes(0),
+                        calHourAndMinutes(0)
+                        ,"0" + resource.getString(R.string.average_productvity_unit))
                 errorGetChart.value = t
             }
         })
