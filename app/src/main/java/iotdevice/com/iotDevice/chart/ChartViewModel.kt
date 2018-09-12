@@ -29,7 +29,10 @@ class ChartViewModel : ViewModel(), AnkoLogger {
                 val todayStatus = objects!![0]
                 val bootTime = todayStatus.bootTime
                 val bootTimeSoFar = todayStatus.bootTimeSoFar
-                val operationTime = todayStatus.operationTime
+                var operationTime = 1L
+                if (todayStatus.operationTime > 0L) {
+                    operationTime = todayStatus.operationTime
+                }
 
                 val totalOfDay = todayStatus.productivity0 +
                         todayStatus.productivity1 +
@@ -55,6 +58,8 @@ class ChartViewModel : ViewModel(), AnkoLogger {
                         todayStatus.productivity21 +
                         todayStatus.productivity22 +
                         todayStatus.productivity23
+
+
 
                 headerItemLiveData.value = ChartHeaderItem(
                         calHourAndMinutes(bootTime),
