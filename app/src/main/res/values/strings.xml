@@ -52,6 +52,7 @@
     <string name="reset_title">Reset</string>
     <string name="reset_submit_btn">Submit</string>
     <string name="reset_word">Reset email have sent, Please check your mail box ( also check the spam box )</string>
+    <string name="reset_password_remind">Please check the reset password mail after 5 minutes</string>
 
     <!-- Login -->
     <string name="login_title">Login</string>

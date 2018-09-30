@@ -90,7 +90,7 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
         setAccountAuthenticatorResult(intent.extras)
         setResult(RESULT_OK, intent)
 
-        IOTPreference.saveUserName(accountName)
+        IOTPreference.saveUserName(result.username)
         startActivity(intent)
         finish()
     }
