@@ -316,9 +316,9 @@ public class UserRepository<U extends User> extends ModelRepository<U> {
 
     private void saveCurrentUserId() {
         final SharedPreferences.Editor editor = getSharedPreferences().edit();
-        final String json = new JSONArray().put(getCurrentUserId()).toString();
+        final String json = new JSONArray().put(currentUserId).toString();
         editor.putString(PROPERTY_CURRENT_USER_ID, json);
-        editor.commit();
+        editor.apply();
     }
 
     private void loadCurrentUserIdIfNotLoaded() {
