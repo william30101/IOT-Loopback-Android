@@ -72,7 +72,7 @@
     <string name="user_name">帳號</string>
     <string name="user_name_hint">請輸入帳號</string>
     <string name="password_again_hint">請再輸入一次密碼</string>
-    <string name="regiser_submit_btn">送出</string>
+    <string name="submit_btn">送出</string>
     <string name="password_not_match">密碼不相符</string>
     <string name="email_not_filled">請確認信箱格式</string>
     <string name="username_not_filled">請確認帳號已輸入</string>
@@ -119,6 +119,16 @@
     <string name="more_welcome">你好</string>
     <string name="log_out">登出</string>
     <string name="version_name">版本 %1$s</string>
+    <string name="change_password">改變密碼</string>
+
+    <!-- Change Password Page -->
+    <string name="change_password_title">改變密碼</string>
+    <string name="old_password">現在密碼</string>
+    <string name="new_password">新密碼</string>
+    <string name="new_password_confirm">確認</string>
+    <string name="new_password_confirm_hint">再輸入一次</string>
+    <string name="change_success">修改成功</string>
+    <string name="change_fail">現在密碼不相符</string>
 
 
 </resources>

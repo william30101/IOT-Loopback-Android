@@ -18,4 +18,10 @@ class CustomerRepository: UserRepository<CustomerModel>("Customers", "Customers"
                 mapOf("email" to email),
                 callback)
     }
+
+    fun changePassword(oldPassword: String, newPassword: String, callback: Adapter.JsonCallback) {
+        invokeStaticMethod("change-password",
+                mapOf("oldPassword" to oldPassword, "newPassword" to newPassword),
+                callback)
+    }
 }

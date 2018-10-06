@@ -13,12 +13,12 @@ import iotdevice.com.iotDevice.chart.GridLayoutDivider
 import iotdevice.com.iotDevice.common.IOTPreference
 import iotdevice.com.iotDevice.common.RecycleViewListener
 import iotdevice.com.iotDevice.login.LoginActivity
+import iotdevice.com.iotDevice.member.info.ChangePasswordActivity
 import iotdevice.com.iot_device.BuildConfig
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.fragment_more.*
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
-
+import org.jetbrains.anko.startActivity
 
 
 class MoreFragment: Fragment(), RecycleViewListener, AnkoLogger {
@@ -35,6 +35,7 @@ class MoreFragment: Fragment(), RecycleViewListener, AnkoLogger {
         val version = getString(R.string.version_name)
         version_number.text = String.format(version, BuildConfig.VERSION_NAME)
 
+        moreItemList.add(resources.getString(R.string.change_password))
         moreItemList.add(resources.getString(R.string.log_out))
 
         val moreAdapter = MoreAdapter(activity, IOTPreference.getUserName())
@@ -51,11 +52,24 @@ class MoreFragment: Fragment(), RecycleViewListener, AnkoLogger {
     }
 
     override fun onClick(bundle: Bundle) {
-        info { "data is : $bundle" }
-
         val clickItem = bundle.getString("clickItemString")
 
         when(clickItem) {
+
+            resources.getString(R.string.change_password) -> {
+//                info {"change password"}
+//                customerRepository.changePassword("1qaz@WSX", "1qaz@WSX#EDC", object: Adapter.JsonCallback(){
+//
+//                    override fun onSuccess(response: Any?) {
+//                        info("change success")
+//                    }
+//
+//                    override fun onError(t: Throwable?) {
+//                        info("change error")
+//                    }
+//                })
+                activity.startActivity<ChangePasswordActivity>()
+            }
             resources.getString(R.string.log_out) -> {
                 val accountManager = AccountManager.get(activity)
 

@@ -53,6 +53,7 @@
         <activity android:name="iotdevice.com.iotDevice.deviceAction.AddDevicesActivity" />
         <activity android:name="iotdevice.com.iotDevice.resetpassword.ResetPasswordActivity" />
         <activity android:name="iotdevice.com.iotDevice.deviceAction.EditDeviceActivity" />
+        <activity android:name="iotdevice.com.iotDevice.member.info.ChangePasswordActivity" />
 
         <service
             android:name="iotdevice.com.iotDevice.member.auth.AuthenticatorService"

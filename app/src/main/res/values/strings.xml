@@ -72,7 +72,7 @@
     <string name="user_name">UserName</string>
     <string name="user_name_hint">Enter UserName</string>
     <string name="password_again_hint">Enter Password Again</string>
-    <string name="regiser_submit_btn">Submit</string>
+    <string name="submit_btn">Submit</string>
     <string name="password_not_match">Password not match</string>
     <string name="email_not_filled">Please check the email format</string>
     <string name="username_not_filled">Please fill the account</string>
@@ -120,6 +120,16 @@
     <string name="more_welcome">Hi</string>
     <string name="log_out">LogOut</string>
     <string name="version_name">Version %1$s</string>
+    <string name="change_password">Change Password</string>
+
+    <!-- Change Password Page -->
+    <string name="change_password_title">Change Password</string>
+    <string name="old_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="new_password_confirm">Confirm</string>
+    <string name="new_password_confirm_hint">Again</string>
+    <string name="change_success">Change Success</string>
+    <string name="change_fail">Current password not match</string>
 
 
 </resources>
