@@ -1,13 +1,14 @@
 package iotdevice.com.iotDevice.home
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.widget.SearchView
+import android.view.*
 import com.strongloop.android.loopback.callbacks.ListCallback
 import com.strongloop.android.loopback.callbacks.ObjectCallback
 import iotdevice.com.iotDevice.App
@@ -30,10 +31,11 @@ import org.jetbrains.anko.info
 import org.jetbrains.anko.startActivity
 import java.net.HttpURLConnection
 
-
 class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
 
-    private var imageList : MutableList<ImageModel> = mutableListOf()
+    private var imageList : ArrayList<ImageModel> = arrayListOf()
+
+    private var searchView: SearchView? = null
 
     private lateinit  var imageAdapter: ImageListAdapter
     private lateinit var customerDeviceRepository: CustomerDeviceRepository
@@ -47,7 +49,6 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
         return inflater!!.inflate(R.layout.fragment_home, container, false)
     }
 
-
     override fun onStart() {
         super.onStart()
         imageList.clear()
@@ -58,7 +59,7 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
 
         imageListRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-        imageAdapter = ImageListAdapter(imageList)
+        imageAdapter = ImageListAdapter()
         imageListRecyclerView.adapter = imageAdapter
 
         imageAdapter.setOnItemClickListener(object : ImageListAdapter.ClickListener {
@@ -97,19 +98,75 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
         getDevice()
     }
 
-    fun getDevice() {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
 
-        imageList.clear()
+        homeSwipeRefreshLayout.setOnRefreshListener({
+            getDevice()
+        })
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.home_menu, menu)
+
+        val searchMenuItem = menu?.findItem(R.id.my_search)
+        searchView = searchMenuItem?.actionView as SearchView
+
+        searchView?.apply {
+            // Get the SearchView and set the searchable configuration
+            val searchManager = activity.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+
+            setSearchableInfo(searchManager.getSearchableInfo(activity.componentName))
+
+            setIconifiedByDefault(true)
+            queryHint = getString(R.string.search_hint)
+
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+                override fun onQueryTextChange(newText: String): Boolean {
+                    info{ "string $query"}
+
+                    if (newText.isEmpty()) {
+                        imageAdapter.restoreItems()
+                        return false
+                    }
+
+                    imageAdapter.filterItems(newText)
+                    return false
+                }
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    info{ "submit $query"}
+                    clearFocus()
+                    return false
+                }
+
+            })
+
+            setOnCloseListener {
+//                imageAdapter.restoreItems()
+                false
+            }
+        }
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    fun getDevice() {
 
         customerDeviceRepository.findDevice(customerRepository.currentUserId as Int, object: ListCallback<CustomerDeviceModel> {
             override fun onSuccess(objects: MutableList<CustomerDeviceModel>?) {
+                imageList.clear()
                 objects?.forEach {  imageList.add(ImageModel(it.id, it.deviceId, "img_1", it.displayName)) }
-                imageAdapter.notifyDataSetChanged()
+                imageAdapter.setItems(imageList)
+                homeSwipeRefreshLayout.isRefreshing = false
             }
 
             override fun onError(t: Throwable?) {
                 info("error : $t")
-
+                homeSwipeRefreshLayout.isRefreshing = false
                 // Status Code 401
                 // if (t.st)
                 if(t is HttpResponseException) {

@@ -9,19 +9,17 @@ import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.layout_image_list_item.view.*
 
 
-
-
-
-class ImageListAdapter(val feedModelItems: List<ImageModel>) : RecyclerView.Adapter<ImageListAdapter.ViewHolder>() {
+class ImageListAdapter : RecyclerView.Adapter<ImageListAdapter.ViewHolder>() {
 
     lateinit var clickListener: ClickListener
-
+    private var feedModelItems: ArrayList<ImageModel> = arrayListOf()
+    private var firstItems: ArrayList<ImageModel> = arrayListOf()
+    private var isFirstTime = true
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent!!.context).inflate(R.layout.layout_image_list_item, parent, false)
         return ViewHolder(view)
     }
-
 
     override fun getItemCount(): Int {
         return feedModelItems.size
@@ -38,6 +36,27 @@ class ImageListAdapter(val feedModelItems: List<ImageModel>) : RecyclerView.Adap
         fun onItemLongClick(position: Int, v: View)
     }
 
+    fun setItems(items: ArrayList<ImageModel>) {
+        if (isFirstTime) {
+            firstItems = items
+            isFirstTime = false
+        }
+
+        feedModelItems.clear()
+        feedModelItems.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun filterItems(keyword: String) {
+        val listItems = firstItems.filter { it.displayName.contains(keyword)}
+        setItems(ArrayList(listItems))
+    }
+
+    fun restoreItems() {
+        if (firstItems.size > 0) {
+            setItems(firstItems)
+        }
+    }
 
     fun setOnItemClickListener(clickListener: ClickListener) {
         this.clickListener = clickListener
