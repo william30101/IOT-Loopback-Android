@@ -28,26 +28,24 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
         android:text="@string/email"
         android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/emailEditText"
-        app:layout_constraintEnd_toStartOf="@+id/emailEditText"
-        app:layout_constraintHorizontal_bias="0.23"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/emailEditText"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:hint="@string/email_hint"
         android:inputType="textEmailAddress"
         android:textSize="20sp"
-        android:hint="@string/email_hint"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/usernameEditText"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -56,12 +54,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
-        android:hint="@string/password_hint"
         android:ems="10"
+        android:hint="@string/password_hint"
         android:inputType="textPassword"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/usernameEditText"
+        app:layout_constraintStart_toStartOf="@+id/passwordAgainEditText"
         app:layout_constraintTop_toBottomOf="@+id/usernameEditText" />
 
     <EditText
@@ -70,12 +68,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
-        android:hint="@string/user_name_hint"
         android:ems="10"
+        android:hint="@string/user_name_hint"
         android:inputType="textPersonName"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/emailEditText"
+        app:layout_constraintStart_toStartOf="@+id/passwordEditText"
         app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
     <TextView
@@ -98,7 +96,6 @@
         android:inputType="textPassword"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/passwordEditText"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
 
     <Button
