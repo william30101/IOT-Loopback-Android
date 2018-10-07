@@ -39,6 +39,8 @@
     <string name="add_device_add_btn">新增</string>
     <string name="add_device_success">新增設備成功，返回首頁</string>
     <string name="add_device_check_msg">請填入所有欄位</string>
+    <string name="add_device_duplicate">此設備已加入過</string>
+
 
     <!-- Common -->
     <string name="network_error">網路錯誤，請確認你的網路連線</string>

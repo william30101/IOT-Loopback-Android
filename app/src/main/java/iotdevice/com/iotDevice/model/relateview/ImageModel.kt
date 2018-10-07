@@ -1,3 +1,7 @@
 package iotdevice.com.iotDevice.model.relateview
 
-data class ImageModel ( val id: Int, val deviceId: Number, val imageName: String, val displayName: String)
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class ImageModel ( val id: Int, val deviceId: Number, val imageName: String, val displayName: String) : Parcelable

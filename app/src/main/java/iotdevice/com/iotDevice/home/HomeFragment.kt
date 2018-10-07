@@ -33,7 +33,7 @@ import java.net.HttpURLConnection
 
 class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
 
-    private var imageList : ArrayList<ImageModel> = arrayListOf()
+    var imageList : ArrayList<ImageModel> = arrayListOf()
 
     private var searchView: SearchView? = null
 
@@ -54,7 +54,11 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
         imageList.clear()
         addDeviceFab.setOnClickListener({ _ ->
             val intent = Intent(activity, AddDevicesActivity::class.java)
+
+            intent.putParcelableArrayListExtra("itemList", imageList)
             startActivity(intent)
+
+//            startActivity(activity.intentFor<AddDevicesActivity>("itemList" to imageList))
         })
 
         imageListRecyclerView.layoutManager = LinearLayoutManager(activity)

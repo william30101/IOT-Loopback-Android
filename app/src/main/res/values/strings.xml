@@ -37,6 +37,7 @@
     <string name="add_device_add_btn">Add</string>
     <string name="add_device_success">A device success, back to home page</string>
     <string name="add_device_check_msg">Please fill whole the fields</string>
+    <string name="add_device_duplicate">You have added the device</string>
 
     <!-- Common -->
     <string name="network_error">Network Error, Please check your network connection</string>

@@ -8,6 +8,7 @@ import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iotDevice.model.CustomerDeviceModel
 import iotdevice.com.iotDevice.model.DeviceModel
+import iotdevice.com.iotDevice.model.relateview.ImageModel
 import iotdevice.com.iotDevice.repository.CustomerDeviceRepository
 import iotdevice.com.iotDevice.repository.CustomerRepository
 import iotdevice.com.iotDevice.repository.DeviceRepository
@@ -43,6 +44,8 @@ class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
 
         setContentView(R.layout.activity_add_device)
 
+        val itemList = intent.getParcelableArrayListExtra<ImageModel>("itemList")
+
         addDeviceBtn.setOnClickListener({ _ ->
 
             val deviceName = deviceDisplayNameEditText.text.toString()
@@ -53,6 +56,12 @@ class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
                 deviceRepository.filter(deviceCode.toInt(), devicePassword.toInt(),
                         object : ListCallback<DeviceModel> {
                             override fun onSuccess(objects: MutableList<DeviceModel>?) {
+
+                                if (itemList.map { it.deviceId == objects?.get(0)?.getId() }.isNotEmpty()) {
+                                    DialogUtils.createAlertDialog(this@AddDevicesActivity, getString(R.string.add_device_title), getString(R.string.add_device_duplicate))
+                                    return
+                                }
+
                                 customerDeviceRepository.add(objects?.get(0)?.getId().toString(),
                                         customerRepository.currentUserId.toString(),
                                         deviceName,
