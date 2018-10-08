@@ -3,13 +3,12 @@ package iotdevice.com.iotDevice.barchart
 import com.github.mikephil.charting.charts.BarLineChartBase
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import java.util.*
 
 /**
  * Created by philipp on 02/06/16.
  */
 class DayAxisValueFormatter(private val chart: BarLineChartBase<*>) : IAxisValueFormatter {
-
-    protected var mMonths = arrayOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 
     override fun getFormattedValue(value: Float, axis: AxisBase?): String {
 
@@ -18,7 +17,7 @@ class DayAxisValueFormatter(private val chart: BarLineChartBase<*>) : IAxisValue
         val year = determineYear(days)
 
         val month = determineMonth(days)
-        val monthName = mMonths[month % mMonths.size]
+        val monthName = currentMonth()
         val yearName = year.toString()
 
         if (chart.visibleXRange > 30 * 6) {
@@ -81,6 +80,10 @@ class DayAxisValueFormatter(private val chart: BarLineChartBase<*>) : IAxisValue
         }
 
         return Math.max(month, 0)
+    }
+
+    private fun currentMonth(): String {
+        return GregorianCalendar().getDisplayName(Calendar.MONTH, Calendar.ALL_STYLES, Locale.ENGLISH)
     }
 
     private fun determineDayOfMonth(days: Int, month: Int): Int {

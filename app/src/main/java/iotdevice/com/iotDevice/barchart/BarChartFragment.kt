@@ -128,8 +128,6 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         itemTitle = device.title
         deviceName = arguments.getString("deviceName")
 
-        info("deviceId : $deviceId")
-
         barChartViewModel = ViewModelProviders.of(this).get(BarChartViewModel::class.java)
 
         barChartViewModel.yAxisData.observe(this, android.arch.lifecycle.Observer {
