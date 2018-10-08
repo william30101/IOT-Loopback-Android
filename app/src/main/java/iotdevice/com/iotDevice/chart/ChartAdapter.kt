@@ -13,7 +13,7 @@ import iotdevice.com.iot_device.databinding.LayoutChartHeaderBinding
 import iotdevice.com.iot_device.databinding.LayoutImageChartListBinding
 import org.jetbrains.anko.AnkoLogger
 
-class ChartAdapter(val context: Context, val chartViewModel: ChartViewModel, val charItemList: List<ChartListItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.OnClickListener, AnkoLogger {
+class ChartAdapter(val context: Context, val chartViewModel: ChartViewModel, val charItemList: List<ChartListItem>, val deviceName: String): RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.OnClickListener, AnkoLogger {
 
     var listener: RecycleViewListener? = null
 
@@ -62,8 +62,8 @@ class ChartAdapter(val context: Context, val chartViewModel: ChartViewModel, val
         val chartListItem = v!!.tag as ChartListItem
 
         val bundle = Bundle()
-        bundle.putLong("deviceId", chartListItem.deviceId)
-        bundle.putString("itemTitle", chartListItem.title)
+        bundle.putParcelable("device", chartListItem)
+        bundle.putString("deviceName", deviceName)
 
         listener?.onClick(bundle)
     }

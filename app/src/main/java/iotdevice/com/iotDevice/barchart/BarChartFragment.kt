@@ -23,6 +23,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
+import iotdevice.com.iotDevice.chart.ChartListItem
 import iotdevice.com.iotDevice.common.ChartUtils
 import iotdevice.com.iotDevice.common.ChartUtils.Companion.AVERAGE_OUTPUT
 import iotdevice.com.iotDevice.common.ChartUtils.Companion.DAY_OUTPUT
@@ -45,6 +46,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
     lateinit var binding: BarchartBinding
     private lateinit var mTfRegular: Typeface
     private lateinit var mTfLight: Typeface
+    private var deviceName: String = ""
 
     var itemTitle: String = ""
 
@@ -120,8 +122,11 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
         val arguments = arguments
 
-        deviceId = arguments.getLong("deviceId")
-        itemTitle = arguments.getString("itemTitle")
+        val device = arguments.getParcelable<ChartListItem>("device")
+
+        deviceId = device.deviceId
+        itemTitle = device.title
+        deviceName = arguments.getString("deviceName")
 
         info("deviceId : $deviceId")
 
@@ -210,14 +215,38 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
     override fun onResume() {
         super.onResume()
         onRefresh(itemTitle)
+
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        info { "test" }
+//        outState?.putSerializable(STATE_ITEMS, mItems)
     }
 
     private fun onRefresh(itemTitle : String) {
         when(itemTitle) {
-            resources.getString(R.string.hour_output_title) -> barChartViewModel.getTodayStatus(deviceId)
-            resources.getString(R.string.day_output_title) -> barChartViewModel.getMonthStatus(deviceId)
-            resources.getString(R.string.operation_time_title) -> barChartViewModel.getMonthOperationStatus(deviceId)
-            resources.getString(R.string.average_output_title) -> barChartViewModel.getMonthPCSStatus(deviceId)
+            resources.getString(R.string.hour_output_title) -> {
+                val titleStr = deviceName + " " + getString(R.string.day_chart_title)
+                activity.title = titleStr
+                barChartViewModel.getTodayStatus(deviceId)
+            }
+            resources.getString(R.string.day_output_title) -> {
+                val titleStr = deviceName + " " + getString(R.string.month_chart_title)
+                activity.title = titleStr
+                barChartViewModel.getMonthStatus(deviceId)
+            }
+            resources.getString(R.string.operation_time_title) -> {
+                val titleStr = deviceName + " " + getString(R.string.operation_time_title)
+                activity.title = titleStr
+                barChartViewModel.getMonthOperationStatus(deviceId)
+            }
+            resources.getString(R.string.average_output_title) -> {
+                val titleStr = deviceName + " " + getString(R.string.average_output_title)
+                activity.title = titleStr
+                barChartViewModel.getMonthPCSStatus(deviceId)
+            }
         }
     }
 

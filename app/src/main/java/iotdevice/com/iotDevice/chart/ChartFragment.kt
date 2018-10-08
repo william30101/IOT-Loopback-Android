@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import iotdevice.com.iotDevice.barchart.BarChartFragment
 import iotdevice.com.iotDevice.common.ChartUtils
 import iotdevice.com.iotDevice.common.RecycleViewListener
+import iotdevice.com.iotDevice.model.relateview.ImageModel
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.fragment_chart.*
 import org.jetbrains.anko.AnkoLogger
@@ -43,12 +44,17 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
         chartViewModel = ViewModelProviders.of(this).get(ChartViewModel::class.java)
 
 
+
         val arguments = arguments
-        deviceId = arguments.getLong("deviceId")
+        val selectedDevice = arguments.getParcelable<ImageModel>("device")
+        deviceId =  selectedDevice.deviceId.toLong()
         info("deviceId : $deviceId")
 
+        val titleStr = "${selectedDevice.displayName} " + getString(R.string.chart_title)
+        activity.title = titleStr
+
         addChartListItem(deviceId)
-        chartAdapter = ChartAdapter(context, chartViewModel , charItemList)
+        chartAdapter = ChartAdapter(context, chartViewModel , charItemList, selectedDevice.displayName)
         chartAdapter.setChartListener(this)
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.recycle_dimen)

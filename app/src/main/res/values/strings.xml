@@ -17,6 +17,7 @@
     <string name="del_device_title">Delete Device</string>
     <string name="search_title">Search</string>
     <string name="search_hint">Enter device name</string>
+    <string name="home_screen_title">OnBoard Device List</string>
 
     <!-- Edit Device -->
     <string name="edit_device_title">Edit Device</string>
@@ -81,7 +82,7 @@
 
 
     <!-- Bar Chart page -->
-    <string name="chart_title">Chart</string>
+    <string name="chart_title">productivity information</string>
     <string name="hour_output_title">hour output</string>
     <string name="hour_output_description">hour output of day</string>
     <string name="day_output_title">day output</string>
@@ -115,6 +116,11 @@
     <string name="chart_list_description">description</string>
 
     <string name="no_date_str">No Data</string>
+
+    <string name="day_chart_title">Productivity Output Of Today</string>
+    <string name="month_chart_title">Productivity Output Of This Month</string>
+    <string name="operation_chart_title">Operation Time Of This Month</string>
+    <string name="average_output_chart_title">Average Productivity Output Of This Month</string>
 
     <!-- More page -->
     <string name="more_title">More</string>

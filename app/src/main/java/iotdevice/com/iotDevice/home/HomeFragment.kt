@@ -51,14 +51,14 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
 
     override fun onStart() {
         super.onStart()
+        activity.title = getString(R.string.home_screen_title)
+
         imageList.clear()
         addDeviceFab.setOnClickListener({ _ ->
             val intent = Intent(activity, AddDevicesActivity::class.java)
 
             intent.putParcelableArrayListExtra("itemList", imageList)
             startActivity(intent)
-
-//            startActivity(activity.intentFor<AddDevicesActivity>("itemList" to imageList))
         })
 
         imageListRecyclerView.layoutManager = LinearLayoutManager(activity)
@@ -75,7 +75,7 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
                 info("onItemClick position: $position , deviceId : ${imageList[position].deviceId}")
                 val chartFragment = ChartFragment()
                 val bundle = Bundle()
-                bundle.putLong("deviceId", imageList[position].deviceId.toLong())
+                bundle.putParcelable("device", imageList[position])
                 transmitFragment(fragmentManager, chartFragment, bundle)
             }
 
