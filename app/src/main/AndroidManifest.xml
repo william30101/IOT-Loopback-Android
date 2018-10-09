@@ -22,6 +22,7 @@
         <activity
             android:name="iotdevice.com.iotDevice.home.HomeActivity"
             android:label="@string/title_activity_home"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTask">
 
             <intent-filter>
