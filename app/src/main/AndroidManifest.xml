@@ -19,6 +19,17 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name="iotdevice.com.iotDevice.splash.SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name="iotdevice.com.iotDevice.home.HomeActivity"
             android:label="@string/title_activity_home"
@@ -43,13 +54,7 @@
             android:value=".HomeActivity" />
 
 
-        <activity android:name="iotdevice.com.iotDevice.login.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name="iotdevice.com.iotDevice.login.LoginActivity" />
         <activity android:name="iotdevice.com.iotDevice.register.RegisterActivity" />
         <activity android:name="iotdevice.com.iotDevice.deviceAction.AddDevicesActivity" />
         <activity android:name="iotdevice.com.iotDevice.resetpassword.ResetPasswordActivity" />
@@ -69,7 +74,6 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" /> <!-- We haven't defined this -->
         </service>
-        <meta-data android:name="net.hockeyapp.android.appIdentifier" android:value="${HOCKEYAPP_APP_ID}" />
     </application>
 
 </manifest>

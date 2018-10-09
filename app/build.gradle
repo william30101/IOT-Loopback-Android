@@ -27,7 +27,6 @@ android {
         versionCode 7
         versionName "1.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [HOCKEYAPP_APP_ID: "6dbf1006606b4e21b3a4f115ee3f7c3d"]
     }
     buildTypes {
         debugincloud {
@@ -79,7 +78,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    //HockyApp
-    compile 'net.hockeyapp.android:HockeySDK:5.1.1'
+
     implementation project(':loopback-sdk-android')
 }
