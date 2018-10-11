@@ -11,7 +11,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/border_quadrangle">
+        android:background="@drawable/border_quadrangle_chart">
 
         <TextView
             android:id="@+id/boot_time_title"

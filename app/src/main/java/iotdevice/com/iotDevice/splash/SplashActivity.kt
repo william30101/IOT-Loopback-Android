@@ -14,7 +14,7 @@ class SplashActivity: BaseActivity() {
 
         setContentView(R.layout.activity_splash)
 
-        Timer().schedule(2000){
+        Timer().schedule(1000){
             startActivity<LoginActivity>()
         }
     }

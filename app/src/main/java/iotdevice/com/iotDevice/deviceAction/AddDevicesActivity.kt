@@ -44,6 +44,8 @@ class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
 
         setContentView(R.layout.activity_add_device)
 
+        title = getString(R.string.add_device_title)
+
         val itemList = intent.getParcelableArrayListExtra<ImageModel>("itemList")
 
         addDeviceBtn.setOnClickListener({ _ ->

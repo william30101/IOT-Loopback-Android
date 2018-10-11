@@ -54,7 +54,8 @@
             android:value=".HomeActivity" />
 
 
-        <activity android:name="iotdevice.com.iotDevice.login.LoginActivity" />
+        <activity android:name="iotdevice.com.iotDevice.login.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name="iotdevice.com.iotDevice.register.RegisterActivity" />
         <activity android:name="iotdevice.com.iotDevice.deviceAction.AddDevicesActivity" />
         <activity android:name="iotdevice.com.iotDevice.resetpassword.ResetPasswordActivity" />

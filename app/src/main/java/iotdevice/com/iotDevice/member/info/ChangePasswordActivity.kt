@@ -27,6 +27,9 @@ class ChangePasswordActivity: BaseActivity(), AnkoLogger {
 
         setContentView(R.layout.activity_change_password)
 
+        title = getString(R.string.change_password_title)
+
+
         changePasswordBtn.setOnClickListener({
             if (oldPassword.text.isNotEmpty() &&
                     (newPassword.text.toString() == newPasswordConfirm.text.toString())) {

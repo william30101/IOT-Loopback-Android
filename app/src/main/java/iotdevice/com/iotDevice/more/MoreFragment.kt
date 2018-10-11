@@ -56,20 +56,7 @@ class MoreFragment: Fragment(), RecycleViewListener, AnkoLogger {
 
         when(clickItem) {
 
-            resources.getString(R.string.change_password) -> {
-//                info {"change password"}
-//                customerRepository.changePassword("1qaz@WSX", "1qaz@WSX#EDC", object: Adapter.JsonCallback(){
-//
-//                    override fun onSuccess(response: Any?) {
-//                        info("change success")
-//                    }
-//
-//                    override fun onError(t: Throwable?) {
-//                        info("change error")
-//                    }
-//                })
-                activity.startActivity<ChangePasswordActivity>()
-            }
+            resources.getString(R.string.change_password) -> activity.startActivity<ChangePasswordActivity>()
             resources.getString(R.string.log_out) -> {
                 val accountManager = AccountManager.get(activity)
 
