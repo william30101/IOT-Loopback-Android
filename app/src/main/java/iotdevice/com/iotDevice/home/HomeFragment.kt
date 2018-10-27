@@ -92,7 +92,8 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
                         }
 
                         override fun onError(t: Throwable?) {
-                            DialogUtils.createAlertDialog(activity, getString(R.string.del_device_title), t?.message.toString())
+                            DialogUtils.createAlertDialog(activity, getString(R.string.del_device_title),
+                                    getString(R.string.del_device_fail))
                         }
                     })
                 }

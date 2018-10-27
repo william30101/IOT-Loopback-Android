@@ -16,6 +16,7 @@
     <string name="list_device_name">設備名</string>
     <string name="del_device_desc">你想要移除這設備嗎？</string>
     <string name="del_device_title">設備刪除</string>
+    <string name="del_device_fail">設備刪除失敗</string>
     <string name="search_title">搜尋</string>
     <string name="search_hint">輸入設備名稱</string>
     <string name="home_screen_title">已登錄設備列表</string>
@@ -27,6 +28,7 @@
     <string name="edit_device_name_btn">確認</string>
     <string name="edit_device_description">如果不想改變，請保留空白</string>
     <string name="edit_device_success">修改設備成功，返回首頁</string>
+    <string name="edit_device_fail">修改設備失敗</string>
 
     <!-- Add Device -->
     <string name="add_device_title">新增設備</string>
@@ -40,7 +42,7 @@
     <string name="add_device_success">新增設備成功，返回首頁</string>
     <string name="add_device_check_msg">請填入所有欄位</string>
     <string name="add_device_duplicate">此設備已加入過</string>
-
+    <string name="add_device_fail">新增設備失敗</string>
 
     <!-- Common -->
     <string name="network_error">網路錯誤，請確認你的網路連線</string>
@@ -67,6 +69,7 @@
     <string name="login_btn">登入</string>
     <string name="register_btn">註冊</string>
     <string name="forgot_password_btn">忘記密碼</string>
+    <string name="login_fail">登入失敗</string>
 
     <!-- Register -->
     <string name="register_title">註冊</string>
@@ -79,6 +82,7 @@
     <string name="email_not_filled">請確認信箱格式</string>
     <string name="username_not_filled">請確認帳號已輸入</string>
     <string name="duplicate_account">已經相同帳號或信簡，請更換</string>
+    <string name="register_fail">註冊失敗</string>
 
     <!-- Bar Chart page -->
     <string name="chart_title">生產資訊列表</string>

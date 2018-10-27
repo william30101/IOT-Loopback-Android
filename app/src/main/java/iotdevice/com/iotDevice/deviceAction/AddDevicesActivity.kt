@@ -59,7 +59,7 @@ class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
                         object : ListCallback<DeviceModel> {
                             override fun onSuccess(objects: MutableList<DeviceModel>?) {
 
-                                if (itemList.map { it.deviceId == objects?.get(0)?.getId() }.isNotEmpty()) {
+                                if (itemList.map { it.deviceId == objects?.get(0)?.getId() }.any{ it }) {
                                     DialogUtils.createAlertDialog(this@AddDevicesActivity, getString(R.string.add_device_title), getString(R.string.add_device_duplicate))
                                     return
                                 }
@@ -77,14 +77,14 @@ class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
                                             }
 
                                             override fun onError(t: Throwable?) {
-                                                DialogUtils.createAlertDialog(this@AddDevicesActivity, getString(R.string.add_device_title), t?.message.toString())
+                                                DialogUtils.createAlertDialog(this@AddDevicesActivity, getString(R.string.add_device_title), getString(R.string.add_device_fail))
 
                                             }
                                         })
                             }
 
                             override fun onError(t: Throwable?) {
-                                DialogUtils.createAlertDialog(this@AddDevicesActivity, getString(R.string.add_device_title), t?.message.toString())
+                                DialogUtils.createAlertDialog(this@AddDevicesActivity, getString(R.string.add_device_title), getString(R.string.add_device_fail))
                             }
                         })
             } else {

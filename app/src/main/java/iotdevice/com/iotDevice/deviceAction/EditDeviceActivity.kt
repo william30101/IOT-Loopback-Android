@@ -32,6 +32,7 @@ class EditDeviceActivity : AppCompatActivity(), AnkoLogger {
         val deviceId = intent.getIntExtra("deviceId", -1)
         val deviceName = intent.getStringExtra("deviceName")
 
+        title = getString(R.string.edit_device_title)
         originalDeviceName.text = deviceName
 
         edit_device_name_btn.setOnClickListener({ _ ->
@@ -49,7 +50,8 @@ class EditDeviceActivity : AppCompatActivity(), AnkoLogger {
                             }
 
                             override fun onError(t: Throwable?) {
-                                DialogUtils.createAlertDialog(this@EditDeviceActivity, getString(R.string.edit_device_title), t?.message.toString())
+                                DialogUtils.createAlertDialog(this@EditDeviceActivity, getString(R.string.edit_device_title),
+                                        getString(R.string.edit_device_fail))
                             }
                         })
             }

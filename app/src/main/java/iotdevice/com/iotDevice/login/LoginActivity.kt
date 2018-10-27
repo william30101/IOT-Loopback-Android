@@ -97,7 +97,9 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
 
     override fun onLoginError(err: Throwable) {
         info("login error $err")
-        DialogUtils.createAlertDialog( this, getString(R.string.login_title), msg = err.message)
+//        DialogUtils.createAlertDialog( this, getString(R.string.login_title), msg = err.message)
+        DialogUtils.createAlertDialog( this, getString(R.string.login_title), msg = getString(R.string.login_fail))
+
     }
 
     override fun onBackPressed() {
