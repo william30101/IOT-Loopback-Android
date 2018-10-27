@@ -16,6 +16,10 @@ import org.jetbrains.anko.AnkoLogger
 class ChartAdapter(val context: Context, val chartViewModel: ChartViewModel, val charItemList: List<ChartListItem>, val deviceName: String): RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.OnClickListener, AnkoLogger {
 
     var listener: RecycleViewListener? = null
+    val listOutCircleList = arrayListOf(R.drawable.ic_list_out_circle_0,
+            R.drawable.ic_list_out_circle_1,
+            R.drawable.ic_list_out_circle_2,
+            R.drawable.ic_list_out_circle_3)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when(viewType) {
@@ -49,7 +53,7 @@ class ChartAdapter(val context: Context, val chartViewModel: ChartViewModel, val
                 val chartListItem = charItemList[position - 1]
                 holder.itemView.tag =  chartListItem
                 holder.itemView.setOnClickListener(this)
-                holder.bindChartList(chartListItem)
+                holder.bindChartList(chartListItem, position - 1)
             }
         }
     }
@@ -72,17 +76,18 @@ class ChartAdapter(val context: Context, val chartViewModel: ChartViewModel, val
 
         private var binding = LayoutImageChartListBinding.bind(itemView)
 
-        fun bindChartList(chartListItem: ChartListItem) {
+        fun bindChartList(chartListItem: ChartListItem, position: Int) {
 
             binding.run {
+
+                ChartImg.setImageDrawable(context.getDrawable(listOutCircleList[position]))
                 itemViewModel = ItemViewModel()
                 itemViewModel?.update(chartListItem)
+                chartTitle.text = chartListItem.title
+//            itemView.ChartImg.setImageURI(Uri.parse(chartListItem.imgPath))
+                chartDescription.text = chartListItem.description
                 executePendingBindings()
             }
-
-            binding.chartTitle.text = chartListItem.title
-//            itemView.ChartImg.setImageURI(Uri.parse(chartListItem.imgPath))
-            binding.chartDescription.text = chartListItem.description
         }
     }
 

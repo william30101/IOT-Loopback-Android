@@ -41,13 +41,13 @@ class ChartUtils {
                 AxisName(AVERAGE_OUTPUT, AxisXType.Month, "PCS/MIN")
         )
 
-        fun addChartListItem(context: Context, deviceId: Long) {
+        fun updateChartListItem(context: Context, deviceId: Long) {
                 charItemList.clear()
 //        charItemList.add(ChartListItem("header", null, "header", deviceId))
-                charItemList.add(ChartListItem(context.getString(R.string.hour_output_title), null, context.getString(R.string.hour_output_description), deviceId))
-                charItemList.add(ChartListItem(context.getString(R.string.day_output_title), null, context.getString(R.string.day_output_description), deviceId))
-                charItemList.add(ChartListItem(context.getString(R.string.operation_time_title), null, context.getString(R.string.operation_time_description), deviceId))
-                charItemList.add(ChartListItem(context.getString(R.string.average_output_title), null, context.getString(R.string.average_output_description), deviceId))
+                charItemList.add(ChartListItem(context.getString(R.string.hour_output_title), null, context.getString(R.string.hour_output_description), deviceId, 0))
+                charItemList.add(ChartListItem(context.getString(R.string.day_output_title), null, context.getString(R.string.day_output_description), deviceId, 0))
+                charItemList.add(ChartListItem(context.getString(R.string.operation_time_title), null, context.getString(R.string.operation_time_description), deviceId, 0))
+                charItemList.add(ChartListItem(context.getString(R.string.average_output_title), null, context.getString(R.string.average_output_description), deviceId, 0))
         }
 
         fun combineProductivityToList(item: DeviceStatusModel) {

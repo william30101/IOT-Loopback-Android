@@ -45,9 +45,13 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
         val titleStr = "${selectedDevice.displayName} " + getString(R.string.chart_title)
         activity.title = titleStr
 
-        ChartUtils.addChartListItem(activity, deviceId)
+
+
+        ChartUtils.updateChartListItem(activity, deviceId)
         chartAdapter = ChartAdapter(context, chartViewModel , charItemList, selectedDevice.displayName)
         chartAdapter.setChartListener(this)
+
+
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.recycle_dimen)
         chartRecyclerView.addItemDecoration(GridLayoutDivider(2, spacingInPixels, true, 1))
@@ -80,6 +84,26 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
 
         })
 
+        chartViewModel.totalOfDay.observe(this, Observer {
+            ChartUtils.charItemList[0].displayNumber = it!!
+            chartRecyclerView.adapter.notifyDataSetChanged()
+        })
+
+        chartViewModel.totalOfMonth.observe(this, Observer {
+            ChartUtils.charItemList[1].displayNumber = it!!
+            chartRecyclerView.adapter.notifyDataSetChanged()
+        })
+
+        chartViewModel.totalOfOperationTime.observe(this, Observer {
+            ChartUtils.charItemList[2].displayNumber = it!!
+            chartRecyclerView.adapter.notifyDataSetChanged()
+        })
+
+        chartViewModel.totalOfPCS.observe(this, Observer {
+            ChartUtils.charItemList[3].displayNumber = it!!
+            chartRecyclerView.adapter.notifyDataSetChanged()
+        })
+
         swipeRefreshLayout.setOnRefreshListener({
             onRefresh()
         })
@@ -100,6 +124,7 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
     }
 
     private fun onRefresh() {
+        chartViewModel.fetchCurrentListItem(deviceId)
         chartViewModel.fetchHeaderItem(deviceId)
     }
 }

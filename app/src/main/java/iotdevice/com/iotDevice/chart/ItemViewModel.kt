@@ -6,11 +6,13 @@ class ItemViewModel {
     var imgPath: String? = ""
     var description: String =""
     var deviceId: Long = 0
+    var displayNumber: Long = 0
 
     fun update(chartListItem: ChartListItem) {
         title = chartListItem.title
         imgPath = chartListItem.imgPath
         description = chartListItem.description
         deviceId = chartListItem.deviceId
+        displayNumber = chartListItem.displayNumber
     }
 }
