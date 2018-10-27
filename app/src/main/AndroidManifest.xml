@@ -62,6 +62,7 @@
         <activity android:name="iotdevice.com.iotDevice.deviceAction.EditDeviceActivity" />
         <activity android:name="iotdevice.com.iotDevice.member.info.ChangePasswordActivity" />
 
+        <activity android:name="iotdevice.com.iotDevice.barchart.BarChartActivity" />
         <service
             android:name="iotdevice.com.iotDevice.member.auth.AuthenticatorService"
             android:enabled="true"

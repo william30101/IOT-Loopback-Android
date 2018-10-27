@@ -1,10 +1,12 @@
 package iotdevice.com.iotDevice.common
 
+import android.content.Context
 import android.content.res.Resources
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import iotdevice.com.iotDevice.App
+import iotdevice.com.iotDevice.chart.ChartListItem
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import iotdevice.com.iot_device.R
 
@@ -22,6 +24,8 @@ class ChartUtils {
         var dayUnit = ""
         var averageProductvityUnit = ""
 
+        val charItemList: MutableList<ChartListItem> = mutableListOf()
+
         val resource: Resources  = App.sInstance.resources.apply {
             hourUnit = this.getString(R.string.hour_unit)
             minuteUnit = this.getString(R.string.minute_unit)
@@ -36,6 +40,15 @@ class ChartUtils {
                 AxisName(OPERATION_TIME, AxisXType.Month, "H"),
                 AxisName(AVERAGE_OUTPUT, AxisXType.Month, "PCS/MIN")
         )
+
+        fun addChartListItem(context: Context, deviceId: Long) {
+                charItemList.clear()
+//        charItemList.add(ChartListItem("header", null, "header", deviceId))
+                charItemList.add(ChartListItem(context.getString(R.string.hour_output_title), null, context.getString(R.string.hour_output_description), deviceId))
+                charItemList.add(ChartListItem(context.getString(R.string.day_output_title), null, context.getString(R.string.day_output_description), deviceId))
+                charItemList.add(ChartListItem(context.getString(R.string.operation_time_title), null, context.getString(R.string.operation_time_description), deviceId))
+                charItemList.add(ChartListItem(context.getString(R.string.average_output_title), null, context.getString(R.string.average_output_description), deviceId))
+        }
 
         fun combineProductivityToList(item: DeviceStatusModel) {
             item.productivityLit.add(0 ,item.productivity0)
@@ -89,8 +102,6 @@ class ChartUtils {
 
     data class AxisName(val chartName: String, val xAxisType: AxisXType, val yAxisUnit: String)
     enum class AxisXType { Hour, Month }
-
-
 
 
 

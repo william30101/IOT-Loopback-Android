@@ -2,14 +2,16 @@ package iotdevice.com.iotDevice.chart
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import iotdevice.com.iotDevice.barchart.BarChartFragment
+import iotdevice.com.iotDevice.barchart.BarChartActivity
 import iotdevice.com.iotDevice.common.ChartUtils
+import iotdevice.com.iotDevice.common.ChartUtils.Companion.charItemList
 import iotdevice.com.iotDevice.common.RecycleViewListener
 import iotdevice.com.iotDevice.model.relateview.ImageModel
 import iotdevice.com.iot_device.R
@@ -22,21 +24,11 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
 
 
     private lateinit  var chartAdapter: ChartAdapter
-    private val charItemList: MutableList<ChartListItem> = mutableListOf()
     private var deviceId: Long = -1
     lateinit var chartViewModel: ChartViewModel
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater!!.inflate(R.layout.fragment_chart, container, false)
-    }
-
-    fun addChartListItem(deviceId: Long) {
-        charItemList.clear()
-//        charItemList.add(ChartListItem("header", null, "header", deviceId))
-        charItemList.add(ChartListItem(resources.getString(R.string.hour_output_title), null, resources.getString(R.string.hour_output_description), deviceId))
-        charItemList.add(ChartListItem(resources.getString(R.string.day_output_title), null, resources.getString(R.string.day_output_description), deviceId))
-        charItemList.add(ChartListItem(resources.getString(R.string.operation_time_title), null, resources.getString(R.string.operation_time_description), deviceId))
-        charItemList.add(ChartListItem(resources.getString(R.string.average_output_title), null, resources.getString(R.string.average_output_description), deviceId))
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -53,7 +45,7 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
         val titleStr = "${selectedDevice.displayName} " + getString(R.string.chart_title)
         activity.title = titleStr
 
-        addChartListItem(deviceId)
+        ChartUtils.addChartListItem(activity, deviceId)
         chartAdapter = ChartAdapter(context, chartViewModel , charItemList, selectedDevice.displayName)
         chartAdapter.setChartListener(this)
 
@@ -99,8 +91,12 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
     }
 
     override fun onClick(bundle: Bundle) {
-        val barChartFragment = BarChartFragment()
-        ChartUtils.transmitFragment(fragmentManager, barChartFragment, bundle)
+//        val barChartFragment = BarChartFragment()
+//        ChartUtils.transmitFragment(fragmentManager, barChartFragment, bundle)
+
+        val intent = Intent(context, BarChartActivity::class.java)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
     private fun onRefresh() {

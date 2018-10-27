@@ -51,6 +51,11 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
     var itemTitle: String = ""
 
     var deviceId: Long = 0
+    var fragmentTitle: String = ""
+
+
+
+    private var instance: BarChartFragment? = null
 
     val barColor = intArrayOf(ColorTemplate.rgb("#ff3333"), ColorTemplate.rgb("#ff0088"),
             ColorTemplate.rgb("#a500cc"), ColorTemplate.rgb("#770077"))
@@ -130,6 +135,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         deviceId = device.deviceId
         itemTitle = device.title
         deviceName = arguments.getString("deviceName")
+
 
         barChartViewModel = ViewModelProviders.of(this).get(BarChartViewModel::class.java)
 
@@ -230,22 +236,18 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         when(itemTitle) {
             resources.getString(R.string.hour_output_title) -> {
                 val titleStr = deviceName + " " + getString(R.string.day_chart_title)
-                activity.title = titleStr
                 barChartViewModel.getTodayStatus(deviceId)
             }
             resources.getString(R.string.day_output_title) -> {
                 val titleStr = deviceName + " " + getString(R.string.month_chart_title)
-                activity.title = titleStr
                 barChartViewModel.getMonthStatus(deviceId)
             }
             resources.getString(R.string.operation_time_title) -> {
                 val titleStr = deviceName + " " + getString(R.string.operation_time_title)
-                activity.title = titleStr
                 barChartViewModel.getMonthOperationStatus(deviceId)
             }
             resources.getString(R.string.average_output_title) -> {
                 val titleStr = deviceName + " " + getString(R.string.average_output_title)
-                activity.title = titleStr
                 barChartViewModel.getMonthPCSStatus(deviceId)
             }
         }
@@ -280,5 +282,17 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
                 + binding.barChart.highestVisibleX)
 
         MPPointF.recycleInstance(position)
+    }
+
+    fun newInstance(bundle: Bundle): BarChartFragment {
+
+        return if (instance == null) {
+            instance = BarChartFragment()
+            instance?.arguments = bundle
+            instance!!
+        } else {
+            instance?.arguments = bundle
+            instance!!
+        }
     }
 }
