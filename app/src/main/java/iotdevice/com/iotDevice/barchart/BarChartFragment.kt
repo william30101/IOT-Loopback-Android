@@ -52,6 +52,9 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
     var deviceId: Long = 0
 
+    val barColor = intArrayOf(ColorTemplate.rgb("#ff3333"), ColorTemplate.rgb("#ff0088"),
+            ColorTemplate.rgb("#a500cc"), ColorTemplate.rgb("#770077"))
+
     private lateinit var barChartViewModel: BarChartViewModel
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -170,7 +173,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
                     } else {
                         val set1 = BarDataSet(it.dataList, itemTitle)
 
-                        set1.setColors(*ColorTemplate.MATERIAL_COLORS)
+                        set1.setColors(*barColor)
 
                         val dataSets = ArrayList<IBarDataSet>()
                         dataSets.add(set1)

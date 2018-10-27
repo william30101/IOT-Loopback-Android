@@ -6,4 +6,5 @@
     <color name="colorGrey">#615f60</color>
     <color name="very_light_gray">#FFEEEEEE</color>
     <color name="colorWhite">#FFFFFFFF</color>
+    <color name="xymarkerColor">#FFFF33</color>
 </resources>
