@@ -82,26 +82,6 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
                 bundle.putParcelable("device", imageList[position])
                 transmitFragment(fragmentManager, chartFragment, bundle)
             }
-
-//            override fun onEditClick(position: Int, v: View) {
-//                activity.startActivity<EditDeviceActivity>("deviceId" to imageList[position].deviceId, "deviceName" to imageList[position].displayName)
-//            }
-
-//            override fun onDelClick(position: Int, v: View) {
-//                DialogUtils.createConfirmDialog(activity, getString(R.string.del_device_title), getString(R.string.del_device_desc)) {
-//
-//                    customerDeviceRepository.delDevice(imageList[position].id, object : ObjectCallback<CustomerDeviceModel> {
-//                        override fun onSuccess(myObj: CustomerDeviceModel?) {
-//                            getDevice()
-//                        }
-//
-//                        override fun onError(t: Throwable?) {
-//                            DialogUtils.createAlertDialog(activity, getString(R.string.del_device_title),
-//                                    getString(R.string.del_device_fail))
-//                        }
-//                    })
-//                }
-//            }
         })
 
         val itemTouchHelperCallback = RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this)
