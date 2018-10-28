@@ -12,11 +12,15 @@ import org.jetbrains.anko.info
 import org.json.JSONObject
 
 class CustomerDeviceRepository : ModelRepository<CustomerDeviceModel>("CustomerDevice", "CustomerDevices", CustomerDeviceModel::class.java), AnkoLogger {
-    fun add(deviceId: String, customerId: String, displayName: String = "", callback: ObjectCallback<CustomerDeviceModel>) {
+    fun add(deviceId: String, customerId: String, displayName: String = "", factoryCode: String, callback: ObjectCallback<CustomerDeviceModel>) {
 
 //        val createRelation = JSONObject("""{"customerId":$customerId, "deviceId": $deviceId }""")
 
-        invokeStaticMethod("prototype.create", mapOf("customerId" to customerId, "deviceId" to deviceId, "displayName" to displayName),
+        invokeStaticMethod("prototype.create", mapOf(
+                "customerId" to customerId,
+                "deviceId" to deviceId,
+                "displayName" to displayName,
+                "factoryCode" to factoryCode),
                 JsonObjectParser(this, callback))
     }
 

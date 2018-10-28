@@ -7,4 +7,18 @@
         android:icon="@drawable/ic_baseline_search_24px"
         app:showAsAction="ifRoom"
         app:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <item android:id="@+id/show_all"
+        android:title="@string/show_all"
+        app:showAsAction="never" />
+
+
+    <item android:id="@+id/filter_fc"
+        android:title="@string/show_fc"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/filter_fa"
+        android:title="@string/show_fa"
+        app:showAsAction="never" />
+
 </menu>

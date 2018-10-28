@@ -25,6 +25,7 @@ import iotdevice.com.iotDevice.model.CustomerModel
 import iotdevice.com.iotDevice.model.relateview.ImageModel
 import iotdevice.com.iotDevice.repository.CustomerDeviceRepository
 import iotdevice.com.iotDevice.repository.CustomerRepository
+import iotdevice.com.iotDevice.repository.DeviceRepository
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.apache.http.client.HttpResponseException
@@ -42,9 +43,11 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
     private lateinit  var imageAdapter: ImageListAdapter
     private lateinit var customerDeviceRepository: CustomerDeviceRepository
     private lateinit var customerRepository: CustomerRepository
+    private lateinit var deviceRepository: DeviceRepository
     val adapter = App.sInstance.loopBackAdapter.apply {
         customerDeviceRepository = this.createRepository(CustomerDeviceRepository::class.java)
         customerRepository = this.createRepository(CustomerRepository::class.java)
+        deviceRepository = this.createRepository(DeviceRepository::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -103,6 +106,24 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.home_menu, menu)
 
+        val showAll = menu?.findItem(R.id.show_all)
+        showAll?.setOnMenuItemClickListener {
+            imageAdapter.restoreItems()
+            true
+        }
+
+        val showFC = menu?.findItem(R.id.filter_fc)
+        showFC?.setOnMenuItemClickListener {
+            imageAdapter.filterFCItems()
+             true
+        }
+
+        val showFA = menu?.findItem(R.id.filter_fa)
+        showFA?.setOnMenuItemClickListener {
+            imageAdapter.filterFAItems()
+            true
+        }
+
         val searchMenuItem = menu?.findItem(R.id.my_search)
         searchView = searchMenuItem?.actionView as SearchView
 
@@ -151,7 +172,11 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
         customerDeviceRepository.findDevice(customerRepository.currentUserId as Int, object: ListCallback<CustomerDeviceModel> {
             override fun onSuccess(objects: MutableList<CustomerDeviceModel>?) {
                 imageList.clear()
-                objects?.forEach {  imageList.add(ImageModel(it.id, it.deviceId, "img_1", it.displayName)) }
+
+                objects?.forEach {
+                    imageList.add(ImageModel(it.id, it.deviceId, "img_1", it.displayName, it.factoryCode))
+                }
+
                 imageAdapter.setItems(imageList)
                 homeSwipeRefreshLayout.isRefreshing = false
             }

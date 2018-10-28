@@ -20,6 +20,9 @@
     <string name="search_hint">Enter device name</string>
     <string name="home_screen_title">OnBoard Device List</string>
     <string name="delete">DELETE</string>
+    <string name="show_all">Show All Device</string>
+    <string name="show_fc">Show FC Device</string>
+    <string name="show_fa">Show FA Device</string>
 
 
     <!-- Edit Device -->

@@ -51,7 +51,17 @@ class ImageListAdapter(val context: Context) : RecyclerView.Adapter<ImageListAda
     }
 
     fun filterItems(keyword: String) {
-        val listItems = firstItems.filter { it.displayName.contains(keyword)}
+        val listItems = feedModelItems.filter { it.displayName.contains(keyword)}
+        setItems(ArrayList(listItems))
+    }
+
+    fun filterFCItems() {
+        val listItems = feedModelItems.filter { it.factoryCode.toUpperCase().contains("FC")}
+        setItems(ArrayList(listItems))
+    }
+
+    fun filterFAItems() {
+        val listItems = feedModelItems.filter { it.displayName.toUpperCase().contains("FA")}
         setItems(ArrayList(listItems))
     }
 

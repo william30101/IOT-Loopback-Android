@@ -55,7 +55,7 @@ class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
             val devicePassword = devicePasswordEditText.text.toString()
 
             if (deviceName.isNotEmpty() && deviceCode.isNotEmpty() && devicePassword.isNotEmpty()) {
-                deviceRepository.filter(deviceCode.toInt(), devicePassword.toInt(),
+                deviceRepository.filter(deviceCode, devicePassword,
                         object : ListCallback<DeviceModel> {
                             override fun onSuccess(objects: MutableList<DeviceModel>?) {
 
@@ -67,6 +67,7 @@ class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
                                 customerDeviceRepository.add(objects?.get(0)?.getId().toString(),
                                         customerRepository.currentUserId.toString(),
                                         deviceName,
+                                        deviceCode,
                                         object : ObjectCallback<CustomerDeviceModel> {
 
                                             override fun onSuccess(res: CustomerDeviceModel?) {

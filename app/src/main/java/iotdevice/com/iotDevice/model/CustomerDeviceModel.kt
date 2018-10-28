@@ -7,4 +7,5 @@ class CustomerDeviceModel : Model() {
     var customerId: Number = 0
     var deviceId: Number = 0
     var id = 0
+    var factoryCode: String =""
 }
