@@ -16,6 +16,7 @@ class SplashActivity: BaseActivity() {
 
         Timer().schedule(1000){
             startActivity<LoginActivity>()
+            finish()
         }
     }
 }

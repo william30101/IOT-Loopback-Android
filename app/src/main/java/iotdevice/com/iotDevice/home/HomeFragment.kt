@@ -228,4 +228,6 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
     override fun onLoginError(err: Throwable) {
         info("login fail $err")
     }
+
+
 }
