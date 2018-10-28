@@ -7,7 +7,14 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 class HourAxisValueFormatter(private val chart: BarLineChartBase<*>) : IAxisValueFormatter {
 
     override fun getFormattedValue(value: Float, axis: AxisBase?): String {
+
         val hourNumber = value.toInt()
-        return hourNumber.toString() + ":00"
+
+        // Only first item display the unit name
+        return if (value == 0f) {
+            hourNumber.toString() + " Hour"
+        } else {
+            hourNumber.toString()
+        }
     }
 }

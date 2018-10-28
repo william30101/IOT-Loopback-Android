@@ -39,7 +39,7 @@ class DayAxisValueFormatter(private val chart: BarLineChartBase<*>) : IAxisValue
                 31 -> appendix = "st"
             }
 
-            return if (dayOfMonth == 0) "" else dayOfMonth.toString() + appendix + " " + monthName
+            return dayOfMonth.toString() + appendix + " " + monthName
         }
     }
 

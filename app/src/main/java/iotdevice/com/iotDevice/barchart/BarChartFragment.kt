@@ -51,9 +51,6 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
     var itemTitle: String = ""
 
     var deviceId: Long = 0
-    var fragmentTitle: String = ""
-
-
 
     private var instance: BarChartFragment? = null
 
@@ -98,6 +95,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f // only intervals of 1 day
         xAxis.labelCount = 7
+        xAxis.textSize = 12f
         xAxis.valueFormatter = xAxisFormatter
 
         val custom = MyAxisValueFormatter("H")
@@ -108,6 +106,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         leftAxis.valueFormatter = custom
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
         leftAxis.spaceTop = 15f
+        leftAxis.textSize = 12f
         leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         val axisRight = binding.barChart.axisRight

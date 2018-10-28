@@ -10,6 +10,10 @@ class MyAxisValueFormatter(private val unitName: String) : IAxisValueFormatter {
             DecimalFormat("###,###,###,###")
 
     override fun getFormattedValue(value: Float, axis: AxisBase): String {
-        return mFormat.format(value.toDouble()) + " " + unitName
+        return if (value == 0f) {
+            mFormat.format(value.toDouble()) + " " + unitName
+        } else {
+            mFormat.format(value.toDouble())
+        }
     }
 }
