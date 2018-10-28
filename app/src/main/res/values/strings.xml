@@ -19,6 +19,8 @@
     <string name="search_title">Search</string>
     <string name="search_hint">Enter device name</string>
     <string name="home_screen_title">OnBoard Device List</string>
+    <string name="delete">DELETE</string>
+
 
     <!-- Edit Device -->
     <string name="edit_device_title">Edit Device</string>

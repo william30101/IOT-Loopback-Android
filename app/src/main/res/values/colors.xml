@@ -7,4 +7,5 @@
     <color name="very_light_gray">#FFEEEEEE</color>
     <color name="colorWhite">#FFFFFFFF</color>
     <color name="xymarkerColor">#FFFF33</color>
+    <color name="bg_row_background">#fa315b</color>
 </resources>

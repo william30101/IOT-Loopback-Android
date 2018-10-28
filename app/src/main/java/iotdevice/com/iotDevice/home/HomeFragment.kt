@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.*
 import com.strongloop.android.loopback.callbacks.ListCallback
 import com.strongloop.android.loopback.callbacks.ObjectCallback
@@ -31,7 +33,7 @@ import org.jetbrains.anko.info
 import org.jetbrains.anko.startActivity
 import java.net.HttpURLConnection
 
-class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
+class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     var imageList : ArrayList<ImageModel> = arrayListOf()
 
@@ -63,12 +65,14 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
 
         imageListRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-        imageAdapter = ImageListAdapter()
+
+
+        imageAdapter = ImageListAdapter(context)
         imageListRecyclerView.adapter = imageAdapter
 
         imageAdapter.setOnItemClickListener(object : ImageListAdapter.ClickListener {
             override fun onItemLongClick(position: Int, v: View) {
-                info("onLongItemClick position: $position")
+                activity.startActivity<EditDeviceActivity>("deviceId" to imageList[position].deviceId, "deviceName" to imageList[position].displayName)
             }
 
             override fun onItemClick(position: Int, v: View) {
@@ -79,26 +83,29 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
                 transmitFragment(fragmentManager, chartFragment, bundle)
             }
 
-            override fun onEditClick(position: Int, v: View) {
-                activity.startActivity<EditDeviceActivity>("deviceId" to imageList[position].deviceId, "deviceName" to imageList[position].displayName)
-            }
+//            override fun onEditClick(position: Int, v: View) {
+//                activity.startActivity<EditDeviceActivity>("deviceId" to imageList[position].deviceId, "deviceName" to imageList[position].displayName)
+//            }
 
-            override fun onDelClick(position: Int, v: View) {
-                DialogUtils.createConfirmDialog(activity, getString(R.string.del_device_title), getString(R.string.del_device_desc)) {
-
-                    customerDeviceRepository.delDevice(imageList[position].id, object : ObjectCallback<CustomerDeviceModel> {
-                        override fun onSuccess(myObj: CustomerDeviceModel?) {
-                            getDevice()
-                        }
-
-                        override fun onError(t: Throwable?) {
-                            DialogUtils.createAlertDialog(activity, getString(R.string.del_device_title),
-                                    getString(R.string.del_device_fail))
-                        }
-                    })
-                }
-            }
+//            override fun onDelClick(position: Int, v: View) {
+//                DialogUtils.createConfirmDialog(activity, getString(R.string.del_device_title), getString(R.string.del_device_desc)) {
+//
+//                    customerDeviceRepository.delDevice(imageList[position].id, object : ObjectCallback<CustomerDeviceModel> {
+//                        override fun onSuccess(myObj: CustomerDeviceModel?) {
+//                            getDevice()
+//                        }
+//
+//                        override fun onError(t: Throwable?) {
+//                            DialogUtils.createAlertDialog(activity, getString(R.string.del_device_title),
+//                                    getString(R.string.del_device_fail))
+//                        }
+//                    })
+//                }
+//            }
         })
+
+        val itemTouchHelperCallback = RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this)
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(imageListRecyclerView)
 
         getDevice()
     }
@@ -198,6 +205,28 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger {
             }
 
         })
+    }
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int, position: Int) {
+
+            // backup of removed item for undo purpose
+            val deletedItem = imageList.get(viewHolder.adapterPosition)
+
+            // remove the item from recycler view
+            DialogUtils.createConfirmDialog(activity, getString(R.string.del_device_title), getString(R.string.del_device_desc), {
+
+                customerDeviceRepository.delDevice(deletedItem.id, object : ObjectCallback<CustomerDeviceModel> {
+                    override fun onSuccess(myObj: CustomerDeviceModel?) {
+                        getDevice()
+                    }
+
+                    override fun onError(t: Throwable?) {
+                        DialogUtils.createAlertDialog(activity, getString(R.string.del_device_title),
+                                getString(R.string.del_device_fail))
+                    }
+                })}, {
+                imageAdapter.restoreItems()
+            })
     }
 
     fun createAlertDialog() {

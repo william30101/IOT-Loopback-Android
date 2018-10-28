@@ -42,7 +42,8 @@ class DialogUtils {
         fun createConfirmDialog(context: Context,
                                 title: String,
                                 msg: String? = context.getString(R.string.network_error),
-                                clickFun: (() -> Unit)? = null) {
+                                clickOKFun: (() -> Unit)? = null,
+                                clickNoFun: (() -> Unit)? = null) {
 
             displayMsg = if (msg?.contains(networkError) == true) {
                 context.getString(R.string.network_error)
@@ -54,11 +55,13 @@ class DialogUtils {
                 this.setTitle(title)
                 this.setMessage(displayMsg)
                 this.setPositiveButton("OK") { _, _ ->
-                    if (clickFun != null) {
-                        clickFun()
+                    if (clickOKFun != null) {
+                        clickOKFun()
                     }}
                 this.setNegativeButton("Cancel") { _, _ ->
-
+                    if (clickNoFun != null) {
+                        clickNoFun()
+                    }
                 }
             }
 
