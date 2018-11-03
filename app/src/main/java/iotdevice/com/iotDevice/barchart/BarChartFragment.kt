@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
@@ -114,14 +113,15 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         axisRight.setDrawGridLines(false)
 
         val legend = binding.barChart.legend
-        legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-        legend.orientation = Legend.LegendOrientation.HORIZONTAL
-        legend.setDrawInside(false)
-        legend.form = Legend.LegendForm.SQUARE
-        legend.formSize = 9f
-        legend.textSize = 11f
-        legend.xEntrySpace = 4f
+        legend.isEnabled = false
+//        legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+//        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+//        legend.orientation = Legend.LegendOrientation.HORIZONTAL
+//        legend.setDrawInside(false)
+//        legend.form = Legend.LegendForm.SQUARE
+//        legend.formSize = 9f
+//        legend.textSize = 11f
+//        legend.xEntrySpace = 4f
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -184,7 +184,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
                         dataSets.add(set1)
 
                         val data = BarData(dataSets)
-                        data.setValueTextSize(10f)
+                        data.setValueTextSize(4f)
                         data.setValueTypeface(mTfLight)
                         data.barWidth = 0.9f
                         data.setValueFormatter(ValueFormatter(false))

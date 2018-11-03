@@ -8,4 +8,5 @@
     <color name="colorWhite">#FFFFFFFF</color>
     <color name="xymarkerColor">#FFFF33</color>
     <color name="bg_row_background">#fa315b</color>
+    <color name="list_item_gray">#4F4F4F</color>
 </resources>

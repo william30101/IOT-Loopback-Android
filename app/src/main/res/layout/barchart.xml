@@ -36,9 +36,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:text="@{barChartBottomInfo.line1Title}"
             app:layout_constraintBottom_toTopOf="@+id/line2_title"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bar_chart"
+            tools:text="line1_title" />
 
         <TextView
             android:id="@+id/line1_value"
@@ -55,6 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            tools:text="line2_title"
             android:text="@{barChartBottomInfo.line2Title}"
             app:layout_constraintBottom_toTopOf="@+id/line3_title"
             app:layout_constraintStart_toStartOf="@+id/line1_title" />
@@ -73,6 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            tools:text="line3_title"
             android:text="@{barChartBottomInfo.line3Title}"
             app:layout_constraintBottom_toTopOf="@+id/line4_title"
             app:layout_constraintStart_toStartOf="@+id/line2_title" />
@@ -91,6 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            tools:text="line4_title"
             android:text="@{barChartBottomInfo.line4Title}"
             android:visibility="@{TextUtils.isEmpty(barChartBottomInfo.line4Title) ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
