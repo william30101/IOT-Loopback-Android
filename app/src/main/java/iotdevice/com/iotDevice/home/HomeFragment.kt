@@ -114,12 +114,14 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
 
         val showFC = menu?.findItem(R.id.filter_fc)
         showFC?.setOnMenuItemClickListener {
+            imageAdapter.restoreItems()
             imageAdapter.filterFCItems()
              true
         }
 
         val showFA = menu?.findItem(R.id.filter_fa)
         showFA?.setOnMenuItemClickListener {
+            imageAdapter.restoreItems()
             imageAdapter.filterFAItems()
             true
         }
