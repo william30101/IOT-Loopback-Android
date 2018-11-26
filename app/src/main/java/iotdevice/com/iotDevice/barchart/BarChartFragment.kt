@@ -86,6 +86,8 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
         binding.barChart.setDrawGridBackground(false)
 
+        binding.barChart.extraBottomOffset = 20f
+
         val xAxisFormatter = DayAxisValueFormatter(binding.barChart)
 
         val xAxis = binding.barChart.xAxis
@@ -94,7 +96,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f // only intervals of 1 day
         xAxis.labelCount = 7
-        xAxis.textSize = 12f
+        xAxis.textSize = 13f
         xAxis.valueFormatter = xAxisFormatter
 
         val custom = MyAxisValueFormatter("H")
@@ -105,7 +107,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         leftAxis.valueFormatter = custom
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
         leftAxis.spaceTop = 15f
-        leftAxis.textSize = 12f
+        leftAxis.textSize = 13f
         leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
         val axisRight = binding.barChart.axisRight
@@ -114,14 +116,6 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
         val legend = binding.barChart.legend
         legend.isEnabled = false
-//        legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-//        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-//        legend.orientation = Legend.LegendOrientation.HORIZONTAL
-//        legend.setDrawInside(false)
-//        legend.form = Legend.LegendForm.SQUARE
-//        legend.formSize = 9f
-//        legend.textSize = 11f
-//        legend.xEntrySpace = 4f
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -184,7 +178,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
                         dataSets.add(set1)
 
                         val data = BarData(dataSets)
-                        data.setValueTextSize(4f)
+                        data.setValueTextSize(6f)
                         data.setValueTypeface(mTfLight)
                         data.barWidth = 0.9f
                         data.setValueFormatter(ValueFormatter(false))

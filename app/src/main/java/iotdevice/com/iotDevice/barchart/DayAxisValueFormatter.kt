@@ -20,26 +20,12 @@ class DayAxisValueFormatter(private val chart: BarLineChartBase<*>) : IAxisValue
         val monthName = currentMonth()
         val yearName = year.toString()
 
-        if (chart.visibleXRange > 30 * 6) {
-
-            return "$monthName $yearName"
+        return if (chart.visibleXRange > 30 * 6) {
+            "$monthName $yearName"
         } else {
 
             val dayOfMonth = determineDayOfMonth(days, month + 12 * (year - 2016))
-
-            var appendix = "th"
-
-            when (dayOfMonth) {
-                1 -> appendix = "st"
-                2 -> appendix = "nd"
-                3 -> appendix = "rd"
-                21 -> appendix = "st"
-                22 -> appendix = "nd"
-                23 -> appendix = "rd"
-                31 -> appendix = "st"
-            }
-
-            return dayOfMonth.toString() + appendix + " " + monthName
+            dayOfMonth.toString() + " " + monthName
         }
     }
 

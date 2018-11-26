@@ -22,7 +22,7 @@ class XYMarkerView(context: Context, private val xAxisValueFormatter: IAxisValue
     // content (user-interface)
     override fun refreshContent(e: Entry?, highlight: Highlight?) {
 
-        val tvText = "x: " + xAxisValueFormatter.getFormattedValue(e!!.x, null) + ", y: " +
+        val tvText = xAxisValueFormatter.getFormattedValue(e!!.x, null) + ", " +
                 format.format(e.y.toDouble())
 
         tvContent.text = tvText

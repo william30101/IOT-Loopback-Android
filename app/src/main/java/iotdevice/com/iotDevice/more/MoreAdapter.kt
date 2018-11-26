@@ -1,6 +1,9 @@
 package iotdevice.com.iotDevice.more
 
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.ACTION_VIEW
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,6 +13,7 @@ import iotdevice.com.iotDevice.common.RecycleViewListener
 import iotdevice.com.iot_device.R
 import iotdevice.com.iot_device.databinding.LayoutMoreHeaderBinding
 import iotdevice.com.iot_device.databinding.LayoutMoreListItemBinding
+
 
 class MoreAdapter(private val context: Context, private val userName: String): RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.OnClickListener {
 
@@ -47,6 +51,11 @@ class MoreAdapter(private val context: Context, private val userName: String): R
         }
     }
 
+    fun openWebsite(url: String) {
+        val browserIntent = Intent(ACTION_VIEW, Uri.parse(url))
+        context.startActivity(browserIntent)
+    }
+
     override fun getItemViewType(position: Int): Int {
         return if (position == 0) ITEM_VIEW_TYPE_HEADER else ITEM_VIEW_TYPE_ITEM
     }
@@ -78,6 +87,9 @@ class MoreAdapter(private val context: Context, private val userName: String): R
 
             binding.run {
                 userNameTextView.text = itemVal
+                logoImageView.setOnClickListener({
+                    openWebsite("http://www.finecause.com.tw/")
+                })
             }
         }
     }
