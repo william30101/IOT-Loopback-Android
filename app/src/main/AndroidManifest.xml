@@ -21,7 +21,8 @@
         android:theme="@style/AppTheme">
 
         <activity android:name="iotdevice.com.iotDevice.splash.SplashActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +35,8 @@
             android:name="iotdevice.com.iotDevice.home.HomeActivity"
             android:label="@string/title_activity_home"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

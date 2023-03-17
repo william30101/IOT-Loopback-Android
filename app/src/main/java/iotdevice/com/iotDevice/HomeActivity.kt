@@ -3,7 +3,7 @@ package iotdevice.com.iotDevice
 import android.accounts.AccountManager
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.strongloop.android.loopback.AccessToken
 import com.strongloop.android.loopback.callbacks.ObjectCallback
 import com.strongloop.android.remoting.adapters.Adapter
@@ -11,11 +11,9 @@ import iotdevice.com.iotDevice.model.CustomerModel
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import iotdevice.com.iotDevice.repository.CustomerRepository
 import iotdevice.com.iotDevice.repository.DeviceStatusRepository
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
+import androidx.appcompat.app.AppCompatActivity
 
-
-class HomeActivity : AppCompatActivity(), AnkoLogger {
+class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,19 +59,19 @@ class HomeActivity : AppCompatActivity(), AnkoLogger {
 //                showResult("Failed.")
 //            }
 //        })
-        info("click button")
+        Log.i(tag, "click button")
 
         repository.findById(8, object : ObjectCallback<DeviceStatusModel> {
             override fun onSuccess(deviceStatus: DeviceStatusModel) {
                 // found!
-                info("onsuccess device status " + deviceStatus)
+                Log.i(tag, "onsuccess device status " + deviceStatus)
 
-                info("boot time is " + deviceStatus.bootTime)
+                Log.i(tag, "boot time is " + deviceStatus.bootTime)
             }
 
             override fun onError(t: Throwable) {
                 // handle the error
-                info("onError device status " + t)
+                Log.i(tag, "onError device status " + t)
             }
         })
 
@@ -81,11 +79,11 @@ class HomeActivity : AppCompatActivity(), AnkoLogger {
 //        repository.filter(1, object : ListCallback<DeviceStatusModel> {
 //
 //            override fun onError(t: Throwable) {
-//                info("Didn't work because " + t.localizedMessage.toString())
+//                Log.i(tag, "Didn't work because " + t.localizedMessage.toString())
 //            }
 //
 //            override fun onSuccess(objects: MutableList<DeviceStatusModel>?) {
-//                info("SUCCESS  " + objects?.get(0)?.bootTime)
+//                Log.i(tag, "SUCCESS  " + objects?.get(0)?.bootTime)
 //            }
 //        })
 
@@ -108,12 +106,12 @@ class HomeActivity : AppCompatActivity(), AnkoLogger {
         customerRepo.loginUser("william30101@gmail.com", "1qaz@WSX",
                 object : CustomerRepository.LoginCallback {
                     override fun onSuccess(token: AccessToken?, currentUser: CustomerModel?) {
-                        info("currentUser :" + currentUser?.username + " AccessToken" + token)
+                        Log.i(tag, "currentUser :" + currentUser?.username + " AccessToken" + token)
                     }
 
                     override fun onError(t: Throwable) {
                         // login failed
-                        info("loginfail " + t)
+                        Log.i(tag, "loginfail " + t)
                     }
                 }
         )
@@ -143,11 +141,11 @@ class HomeActivity : AppCompatActivity(), AnkoLogger {
                 mapOf("email" to "william5@gmail.com", "password" to "1qaz@WSX"),
                 object : Adapter.JsonCallback() {
                     override fun onSuccess(response: Any?) {
-                        info("success : " + response)
+                        Log.i(tag, "success : " + response)
                     }
 
                     override fun onError(t: Throwable?) {
-                        info("error : " + t)
+                        Log.i(tag, "error : " + t)
                     }
 
                 })
@@ -176,5 +174,9 @@ class HomeActivity : AppCompatActivity(), AnkoLogger {
 //        intent.putExtra(RegisterSuccessfulFragment.USER_GENDER, gender)
 //        intent.putExtra(RegisterSuccessfulFragment.INTENT, destinationIntent)
 //        startActivity(intent)
+    }
+
+    companion object {
+        const val tag = "HomeActivity"
     }
 }

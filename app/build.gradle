@@ -1,7 +1,8 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
 
 
 android {
@@ -19,11 +20,11 @@ android {
             storePassword '1qaz@WSX'
         }
     }
-    compileSdkVersion 26
+    compileSdkVersion 33
     defaultConfig {
         applicationId "iotdevice.com.iot_device"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 33
         versionCode 10
         versionName "1.8.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -38,46 +39,44 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled true
-    }
-    useLibrary 'org.apache.http.legacy'
-}
 
-androidExtensions {
-    experimental = true
+    useLibrary 'org.apache.http.legacy'
+
+    dataBinding {
+        enabled = true
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 ext {
-    anko_version = "0.10.5"
-}
-
-kapt {
-    generateStubs = true
+    anko_version = "0.10.8"
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //    implementation project(':loopback-sdk-android')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.guava:guava:18.0'
+//    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     //    implementation 'com.strongloop:loopback-sdk-android:1.5.2'
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     // ViewModel and LiveData
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
-    // Anko , coroutine
-    implementation "org.jetbrains.anko:anko-commons:${anko_version}"
-    implementation "org.jetbrains.anko:anko-coroutines:${anko_version}"
-    implementation "org.jetbrains.anko:anko-design:${anko_version}"
+//    implementation 'android.arch.lifecycle:extensions:1.1.1'
+
     // parse JSON
     implementation 'com.beust:klaxon:3.0.1'
     // Data Binding
-    kapt "com.android.databinding:compiler:3.1.3"
-    implementation 'com.android.support:design:26.1.0'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     implementation project(':loopback-sdk-android')
 }

@@ -2,20 +2,20 @@ package iotdevice.com.iotDevice.barchart
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
+import android.util.Log
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import iotdevice.com.iotDevice.chart.ChartListItem
 import iotdevice.com.iotDevice.common.BaseActivity
 import iotdevice.com.iotDevice.common.ChartUtils
 import iotdevice.com.iot_device.R
 import kotlinx.android.synthetic.main.activity_barchart.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 
 
-class BarChartActivity: BaseActivity(), AnkoLogger, ViewPager.OnPageChangeListener {
+
+class BarChartActivity: BaseActivity(), ViewPager.OnPageChangeListener {
 
     private lateinit var pageList: MutableList<PageView>
 
@@ -48,7 +48,8 @@ class BarChartActivity: BaseActivity(), AnkoLogger, ViewPager.OnPageChangeListen
     }
 
     override fun onPageSelected(position: Int) {
-        info ("selected : $position")
+        Log.i(tag, "selected : $position")
+
         title = deviceName + " " + itemList[position].title
     }
 
@@ -90,6 +91,10 @@ class BarChartActivity: BaseActivity(), AnkoLogger, ViewPager.OnPageChangeListen
         override fun getCount(): Int {
             return itemList.size
         }
+    }
+
+    companion object {
+        const val tag = "BarChartActivity"
     }
 
 }
