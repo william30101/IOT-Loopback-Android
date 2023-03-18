@@ -27,10 +27,10 @@ class App : Application() {
             if (adapter == null) {
                 adapter = if (BuildConfig.BUILD_TYPE == "release" || BuildConfig.BUILD_TYPE == "debugincloud") {
                     RestAdapter(
-                            applicationContext, "http://35.194.235.166:3000/api")
+                            applicationContext, "http://54.65.190.127:1883/api")
                 } else {
                     RestAdapter(
-                            applicationContext, "http://192.168.0.103:3000/api")
+                            applicationContext, "http://54.65.190.127:1883/api")
                 }
             }
             return adapter!!

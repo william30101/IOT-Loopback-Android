@@ -1,78 +1,84 @@
 package iotdevice.com.iotDevice.register
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.fragment_register.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
-import org.jetbrains.anko.toast
+import iotdevice.com.iot_device.databinding.FragmentRegisterBinding
 import java.util.*
 import kotlin.concurrent.schedule
 
-class RegisterFragment: Fragment(), AnkoLogger {
+class RegisterFragment: Fragment() {
 
     lateinit var registerViewModel: RegisterViewModel
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_register, container, false)
+    private var _binding: FragmentRegisterBinding? = null
+    // This property is only valid between onCreateView and
+// onDestroyView.
+    private val binding get() = _binding!!
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        registerViewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
+        registerViewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
 
-        registerViewModel.registerSuccess.observe(this, Observer<Any> {
-            activity.toast(resources.getString(R.string.register_success))
+        registerViewModel.registerSuccess.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            Toast.makeText(requireContext(), resources.getString(R.string.register_success), Toast.LENGTH_SHORT).show()
             Timer().schedule(1000){
                 //do something
-                activity.finish()
+                activity?.finish()
             }
         })
 
-        registerViewModel.registerFail.observe(this, Observer<Throwable> {
-            DialogUtils.createAlertDialog(context, getString(R.string.register_title), getString(R.string.register_fail))
+        registerViewModel.registerFail.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            DialogUtils.createAlertDialog(requireContext(), getString(R.string.register_title), getString(R.string.register_fail))
         })
 
-            registerBtn?.setOnClickListener({ _ ->
+            binding.registerBtn?.setOnClickListener({ _ ->
                 if (checkField()) {
                     registerViewModel.registerUser(
-                            emailEditText.text.toString(),
-                            usernameEditText.text.toString(),
-                            passwordEditText.text.toString())
+                        binding.emailEditText.text.toString(),
+                        binding.usernameEditText.text.toString(),
+                        binding.passwordEditText.text.toString())
                 }
         })
     }
 
     private fun checkField(): Boolean {
-        val email = emailEditText.text.toString()
+        val email = binding.emailEditText.text.toString()
         if (!email.contains("@")) {
-            DialogUtils.createAlertDialog(context, resources.getString(R.string.register_title), resources.getString(R.string.email_not_filled), {
-                info ( "clicked" )
+            DialogUtils.createAlertDialog(requireContext(), resources.getString(R.string.register_title), resources.getString(R.string.email_not_filled), {
+                Log.i (tag, "clicked" )
             })
             return false
         }
-        val username = usernameEditText.text.toString()
+        val username = binding.usernameEditText.text.toString()
         if (username.isEmpty()) {
-            DialogUtils.createAlertDialog(context, resources.getString(R.string.register_title), resources.getString(R.string.username_not_filled), {
-                info ( "clicked" )
+            DialogUtils.createAlertDialog(requireContext(), resources.getString(R.string.register_title), resources.getString(R.string.username_not_filled), {
+                Log.i (tag, "clicked" )
             })
             return false
         }
-        val firstPassword = passwordEditText.text.toString()
-        val secondPassword = passwordAgainEditText.text.toString()
+        val firstPassword = binding.passwordEditText.text.toString()
+        val secondPassword = binding.passwordAgainEditText.text.toString()
         if (firstPassword != secondPassword) {
 
-            DialogUtils.createAlertDialog(context, resources.getString(R.string.register_title), resources.getString(R.string.password_not_match), {
-                info ( "clicked" )
+            DialogUtils.createAlertDialog(requireContext(), resources.getString(R.string.register_title), resources.getString(R.string.password_not_match), {
+                Log.i ( tag, "clicked" )
             })
             return false
         }

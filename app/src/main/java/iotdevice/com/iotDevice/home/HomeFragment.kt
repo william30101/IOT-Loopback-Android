@@ -1,16 +1,17 @@
 package iotdevice.com.iotDevice.home
 
+import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SearchView
-import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
 import android.view.*
+import android.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.strongloop.android.loopback.callbacks.ListCallback
 import com.strongloop.android.loopback.callbacks.ObjectCallback
 import iotdevice.com.iotDevice.App
@@ -27,16 +28,19 @@ import iotdevice.com.iotDevice.repository.CustomerDeviceRepository
 import iotdevice.com.iotDevice.repository.CustomerRepository
 import iotdevice.com.iotDevice.repository.DeviceRepository
 import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.fragment_home.*
+import iotdevice.com.iot_device.databinding.FragmentHomeBinding
 import org.apache.http.client.HttpResponseException
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
-import org.jetbrains.anko.startActivity
 import java.net.HttpURLConnection
 
-class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
+class HomeFragment : Fragment(), TokenManager.LoginListener, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
     var imageList : ArrayList<ImageModel> = arrayListOf()
+
+    private var _binding: FragmentHomeBinding? = null
+    // This property is only valid between onCreateView and
+// onDestroyView.
+    private val binding get() = _binding!!
+
 
     private var searchView: SearchView? = null
 
@@ -50,45 +54,51 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
         deviceRepository = this.createRepository(DeviceRepository::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_home, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onStart() {
         super.onStart()
-        activity.title = getString(R.string.home_screen_title)
+        activity?.title = getString(R.string.home_screen_title)
 
         imageList.clear()
-        addDeviceFab.setOnClickListener({ _ ->
+        binding.addDeviceFab.setOnClickListener({ _ ->
             val intent = Intent(activity, AddDevicesActivity::class.java)
 
             intent.putParcelableArrayListExtra("itemList", imageList)
             startActivity(intent)
         })
 
-        imageListRecyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.imageListRecyclerView.layoutManager = LinearLayoutManager(activity)
 
 
 
-        imageAdapter = ImageListAdapter(context)
-        imageListRecyclerView.adapter = imageAdapter
+        imageAdapter = ImageListAdapter(requireContext())
+        binding.imageListRecyclerView.adapter = imageAdapter
 
         imageAdapter.setOnItemClickListener(object : ImageListAdapter.ClickListener {
             override fun onItemLongClick(position: Int, v: View) {
-                activity.startActivity<EditDeviceActivity>("deviceId" to imageList[position].deviceId, "deviceName" to imageList[position].displayName)
+                val intent = Intent(requireContext(), EditDeviceActivity::class.java).apply {
+                    putExtra("deviceId", imageList[position].deviceId)
+                    putExtra("deviceName", imageList[position].displayName)
+                }
+
+                startActivity(intent)
             }
 
             override fun onItemClick(position: Int, v: View) {
-                info("onItemClick position: $position , deviceId : ${imageList[position].deviceId}")
+                Log.i(tag, "onItemClick position: $position , deviceId : ${imageList[position].deviceId}")
                 val chartFragment = ChartFragment()
                 val bundle = Bundle()
                 bundle.putParcelable("device", imageList[position])
-                transmitFragment(fragmentManager, chartFragment, bundle)
+                transmitFragment(fragmentManager!!, chartFragment, bundle)
             }
         })
 
         val itemTouchHelperCallback = RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this)
-        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(imageListRecyclerView)
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.imageListRecyclerView)
 
         getDevice()
     }
@@ -97,43 +107,43 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
 
-        homeSwipeRefreshLayout.setOnRefreshListener({
+        binding.homeSwipeRefreshLayout.setOnRefreshListener({
             getDevice()
         })
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.home_menu, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.home_menu, menu)
 
-        val showAll = menu?.findItem(R.id.show_all)
+        val showAll = menu.findItem(R.id.show_all)
         showAll?.setOnMenuItemClickListener {
             imageAdapter.restoreItems()
             true
         }
 
-        val showFC = menu?.findItem(R.id.filter_fc)
+        val showFC = menu.findItem(R.id.filter_fc)
         showFC?.setOnMenuItemClickListener {
             imageAdapter.restoreItems()
             imageAdapter.filterFCItems()
              true
         }
 
-        val showFA = menu?.findItem(R.id.filter_fa)
+        val showFA = menu.findItem(R.id.filter_fa)
         showFA?.setOnMenuItemClickListener {
             imageAdapter.restoreItems()
             imageAdapter.filterFAItems()
             true
         }
 
-        val searchMenuItem = menu?.findItem(R.id.my_search)
+        val searchMenuItem = menu.findItem(R.id.my_search)
         searchView = searchMenuItem?.actionView as SearchView
 
         searchView?.apply {
             // Get the SearchView and set the searchable configuration
-            val searchManager = activity.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+            val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
-            setSearchableInfo(searchManager.getSearchableInfo(activity.componentName))
+            setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
 
             setIconifiedByDefault(true)
             queryHint = getString(R.string.search_hint)
@@ -141,7 +151,7 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
                 override fun onQueryTextChange(newText: String): Boolean {
-                    info{ "string $query"}
+                    Log.i(tag.toString(), "string $query")
 
                     if (newText.isEmpty()) {
                         imageAdapter.restoreItems()
@@ -153,7 +163,7 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
                 }
 
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    info{ "submit $query"}
+                    Log.i(tag.toString(), "submit $query")
                     clearFocus()
                     return false
                 }
@@ -180,12 +190,12 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
                 }
 
                 imageAdapter.setItems(imageList)
-                homeSwipeRefreshLayout.isRefreshing = false
+                binding.homeSwipeRefreshLayout.isRefreshing = false
             }
 
             override fun onError(t: Throwable?) {
-                info("error : $t")
-                homeSwipeRefreshLayout.isRefreshing = false
+                Log.i(tag, "error : $t")
+                binding.homeSwipeRefreshLayout.isRefreshing = false
                 // Status Code 401
                 // if (t.st)
                 if(t is HttpResponseException) {
@@ -204,7 +214,7 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
                         }
                     }
                 } else {
-                    DialogUtils.createAlertDialog( activity, getString(R.string.home_title))
+                    DialogUtils.createAlertDialog(requireActivity(), getString(R.string.home_title))
 
                 }
 //                HttpURLConnection.HTTP_UNSUPPORTED_TYPE
@@ -220,7 +230,7 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
             val deletedItem = imageList.get(viewHolder.adapterPosition)
 
             // remove the item from recycler view
-            DialogUtils.createConfirmDialog(activity, getString(R.string.del_device_title), getString(R.string.del_device_desc), {
+            DialogUtils.createConfirmDialog(requireActivity(), getString(R.string.del_device_title), getString(R.string.del_device_desc), {
 
                 customerDeviceRepository.delDevice(deletedItem.id, object : ObjectCallback<CustomerDeviceModel> {
                     override fun onSuccess(myObj: CustomerDeviceModel?) {
@@ -228,7 +238,7 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
                     }
 
                     override fun onError(t: Throwable?) {
-                        DialogUtils.createAlertDialog(activity, getString(R.string.del_device_title),
+                        DialogUtils.createAlertDialog(requireActivity(), getString(R.string.del_device_title),
                                 getString(R.string.del_device_fail))
                     }
                 })}, {
@@ -249,12 +259,14 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
     }
 
     override fun onLoginComplete(result: CustomerModel) {
-        info("completed $result")
+        Log.i(tag, "completed $result")
     }
 
     override fun onLoginError(err: Throwable) {
-        info("login fail $err")
+        Log.i(tag, "login fail $err")
     }
 
-
+    companion object {
+        const val tag = "HomeFragment"
+    }
 }

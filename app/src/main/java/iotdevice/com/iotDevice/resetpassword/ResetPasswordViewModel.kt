@@ -1,14 +1,15 @@
 package iotdevice.com.iotDevice.resetpassword
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.strongloop.android.remoting.adapters.Adapter
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.repository.CustomerRepository
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 
-class ResetPasswordViewModel: ViewModel(), AnkoLogger {
+
+class ResetPasswordViewModel: ViewModel() {
 
     val sendResetSuccess: MutableLiveData<Boolean> = MutableLiveData()
     val sendResetFail: MutableLiveData<Boolean> = MutableLiveData()
@@ -19,13 +20,13 @@ class ResetPasswordViewModel: ViewModel(), AnkoLogger {
     fun resetPassword(email: String) {
         repository?.resetPassword(email,  object: Adapter.JsonCallback(){
             override fun onSuccess(response: Any?) {
-                info("success")
+                Log.i(tag, "success")
                 sendResetSuccess.value = true
             }
 
             // TODO : the API will return null even if success, need to handle this.
             override fun onError(t: Throwable?) {
-                info("fail")
+                Log.i(tag, "fail")
                 if (t?.message?.contains("null") == true) {
                     sendResetSuccess.value = true
                 } else {
@@ -33,5 +34,9 @@ class ResetPasswordViewModel: ViewModel(), AnkoLogger {
                 }
             }
         })
+    }
+
+    companion object {
+        const val tag = "ResetPasswordViewModel"
     }
 }

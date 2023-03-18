@@ -1,20 +1,20 @@
 package iotdevice.com.iotDevice.home
 
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 import iotdevice.com.iotDevice.common.BaseActivity
 import iotdevice.com.iotDevice.more.MoreFragment
 import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.activity_home.*
-import org.jetbrains.anko.AnkoLogger
+import iotdevice.com.iot_device.databinding.ActivityHomeBinding
 
 
-
-class HomeActivity : BaseActivity(), AnkoLogger {
+class HomeActivity : BaseActivity() {
 
     val manager = supportFragmentManager
+    lateinit var binding: ActivityHomeBinding
 
     enum class FragmentType {
         Home, More
@@ -69,10 +69,11 @@ class HomeActivity : BaseActivity(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        binding.navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         // Open Home fragment
         changeFragmentTo(FragmentType.Home)

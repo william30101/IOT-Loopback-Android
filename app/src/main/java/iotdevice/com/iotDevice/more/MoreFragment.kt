@@ -4,11 +4,12 @@ package iotdevice.com.iotDevice.more
 import android.accounts.AccountManager
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import iotdevice.com.iotDevice.chart.GridLayoutDivider
 import iotdevice.com.iotDevice.common.IOTPreference
 import iotdevice.com.iotDevice.common.RecycleViewListener
@@ -16,39 +17,43 @@ import iotdevice.com.iotDevice.login.LoginActivity
 import iotdevice.com.iotDevice.member.info.ChangePasswordActivity
 import iotdevice.com.iot_device.BuildConfig
 import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.fragment_more.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.startActivity
+import iotdevice.com.iot_device.databinding.FragmentMoreBinding
 
 
-class MoreFragment: Fragment(), RecycleViewListener, AnkoLogger {
+class MoreFragment: Fragment(), RecycleViewListener {
 
     private val moreItemList = mutableListOf<String>()
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater!!.inflate(R.layout.fragment_more, container, false)
+    private var _binding: FragmentMoreBinding? = null
+    // This property is only valid between onCreateView and
+// onDestroyView.
+    private val binding get() = _binding!!
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentMoreBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val version = getString(R.string.version_name)
-        version_number.text = String.format(version, BuildConfig.VERSION_NAME)
+        binding.versionNumber.text = String.format(version, BuildConfig.VERSION_NAME)
 
         moreItemList.add(resources.getString(R.string.change_password))
         moreItemList.add(resources.getString(R.string.log_out))
 
-        val moreAdapter = MoreAdapter(activity, IOTPreference.getUserName())
+        val moreAdapter = MoreAdapter(requireActivity(), IOTPreference.getUserName())
         moreAdapter.itemList.addAll(moreItemList)
         moreAdapter.listener = this
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.recycle_dimen)
-        more_recyclew_view.addItemDecoration(GridLayoutDivider(1, spacingInPixels, true, 1))
+        binding.moreRecyclewView.addItemDecoration(GridLayoutDivider(1, spacingInPixels, true, 1))
 
         val manager = GridLayoutManager(context, 1)
 
-        more_recyclew_view.layoutManager = manager
-        more_recyclew_view.adapter = moreAdapter
+        binding.moreRecyclewView.layoutManager = manager
+        binding.moreRecyclewView.adapter = moreAdapter
     }
 
     override fun onClick(bundle: Bundle) {
@@ -56,7 +61,10 @@ class MoreFragment: Fragment(), RecycleViewListener, AnkoLogger {
 
         when(clickItem) {
 
-            resources.getString(R.string.change_password) -> activity.startActivity<ChangePasswordActivity>()
+            resources.getString(R.string.change_password) -> {
+                val intent = Intent(requireContext(),ChangePasswordActivity::class.java)
+                requireActivity().startActivity(intent)
+            }
             resources.getString(R.string.log_out) -> {
                 val accountManager = AccountManager.get(activity)
 
@@ -66,7 +74,7 @@ class MoreFragment: Fragment(), RecycleViewListener, AnkoLogger {
                         if (it.result) {
                             val intent = Intent(activity, LoginActivity::class.java)
                             startActivity(intent)
-                            activity.finish()
+                            activity?.finish()
                         }
                     }, null)
                 }

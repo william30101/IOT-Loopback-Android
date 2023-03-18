@@ -1,22 +1,22 @@
 package iotdevice.com.iotDevice.barchart
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.databinding.DataBindingUtil
 import android.graphics.RectF
 import android.graphics.Typeface
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
@@ -33,19 +33,22 @@ import iotdevice.com.iotDevice.common.ChartUtils.Companion.hourUnit
 import iotdevice.com.iotDevice.common.ChartUtils.Companion.productivityUnit
 import iotdevice.com.iot_device.R
 import iotdevice.com.iot_device.databinding.BarchartBinding
-import kotlinx.android.synthetic.main.fragment_chart.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 
 
-class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
+
+class BarChartFragment: Fragment(), OnChartValueSelectedListener {
 
     private var mOnValueSelectedRectF = RectF()
 
-    lateinit var binding: BarchartBinding
     private lateinit var mTfRegular: Typeface
     private lateinit var mTfLight: Typeface
     private var deviceName: String = ""
+
+    private var _binding: BarchartBinding? = null
+    // This property is only valid between onCreateView and
+// onDestroyView.
+    private val binding get() = _binding!!
+
 
     var itemTitle: String = ""
 
@@ -58,16 +61,16 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
     private lateinit var barChartViewModel: BarChartViewModel
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.barchart, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = BarchartBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mTfRegular = Typeface.createFromAsset(activity.assets, "OpenSans-Regular.ttf")
-        mTfLight = Typeface.createFromAsset(activity.assets, "OpenSans-Light.ttf")
+        mTfRegular = Typeface.createFromAsset(requireActivity().assets, "OpenSans-Regular.ttf")
+        mTfLight = Typeface.createFromAsset(requireActivity().assets, "OpenSans-Light.ttf")
 
         binding.barChart.setOnChartValueSelectedListener(this)
 
@@ -75,7 +78,6 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         binding.barChart.setDrawValueAboveBar(true)
         binding.barChart.isDoubleTapToZoomEnabled = false
         binding.barChart.description.isEnabled = false
-
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -123,18 +125,18 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
         val arguments = arguments
 
-        val device = arguments.getParcelable<ChartListItem>("device")
+        val device = arguments?.getParcelable<ChartListItem>("device")
 
-        deviceId = device.deviceId
-        itemTitle = device.title
-        deviceName = arguments.getString("deviceName")
+        deviceId = device!!.deviceId
+        itemTitle = device!!.title
+        deviceName = arguments.getString("deviceName").toString()
 
 
-        barChartViewModel = ViewModelProviders.of(this).get(BarChartViewModel::class.java)
+        barChartViewModel = ViewModelProvider(this)[BarChartViewModel::class.java]
 
-        barChartViewModel.yAxisData.observe(this, android.arch.lifecycle.Observer {
+        barChartViewModel.yAxisData.observe(viewLifecycleOwner, Observer {
 
-            swipeRefreshLayout.isRefreshing = false
+            (binding.swipeRefreshLayout as? SwipeRefreshLayout)?.isRefreshing = false
 
             it?.chartName?.apply {
 
@@ -151,13 +153,13 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
                     when(this.xAxisType) {
                         ChartUtils.AxisXType.Hour -> {
                             setAxisXFormatter(HourAxisValueFormatter(binding.barChart))
-                            val mv = XYMarkerView(activity, HourAxisValueFormatter(binding.barChart), it.enablePointDecimal)
+                            val mv = XYMarkerView(requireContext(), HourAxisValueFormatter(binding.barChart), it.enablePointDecimal)
                             mv.chartView = binding.barChart // For bounds control
                             binding.barChart.marker = mv // Set the marker to the chart
                         }
                         ChartUtils.AxisXType.Month -> {
                             setAxisXFormatter(DayAxisValueFormatter(binding.barChart))
-                            val mv = XYMarkerView(activity, DayAxisValueFormatter(binding.barChart), it.enablePointDecimal)
+                            val mv = XYMarkerView(requireContext(), DayAxisValueFormatter(binding.barChart), it.enablePointDecimal)
                             mv.chartView = binding.barChart // For bounds control
                             binding.barChart.marker = mv // Set the marker to the chart
                         }
@@ -195,18 +197,18 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         })
 
         // Don't display error msg to users
-        barChartViewModel.errorRes.observe(this, Observer {
-            swipeRefreshLayout.isRefreshing = false
+        barChartViewModel.errorRes.observe(viewLifecycleOwner, Observer {
+            (binding.swipeRefreshLayout as? SwipeRefreshLayout)?.isRefreshing = false
 //            if (it?.message?.contains("size is 0") == true) {
 //                DialogUtils.createAlertDialog(context, getString(R.string.chart_title), getString(R.string.no_date_str), activity::onBackPressed)
 //            } else {
 //                DialogUtils.createAlertDialog(context, getString(R.string.chart_title))
 //            }
 
-            info("error msg : {${it?.message}}")
+            Log.e(tag, "error msg : {${it?.message}}")
         })
 
-        swipeRefreshLayout.setOnRefreshListener({
+        (binding.swipeRefreshLayout as? SwipeRefreshLayout)?.setOnRefreshListener({
             onRefresh(itemTitle)
         })
 
@@ -219,9 +221,10 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        info { "test" }
+        Log.i (tag, "test" )
 //        outState?.putSerializable(STATE_ITEMS, mItems)
     }
 
@@ -253,7 +256,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         leftAxis.valueFormatter = MyAxisValueFormatter(unit)
     }
 
-    private fun setAxisXFormatter(formatter: IAxisValueFormatter) {
+    private fun setAxisXFormatter(formatter: com.github.mikephil.charting.formatter.ValueFormatter) {
         val xAxis = binding.barChart.xAxis
         xAxis.labelRotationAngle = -20f
         xAxis.valueFormatter = formatter
@@ -271,7 +274,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
         binding.barChart.getBarBounds(e as BarEntry, bounds)
         val position = binding.barChart.getPosition(e, YAxis.AxisDependency.LEFT)
 
-        info("low: " + binding.barChart.lowestVisibleX + ", high: "
+        Log.i(tag, "low: " + binding.barChart.lowestVisibleX + ", high: "
                 + binding.barChart.highestVisibleX)
 
         MPPointF.recycleInstance(position)

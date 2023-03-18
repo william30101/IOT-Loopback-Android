@@ -1,19 +1,18 @@
 package iotdevice.com.iotDevice.chart
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import android.content.res.Resources
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.strongloop.android.loopback.callbacks.ListCallback
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.common.ChartUtils.Companion.calHourAndMinutes
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import iotdevice.com.iotDevice.repository.DeviceStatusRepository
 import iotdevice.com.iot_device.R
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import java.util.*
 
-class ChartViewModel : ViewModel(), AnkoLogger {
+class ChartViewModel : ViewModel() {
 
     val errorGetChart: MutableLiveData<Any> = MutableLiveData()
 
@@ -246,7 +245,7 @@ class ChartViewModel : ViewModel(), AnkoLogger {
             }
 
             override fun onError(t: Throwable?) {
-                info("error : $t")
+                Log.i(tag, "error : $t")
                 headerItemLiveData.value = ChartHeaderItem(
                         calHourAndMinutes(0),
                         calHourAndMinutes(0),
@@ -255,5 +254,9 @@ class ChartViewModel : ViewModel(), AnkoLogger {
                 errorGetChart.value = t
             }
         })
+    }
+
+    companion object {
+        const val tag = "ChartViewModel"
     }
 }

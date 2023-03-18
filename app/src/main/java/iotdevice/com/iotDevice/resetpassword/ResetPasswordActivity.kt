@@ -1,36 +1,42 @@
 package iotdevice.com.iotDevice.resetpassword
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+
 import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.activity_reset_password.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.toast
+import iotdevice.com.iot_device.databinding.ActivityResetPasswordBinding
+
+
 import java.util.*
 import kotlin.concurrent.schedule
 
-class ResetPasswordActivity: AppCompatActivity(), AnkoLogger {
+class ResetPasswordActivity: AppCompatActivity() {
 
     private lateinit var resetPasswordViewModel: ResetPasswordViewModel
+
+    lateinit var binding: ActivityResetPasswordBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_reset_password)
-        resetPasswordViewModel = ViewModelProviders.of(this).get(ResetPasswordViewModel::class.java)
+        binding = ActivityResetPasswordBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
+
+        resetPasswordViewModel = ViewModelProvider(this)[ResetPasswordViewModel::class.java]
 
 
-        reset_button.setOnClickListener({ _ ->
-            resetPasswordViewModel.resetPassword(reset_email.text.toString())
+        binding.resetButton.setOnClickListener({ _ ->
+            resetPasswordViewModel.resetPassword(binding.resetEmail.text.toString())
         })
 
-        resetPasswordViewModel.sendResetSuccess.observe(this, Observer<Boolean> {
+        resetPasswordViewModel.sendResetSuccess.observe(this, androidx.lifecycle.Observer {
             if (it == true) {
-
-                toast(getString(R.string.reset_word))
+                Toast.makeText(applicationContext, getString(R.string.reset_word), Toast.LENGTH_SHORT).show()
 
                 Timer().schedule(500) {
                     finish()
@@ -38,7 +44,7 @@ class ResetPasswordActivity: AppCompatActivity(), AnkoLogger {
             }
         })
 
-        resetPasswordViewModel.sendResetFail.observe(this, Observer<Boolean> {
+        resetPasswordViewModel.sendResetFail.observe(this, androidx.lifecycle.Observer {
             if (it == true) {
                 DialogUtils.createAlertDialog( this, getString(R.string.reset_title))
             }

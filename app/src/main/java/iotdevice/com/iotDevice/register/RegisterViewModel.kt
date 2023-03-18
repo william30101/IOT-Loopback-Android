@@ -1,13 +1,14 @@
 package iotdevice.com.iotDevice.register
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
-import android.os.Bundle
-import iotdevice.com.iotDevice.member.TokenManager
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 
-class RegisterViewModel: ViewModel(), AnkoLogger,  TokenManager.RegisterListener {
+import android.os.Bundle
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import iotdevice.com.iotDevice.member.TokenManager
+
+
+class RegisterViewModel: ViewModel(),  TokenManager.RegisterListener {
 
     val registerSuccess: MutableLiveData<Any> = MutableLiveData()
     val registerFail: MutableLiveData<Throwable> = MutableLiveData()
@@ -19,12 +20,16 @@ class RegisterViewModel: ViewModel(), AnkoLogger,  TokenManager.RegisterListener
     }
 
     override fun onRegisterComplete(result: Any?) {
-        info("register success : $result")
+        Log.i(tag, "register success : $result")
         registerSuccess.value = result
     }
 
     override fun onRegisterError(err: Throwable) {
-        info("register fail : $err")
+        Log.i(tag, "register fail : $err")
         registerFail.value = err
+    }
+
+    companion object {
+        const val tag = "RegisterViewModel"
     }
 }

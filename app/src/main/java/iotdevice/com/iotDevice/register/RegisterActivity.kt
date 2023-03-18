@@ -1,8 +1,9 @@
 package iotdevice.com.iotDevice.register
 
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+
 import iotdevice.com.iotDevice.common.BaseActivity
 import iotdevice.com.iot_device.R
 

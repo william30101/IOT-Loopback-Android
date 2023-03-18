@@ -3,8 +3,9 @@ package iotdevice.com.iotDevice.common
 import android.content.Context
 import android.content.res.Resources
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.chart.ChartListItem
 import iotdevice.com.iotDevice.model.DeviceStatusModel

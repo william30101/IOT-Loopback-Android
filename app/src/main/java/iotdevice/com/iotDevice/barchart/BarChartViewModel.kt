@@ -1,7 +1,8 @@
 package iotdevice.com.iotDevice.barchart
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.github.mikephil.charting.data.BarEntry
 import com.strongloop.android.loopback.RestAdapter
 import com.strongloop.android.loopback.callbacks.ListCallback
@@ -14,11 +15,9 @@ import iotdevice.com.iotDevice.common.ChartUtils.Companion.resource
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import iotdevice.com.iotDevice.repository.DeviceStatusRepository
 import iotdevice.com.iot_device.R
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import java.util.*
 
-class BarChartViewModel: ViewModel(), AnkoLogger {
+class BarChartViewModel: ViewModel() {
 
     private val adapter: RestAdapter by lazy { App.sInstance.loopBackAdapter }
     private val deviceStatusRepository: DeviceStatusRepository by lazy { adapter.createRepository(DeviceStatusRepository::class.java) }
@@ -105,7 +104,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
             }
 
             override fun onError(t: Throwable?) {
-                info("error : $t")
+                Log.e(tag, "error : $t")
 
                 val deviceStatusList = mutableMapOf<Int, Float>()
 
@@ -198,7 +197,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
             }
 
             override fun onError(t: Throwable?) {
-                info("error : $t")
+                Log.i(tag, "error : $t")
 
                 val dayTotalList: MutableMap<Int, Float> = mutableMapOf()
                 initCurrentMonthDays(dayTotalList)
@@ -258,7 +257,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
             }
 
             override fun onError(t: Throwable?) {
-                info("error : $t")
+                Log.i(tag, "error : $t")
 
                 val dayTotalList: MutableMap<Int, Float> = mutableMapOf()
 
@@ -349,7 +348,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
             }
 
             override fun onError(t: Throwable?) {
-                info("error : $t")
+                Log.i(tag, "error : $t")
 
                 val dayTotalList: MutableMap<Int, Float> = mutableMapOf()
 
@@ -393,6 +392,10 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
         for (i in 1..days) {
             monthMap[i] = 0f
         }
+    }
+
+    companion object {
+        const val tag = "BarChartViewModel"
     }
 }
 

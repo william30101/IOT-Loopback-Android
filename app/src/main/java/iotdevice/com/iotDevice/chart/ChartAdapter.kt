@@ -1,19 +1,21 @@
 package iotdevice.com.iotDevice.chart
 
-import android.arch.lifecycle.LifecycleOwner
+
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
 import iotdevice.com.iotDevice.common.RecycleViewListener
 import iotdevice.com.iot_device.R
 import iotdevice.com.iot_device.databinding.LayoutChartHeaderBinding
 import iotdevice.com.iot_device.databinding.LayoutImageChartListBinding
-import org.jetbrains.anko.AnkoLogger
 
-class ChartAdapter(val context: Context, val chartViewModel: ChartViewModel, val charItemList: List<ChartListItem>, val deviceName: String): RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.OnClickListener, AnkoLogger {
+
+class ChartAdapter(val context: Context, val chartViewModel: ChartViewModel, val charItemList: List<ChartListItem>, val deviceName: String): RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.OnClickListener {
 
     var listener: RecycleViewListener? = null
     val listOutCircleList = arrayListOf(R.drawable.ic_list_out_circle_0,
@@ -41,7 +43,7 @@ class ChartAdapter(val context: Context, val chartViewModel: ChartViewModel, val
         this.listener = listener
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         when(holder) {
             is HeaderViewHolder -> {

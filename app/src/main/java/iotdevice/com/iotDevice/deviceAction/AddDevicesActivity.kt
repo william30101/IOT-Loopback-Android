@@ -1,7 +1,9 @@
 package iotdevice.com.iotDevice.deviceAction
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+
 import com.strongloop.android.loopback.callbacks.ListCallback
 import com.strongloop.android.loopback.callbacks.ObjectCallback
 import iotdevice.com.iotDevice.App
@@ -13,18 +15,18 @@ import iotdevice.com.iotDevice.repository.CustomerDeviceRepository
 import iotdevice.com.iotDevice.repository.CustomerRepository
 import iotdevice.com.iotDevice.repository.DeviceRepository
 import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.activity_add_device.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.toast
+import iotdevice.com.iot_device.databinding.ActivityAddDeviceBinding
 import java.util.*
 import kotlin.concurrent.schedule
 
 
-class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
+class AddDevicesActivity : AppCompatActivity() {
 
     private lateinit var deviceRepository: DeviceRepository
     lateinit var customerDeviceRepository: CustomerDeviceRepository
     lateinit var customerRepository: CustomerRepository
+
+    private lateinit var binding: ActivityAddDeviceBinding
 
     val adapter = App.sInstance.loopBackAdapter.apply {
         deviceRepository = this.createRepository(DeviceRepository::class.java)
@@ -42,24 +44,26 @@ class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_add_device)
+        binding = ActivityAddDeviceBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         title = getString(R.string.add_device_title)
 
         val itemList = intent.getParcelableArrayListExtra<ImageModel>("itemList")
 
-        addDeviceBtn.setOnClickListener({ _ ->
+        binding.addDeviceBtn.setOnClickListener({ _ ->
 
-            val deviceName = deviceDisplayNameEditText.text.toString()
-            val deviceCode = deviceCodeEditText.text.toString()
-            val devicePassword = devicePasswordEditText.text.toString()
+            val deviceName = binding.deviceDisplayNameEditText.text.toString()
+            val deviceCode = binding.deviceCodeEditText.text.toString()
+            val devicePassword = binding.devicePasswordEditText.text.toString()
 
             if (deviceName.isNotEmpty() && deviceCode.isNotEmpty() && devicePassword.isNotEmpty()) {
                 deviceRepository.filter(deviceCode, devicePassword,
                         object : ListCallback<DeviceModel> {
                             override fun onSuccess(objects: MutableList<DeviceModel>?) {
 
-                                if (itemList.map { it.deviceId == objects?.get(0)?.getId() }.any{ it }) {
+                                if (itemList?.map { it.deviceId == objects?.get(0)?.getId() }!!.any{ it }) {
                                     DialogUtils.createAlertDialog(this@AddDevicesActivity, getString(R.string.add_device_title), getString(R.string.add_device_duplicate))
                                     return
                                 }
@@ -71,7 +75,7 @@ class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
                                         object : ObjectCallback<CustomerDeviceModel> {
 
                                             override fun onSuccess(res: CustomerDeviceModel?) {
-                                                toast(getString(R.string.add_device_success))
+                                                Toast.makeText(applicationContext, getString(R.string.add_device_success), Toast.LENGTH_SHORT).show()
                                                 Timer().schedule(2000) {
                                                     finish()
                                                 }

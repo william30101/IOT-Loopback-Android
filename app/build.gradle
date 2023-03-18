@@ -2,6 +2,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
 }
 
 
@@ -62,11 +63,12 @@ ext {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //    implementation project(':loopback-sdk-android')
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.guava:guava:18.0'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 //    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     //    implementation 'com.strongloop:loopback-sdk-android:1.5.2'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'

@@ -8,7 +8,7 @@
             type="iotdevice.com.iotDevice.chart.ChartViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/border_quadrangle_chart">
@@ -95,5 +95,5 @@
             app:layout_constraintTop_toBottomOf="@+id/operation_time_value"
             tool:text="2000 pcs/min" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

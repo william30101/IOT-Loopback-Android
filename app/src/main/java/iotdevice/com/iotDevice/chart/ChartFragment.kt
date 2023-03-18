@@ -1,64 +1,69 @@
 package iotdevice.com.iotDevice.chart
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
+import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import iotdevice.com.iotDevice.barchart.BarChartActivity
 import iotdevice.com.iotDevice.common.ChartUtils
 import iotdevice.com.iotDevice.common.ChartUtils.Companion.charItemList
 import iotdevice.com.iotDevice.common.RecycleViewListener
 import iotdevice.com.iotDevice.model.relateview.ImageModel
 import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.fragment_chart.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
+import iotdevice.com.iot_device.databinding.FragmentChartBinding
 
-
-class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
+class ChartFragment: Fragment(), RecycleViewListener {
 
 
     private lateinit  var chartAdapter: ChartAdapter
     private var deviceId: Long = -1
     lateinit var chartViewModel: ChartViewModel
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater!!.inflate(R.layout.fragment_chart, container, false)
+    private var _binding: FragmentChartBinding? = null
+    // This property is only valid between onCreateView and
+// onDestroyView.
+    private val binding get() = _binding!!
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
+        _binding = FragmentChartBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        chartViewModel = ViewModelProviders.of(this).get(ChartViewModel::class.java)
-
-
+        chartViewModel = ViewModelProvider(this)[ChartViewModel::class.java]
 
         val arguments = arguments
-        val selectedDevice = arguments.getParcelable<ImageModel>("device")
-        deviceId =  selectedDevice.deviceId.toLong()
-        info("deviceId : $deviceId")
+        val selectedDevice = arguments?.getParcelable<ImageModel>("device")
+        deviceId =  selectedDevice?.deviceId!!.toLong()
+        Log.i(tag, "deviceId : $deviceId")
 
-        val titleStr = "${selectedDevice.displayName} " + getString(R.string.chart_title)
-        activity.title = titleStr
+        val titleStr = "${selectedDevice!!.displayName} " + getString(R.string.chart_title)
+        activity?.title = titleStr
 
 
 
-        ChartUtils.updateChartListItem(activity, deviceId)
-        chartAdapter = ChartAdapter(context, chartViewModel , charItemList, selectedDevice.displayName)
+        ChartUtils.updateChartListItem(requireActivity(), deviceId)
+        chartAdapter = ChartAdapter(requireContext(), chartViewModel , charItemList, selectedDevice!!.displayName)
         chartAdapter.setChartListener(this)
 
 
 
         val spacingInPixels = resources.getDimensionPixelSize(R.dimen.recycle_dimen)
-        chartRecyclerView.addItemDecoration(GridLayoutDivider(2, spacingInPixels, true, 1))
+        binding.chartRecyclerView.addItemDecoration(GridLayoutDivider(2, spacingInPixels, true, 1))
 
         val manager = GridLayoutManager(context, 2)
 
-        chartRecyclerView.layoutManager = manager
+        binding.chartRecyclerView.layoutManager = manager
 
         manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -66,11 +71,11 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
             }
         }
 
-        chartRecyclerView.adapter = chartAdapter
+        binding.chartRecyclerView.adapter = chartAdapter
 
-        chartViewModel.errorGetChart.observe(this, Observer { errMsg ->
-            swipeRefreshLayout.isRefreshing = false
-            chartRecyclerView.adapter.notifyDataSetChanged()
+        chartViewModel.errorGetChart.observe(viewLifecycleOwner, Observer { errMsg ->
+            binding.swipeRefreshLayout.isRefreshing = false
+            (binding.chartRecyclerView.adapter as ChartAdapter).notifyDataSetChanged()
 
             // We don't display error here.
             // Fill each filed to 0
@@ -78,41 +83,41 @@ class ChartFragment: Fragment(), AnkoLogger, RecycleViewListener {
 
         })
 
-        chartViewModel.headerItemLiveData.observe(this, Observer {
-            swipeRefreshLayout.isRefreshing = false
-            chartRecyclerView.adapter.notifyDataSetChanged()
+        chartViewModel.headerItemLiveData.observe(viewLifecycleOwner, Observer {
+            binding.swipeRefreshLayout.isRefreshing = false
+            (binding.chartRecyclerView.adapter as ChartAdapter).notifyDataSetChanged()
 
         })
 
-        chartViewModel.totalOfDay.observe(this, Observer {
+        chartViewModel.totalOfDay.observe(viewLifecycleOwner, Observer {
             it?.run {
                 ChartUtils.charItemList[0].displayNumber = this
-                chartRecyclerView.adapter.notifyDataSetChanged()
+                (binding.chartRecyclerView.adapter as ChartAdapter).notifyDataSetChanged()
             }
         })
 
-        chartViewModel.totalOfMonth.observe(this, Observer {
+        chartViewModel.totalOfMonth.observe(viewLifecycleOwner, Observer {
             it?.run {
                 ChartUtils.charItemList[1].displayNumber = this
-                chartRecyclerView.adapter.notifyDataSetChanged()
+                (binding.chartRecyclerView.adapter as ChartAdapter).notifyDataSetChanged()
             }
         })
 
-        chartViewModel.totalOfOperationTime.observe(this, Observer {
+        chartViewModel.totalOfOperationTime.observe(viewLifecycleOwner, Observer {
             it?.run {
                 ChartUtils.charItemList[2].displayNumber = this
-                chartRecyclerView.adapter.notifyDataSetChanged()
+                (binding.chartRecyclerView.adapter as ChartAdapter).notifyDataSetChanged()
             }
         })
 
-        chartViewModel.totalOfPCS.observe(this, Observer {
+        chartViewModel.totalOfPCS.observe(viewLifecycleOwner, Observer {
             it?.run {
                 ChartUtils.charItemList[3].displayNumber = this
-                chartRecyclerView.adapter.notifyDataSetChanged()
+                (binding.chartRecyclerView.adapter as ChartAdapter).notifyDataSetChanged()
             }
         })
 
-        swipeRefreshLayout.setOnRefreshListener({
+        binding.swipeRefreshLayout.setOnRefreshListener({
             onRefresh()
         })
     }

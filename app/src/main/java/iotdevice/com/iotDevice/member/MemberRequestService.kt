@@ -1,14 +1,14 @@
 package iotdevice.com.iotDevice.member
 
+import android.util.Log
 import com.strongloop.android.loopback.AccessToken
 import com.strongloop.android.remoting.adapters.Adapter
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.model.CustomerModel
 import iotdevice.com.iotDevice.repository.CustomerRepository
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 
-class MemberRequestService : MemberService, AnkoLogger {
+
+class MemberRequestService : MemberService {
 
     override suspend fun register(email: String, password: String, username: String,
                                   registerListener: TokenManager.RegisterListener?) {
@@ -20,12 +20,12 @@ class MemberRequestService : MemberService, AnkoLogger {
                 mapOf("email" to email, "password" to password, "username" to username),
                 object : Adapter.JsonCallback() {
                     override fun onSuccess(response: Any?) {
-                        info("success : " + response)
+                        Log.i(tag, "success : " + response)
                         registerListener?.onRegisterComplete(response)
                     }
 
                     override fun onError(t: Throwable) {
-                        info("error : " + t)
+                        Log.i(tag, "error : " + t)
                         registerListener?.onRegisterError(t)
                     }
 
@@ -45,7 +45,7 @@ class MemberRequestService : MemberService, AnkoLogger {
         customerRepo.loginUser(email, password,
                 object : CustomerRepository.LoginCallback {
                     override fun onSuccess(token: AccessToken?, currentUser: CustomerModel?) {
-                        info("currentUser :" + currentUser?.username + " AccessToken" + token)
+                        Log.i(tag, "currentUser :" + currentUser?.username + " AccessToken" + token)
 
                         currentUser?.id = token?.id.toString()
                         loginListener.onLoginComplete(currentUser!!)
@@ -53,9 +53,13 @@ class MemberRequestService : MemberService, AnkoLogger {
 
                     override fun onError(trow: Throwable) {
                         // login failed
-                        info("loginfail $trow")
+                        Log.i(tag, "loginfail $trow")
                         loginListener.onLoginError(trow)
                     }
                 })
+    }
+
+    companion object {
+        const val tag= "MemberRequestService"
     }
 }
