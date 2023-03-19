@@ -137,7 +137,7 @@ class HomeFragment : Fragment(), TokenManager.LoginListener, RecyclerItemTouchHe
         }
 
         val searchMenuItem = menu.findItem(R.id.my_search)
-        searchView = searchMenuItem?.actionView as SearchView
+        searchView = searchMenuItem?.actionView as? SearchView
 
         searchView?.apply {
             // Get the SearchView and set the searchable configuration

@@ -12,6 +12,7 @@ import iotdevice.com.iotDevice.login.LoginActivity
 import iotdevice.com.iotDevice.member.auth.AuthUtil
 import iotdevice.com.iotDevice.model.CustomerModel
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import java.sql.Timestamp
 
@@ -92,7 +93,7 @@ object TokenManager: AuthenticationSessionFacade {
 
         val memberRequestService = MemberRequestService()
 
-        GlobalScope.launch {
+        MainScope().launch {
             memberRequestService.signIn(userName, password, loginListener)
         }
     }
@@ -101,7 +102,7 @@ object TokenManager: AuthenticationSessionFacade {
 
         val memberRequestService = MemberRequestService()
 
-        GlobalScope.launch {
+        MainScope().launch {
             memberRequestService.register(email, password, userName, resiterListener)
         }
     }

@@ -20,10 +20,10 @@ repositories {
 
 android {
     useLibrary 'org.apache.http.legacy'
-    compileSdkVersion 22
+    compileSdkVersion 30
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 22
+        targetSdkVersion 30
     }
     compileOptions {
         encoding 'UTF-8'
