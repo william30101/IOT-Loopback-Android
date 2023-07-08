@@ -36,82 +36,88 @@ class ChartViewModel : ViewModel() {
                 // Fix a bug, device status will be updated during 0759 - 0800
                 // Server will create another device status record at that time,
                 // We need to handle the situation
-                var productivity0Total = 0L
-                var productivity1Total = 0L
-                var productivity2Total = 0L
-                var productivity3Total = 0L
-                var productivity4Total = 0L
-                var productivity5Total = 0L
-                var productivity6Total = 0L
-                var productivity7Total = 0L
-                var productivity8Total = 0L
-                var productivity9Total = 0L
-                var productivity10Total = 0L
-                var productivity11Total = 0L
-                var productivity12Total = 0L
-                var productivity13Total = 0L
-                var productivity14Total = 0L
-                var productivity15Total = 0L
-                var productivity16Total = 0L
-                var productivity17Total = 0L
-                var productivity18Total = 0L
-                var productivity19Total = 0L
-                var productivity20Total = 0L
-                var productivity21Total = 0L
-                var productivity22Total = 0L
-                var productivity23Total = 0L
+//                var productivity0Total = 0L
+//                var productivity1Total = 0L
+//                var productivity2Total = 0L
+//                var productivity3Total = 0L
+//                var productivity4Total = 0L
+//                var productivity5Total = 0L
+//                var productivity6Total = 0L
+//                var productivity7Total = 0L
+//                var productivity8Total = 0L
+//                var productivity9Total = 0L
+//                var productivity10Total = 0L
+//                var productivity11Total = 0L
+//                var productivity12Total = 0L
+//                var productivity13Total = 0L
+//                var productivity14Total = 0L
+//                var productivity15Total = 0L
+//                var productivity16Total = 0L
+//                var productivity17Total = 0L
+//                var productivity18Total = 0L
+//                var productivity19Total = 0L
+//                var productivity20Total = 0L
+//                var productivity21Total = 0L
+//                var productivity22Total = 0L
+//                var productivity23Total = 0L
 
-                objects?.forEach {
-                    productivity0Total += it.productivity0
-                    productivity1Total += it.productivity1
-                    productivity2Total += it.productivity2
-                    productivity3Total += it.productivity3
-                    productivity4Total += it.productivity4
-                    productivity5Total += it.productivity5
-                    productivity6Total += it.productivity6
-                    productivity7Total += it.productivity7
-                    productivity8Total += it.productivity8
-                    productivity9Total += it.productivity9
-                    productivity10Total += it.productivity10
-                    productivity11Total += it.productivity11
-                    productivity12Total += it.productivity12
-                    productivity13Total += it.productivity13
-                    productivity14Total += it.productivity14
-                    productivity15Total += it.productivity15
-                    productivity16Total += it.productivity16
-                    productivity17Total += it.productivity17
-                    productivity18Total += it.productivity18
-                    productivity19Total += it.productivity19
-                    productivity20Total += it.productivity20
-                    productivity21Total += it.productivity21
-                    productivity22Total += it.productivity22
-                    productivity23Total += it.productivity23
+
+
+//                objects?.forEach {
+//                    productivity0Total += it.productivity0
+//                    productivity1Total += it.productivity1
+//                    productivity2Total += it.productivity2
+//                    productivity3Total += it.productivity3
+//                    productivity4Total += it.productivity4
+//                    productivity5Total += it.productivity5
+//                    productivity6Total += it.productivity6
+//                    productivity7Total += it.productivity7
+//                    productivity8Total += it.productivity8
+//                    productivity9Total += it.productivity9
+//                    productivity10Total += it.productivity10
+//                    productivity11Total += it.productivity11
+//                    productivity12Total += it.productivity12
+//                    productivity13Total += it.productivity13
+//                    productivity14Total += it.productivity14
+//                    productivity15Total += it.productivity15
+//                    productivity16Total += it.productivity16
+//                    productivity17Total += it.productivity17
+//                    productivity18Total += it.productivity18
+//                    productivity19Total += it.productivity19
+//                    productivity20Total += it.productivity20
+//                    productivity21Total += it.productivity21
+//                    productivity22Total += it.productivity22
+//                    productivity23Total += it.productivity23
+//                }
+
+                objects?.last()?.let {
+                    totalOfDay.postValue(it.productivity0 +
+                            it.productivity1 +
+                            it.productivity2 +
+                            it.productivity3 +
+                            it.productivity4 +
+                            it.productivity5 +
+                            it.productivity6 +
+                            it.productivity7 +
+                            it.productivity8 +
+                            it.productivity9 +
+                            it.productivity10 +
+                            it.productivity11 +
+                            it.productivity12 +
+                            it.productivity13 +
+                            it.productivity14 +
+                            it.productivity15 +
+                            it.productivity16 +
+                            it.productivity17 +
+                            it.productivity18 +
+                            it.productivity19 +
+                            it.productivity20 +
+                            it.productivity21 +
+                            it.productivity22 +
+                            it.productivity23)
                 }
 
-                totalOfDay.postValue(productivity0Total +
-                        productivity1Total +
-                        productivity2Total +
-                        productivity3Total +
-                        productivity4Total +
-                        productivity5Total +
-                        productivity6Total +
-                        productivity7Total +
-                        productivity8Total +
-                        productivity9Total +
-                        productivity10Total +
-                        productivity11Total +
-                        productivity12Total +
-                        productivity13Total +
-                        productivity14Total +
-                        productivity15Total +
-                        productivity16Total +
-                        productivity17Total +
-                        productivity18Total +
-                        productivity19Total +
-                        productivity20Total +
-                        productivity21Total +
-                        productivity22Total +
-                        productivity23Total)
+
             }
 
             override fun onError(t: Throwable?) {
@@ -157,7 +163,12 @@ class ChartViewModel : ViewModel() {
                     val calendar = Calendar.getInstance()
                     calendar.timeInMillis = it.timeStamp!!.toLong()
 
-                    totalMonth += dayTotal
+                    // Server will save record within one day which caused by using UTC+0, different timezone between local and server
+                    dayTotalList[calendar.get(Calendar.DAY_OF_MONTH)] =  dayTotal.toFloat()
+                }
+
+                dayTotalList.forEach {
+                    totalMonth += it.value.toLong()
                 }
 
                 totalOfMonth.postValue(totalMonth)

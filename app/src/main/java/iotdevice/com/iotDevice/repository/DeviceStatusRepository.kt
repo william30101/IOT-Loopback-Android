@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap
 import com.strongloop.android.loopback.ModelRepository
 import com.strongloop.android.loopback.callbacks.JsonArrayParser
 import com.strongloop.android.loopback.callbacks.ListCallback
+import iotdevice.com.iotDevice.common.ChartUtils
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import org.json.JSONObject
 import java.util.*
@@ -21,22 +22,18 @@ class DeviceStatusRepository : ModelRepository<DeviceStatusModel>("DeviceStatus"
                 JsonArrayParser(this, callback))
     }
 
+    fun isTheSameDay(timeStamp: String): Boolean {
+        val todayTimeStamp = ChartUtils.getTodayTimeStamp()
+        val tomorrowTimeStamp = ChartUtils.getTomorrowTimeStamp()
+
+        return timeStamp.toLong() > todayTimeStamp.toLong() && timeStamp.toLong() < tomorrowTimeStamp.toLong()
+    }
+
     fun findTodayStatus(id: Long?, callback: ListCallback<DeviceStatusModel>) {
         // {"where" : { "timeStamp" : {"between" : [1527984000,1528070399 ]}}}
 
-
-
-        val gcToday = GregorianCalendar()
-        resetTimeOfHourMinuteSecond(gcToday)
-
-        val gcTomorrow = GregorianCalendar()
-        gcTomorrow.add(Calendar.DATE, 1)
-        resetTimeOfHourMinuteSecond(gcTomorrow)
-
-
-        val todayTimeStamp = gcToday.timeInMillis.toString()
-        val tomorrowTimeStamp = gcTomorrow.timeInMillis.toString()
-
+        val todayTimeStamp = ChartUtils.getTodayTimeStamp()
+        val tomorrowTimeStamp = ChartUtils.getTomorrowTimeStamp()
 
 //        val findJson = JSONObject("""{"where":{"deviceId" : $id }, "order" : "id DESC", "limit" : "1"}""")
 
@@ -47,14 +44,6 @@ class DeviceStatusRepository : ModelRepository<DeviceStatusModel>("DeviceStatus"
                 JsonArrayParser<DeviceStatusModel>(this, callback))
 
     }
-
-
-    private fun resetTimeOfHourMinuteSecond(gregorianCal: GregorianCalendar) {
-        gregorianCal.set(GregorianCalendar.HOUR_OF_DAY, 0)
-        gregorianCal.set(GregorianCalendar.MINUTE, 0)
-        gregorianCal.set(GregorianCalendar.SECOND, 0)
-    }
-
 
     fun findMonthStatus(id: Long?, callback: ListCallback<DeviceStatusModel>) {
         // {"where" : { "timeStamp" : {"between" : [1527984000,1528070399 ]}}}

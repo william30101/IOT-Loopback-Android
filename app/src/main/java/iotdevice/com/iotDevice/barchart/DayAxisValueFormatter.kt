@@ -16,10 +16,7 @@ class DayAxisValueFormatter(private val chart: BarLineChartBase<*>, enableDecima
 ){
 
     override fun getFormattedValue(
-        value: Float,
-        entry: Entry?,
-        dataSetIndex: Int,
-        viewPortHandler: ViewPortHandler?
+        value: Float
     ): String {
 
         val days = value.toInt()
@@ -35,7 +32,7 @@ class DayAxisValueFormatter(private val chart: BarLineChartBase<*>, enableDecima
         } else {
 
             val dayOfMonth = determineDayOfMonth(days, month + 12 * (year - 2016))
-            dayOfMonth.toString() + " " + monthName
+            "$dayOfMonth $monthName"
         }
     }
 

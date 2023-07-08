@@ -9,13 +9,12 @@ class HourAxisValueFormatter(private val chart: BarLineChartBase<*>, enableDecim
     enableDecimalPoint
 ) {
 
-    override fun getFormattedValue(value: Float, axis: AxisBase?): String {
-
+    override fun getFormattedValue(value: Float): String {
         val hourNumber = value.toInt()
 
         // Only first item display the unit name
         return if (value == 0f) {
-            hourNumber.toString() + " Hour"
+            "$hourNumber Hour"
         } else {
             hourNumber.toString()
         }

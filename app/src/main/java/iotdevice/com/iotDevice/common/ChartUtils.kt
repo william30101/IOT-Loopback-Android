@@ -10,6 +10,8 @@ import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.chart.ChartListItem
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import iotdevice.com.iot_device.R
+import java.util.Calendar
+import java.util.GregorianCalendar
 
 class ChartUtils {
     companion object {
@@ -99,6 +101,28 @@ class ChartUtils {
             return hour + resource.getString(R.string.hour_unit) +
                     minutes + resource.getString(R.string.minute_unit)
         }
+
+        fun getTodayTimeStamp(): String {
+            val gcToday = GregorianCalendar()
+            resetTimeOfHourMinuteSecond(gcToday)
+
+            return gcToday.timeInMillis.toString()
+        }
+
+        fun getTomorrowTimeStamp(): String {
+            val gcTomorrow = GregorianCalendar()
+            gcTomorrow.add(Calendar.DATE, 1)
+            resetTimeOfHourMinuteSecond(gcTomorrow)
+
+            return  gcTomorrow.timeInMillis.toString()
+        }
+
+        private fun resetTimeOfHourMinuteSecond(gregorianCal: GregorianCalendar) {
+            gregorianCal.set(GregorianCalendar.HOUR_OF_DAY, 0)
+            gregorianCal.set(GregorianCalendar.MINUTE, 0)
+            gregorianCal.set(GregorianCalendar.SECOND, 0)
+        }
+
     }
 
     data class AxisName(val chartName: String, val xAxisType: AxisXType, val yAxisUnit: String)
