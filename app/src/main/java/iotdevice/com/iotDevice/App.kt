@@ -30,7 +30,7 @@ class App : Application() {
                             applicationContext, "http://54.65.190.127:1883/api")
                 } else {
                     RestAdapter(
-                        applicationContext, "http://192.168.1.126:3000/api")
+                        applicationContext, "http://54.65.190.127:1883/api")
                 }
             }
             return adapter!!

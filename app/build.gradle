@@ -10,13 +10,13 @@ android {
     signingConfigs {
         debugincloud {
             keyAlias 'debugcloud'
-            storeFile file('/Users/williamwu/Programming/IOTDevice/cloud')
+            storeFile file('/home/william/AndroidStudioProjects/IOT-Loopback-Android/IOTDevice/cloud')
             keyPassword '1qaz@WSX'
             storePassword '1qaz@WSX'
         }
         clouddebug {
             keyAlias 'cloud'
-            storeFile file('/Users/williamwu/Programming/IOTDevice/clouddebug.keystore')
+            storeFile file('/home/william/AndroidStudioProjects/IOT-Loopback-Android/clouddebug.keystore')
             keyPassword '1qaz@WSX'
             storePassword '1qaz@WSX'
         }
