@@ -1,8 +1,13 @@
 package iotdevice.com.iotDevice
 
 import android.app.Application
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent.ACTION_LOCALE_CHANGED
+import android.content.IntentFilter
+import androidx.core.content.ContextCompat
 import com.strongloop.android.loopback.RestAdapter
+import iotdevice.com.iotDevice.common.LanguageBroadcastReceiver
 import iotdevice.com.iotDevice.member.TokenManager
 import iotdevice.com.iot_device.BuildConfig
 import kotlin.properties.Delegates
@@ -43,6 +48,19 @@ class App : Application() {
         super.onCreate()
         sInstance = this
         TokenManager.initialize(this)
+
+        val br: BroadcastReceiver = LanguageBroadcastReceiver()
+        val filter = IntentFilter(ACTION_LOCALE_CHANGED)
+
+        val listenToBroadcastsFromOtherApps = false
+        val receiverFlags = if (listenToBroadcastsFromOtherApps) {
+            ContextCompat.RECEIVER_EXPORTED
+        } else {
+            ContextCompat.RECEIVER_NOT_EXPORTED
+        }
+
+        ContextCompat.registerReceiver(context, br, filter, receiverFlags)
+
     }
 
     companion object {
