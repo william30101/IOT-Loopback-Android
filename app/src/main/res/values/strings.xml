@@ -139,6 +139,8 @@
     <string name="log_out">LogOut</string>
     <string name="version_name">Version %1$s</string>
     <string name="change_password">Change Password</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Change Password Page -->
     <string name="change_password_title">Change Password</string>
@@ -148,6 +150,8 @@
     <string name="new_password_confirm_hint">Again</string>
     <string name="change_success">Change Success</string>
     <string name="change_fail">Current password not match</string>
+    <string name="confirm_delete_account">Aue your sure you want to delete?</string>
+
 
 
 </resources>

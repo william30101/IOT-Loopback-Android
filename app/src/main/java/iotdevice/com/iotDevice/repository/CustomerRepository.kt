@@ -1,7 +1,9 @@
 package iotdevice.com.iotDevice.repository;
 
+import android.util.Log
 import com.strongloop.android.loopback.UserRepository
 import com.strongloop.android.remoting.adapters.Adapter
+import iotdevice.com.iotDevice.member.MemberRequestService
 import iotdevice.com.iotDevice.model.CustomerModel
 
 
@@ -23,5 +25,16 @@ class CustomerRepository: UserRepository<CustomerModel>("Customers", "Customers"
         invokeStaticMethod("change-password",
                 mapOf("oldPassword" to oldPassword, "newPassword" to newPassword),
                 callback)
+    }
+
+    fun deleteAccount(userId: String, callback: Adapter.JsonCallback) {
+
+        invokeStaticMethod("prototype.remove",
+            mapOf("id" to userId),
+            callback)
+    }
+
+    companion object {
+        const val tag= "CustomerRepository"
     }
 }
