@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentManager
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.chart.ChartListItem
 import iotdevice.com.iotDevice.model.DeviceStatusModel
-import iotdevice.com.iot_device.R
+import iotdevice.com.iotDevice.R
 
 class ChartUtils {
     companion object {

@@ -10,8 +10,11 @@ import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.login.LoginActivity
 import iotdevice.com.iotDevice.member.auth.AuthUtil
 import iotdevice.com.iotDevice.model.CustomerModel
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import java.sql.Timestamp
@@ -92,7 +95,8 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
 
         val memberRequestService = MemberRequestService()
 
-        launch(UI) {
+        val scope = CoroutineScope(Dispatchers.IO)
+        scope.launch {
             memberRequestService.signIn(userName, password, loginListener)
         }
     }
@@ -101,7 +105,8 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
 
         val memberRequestService = MemberRequestService()
 
-        launch(UI) {
+        val scope = CoroutineScope(Dispatchers.IO)
+        scope.launch {
             memberRequestService.register(email, password, userName, resiterListener)
         }
     }

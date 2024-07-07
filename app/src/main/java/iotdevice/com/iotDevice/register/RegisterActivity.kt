@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import iotdevice.com.iotDevice.common.BaseActivity
-import iotdevice.com.iot_device.R
+import iotdevice.com.iotDevice.R
 
 class RegisterActivity: BaseActivity() {
 
@@ -33,6 +33,7 @@ class RegisterActivity: BaseActivity() {
         transaction.commit()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (manager.backStackEntryCount ==1) {
             finish()

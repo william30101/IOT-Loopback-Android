@@ -1,13 +1,15 @@
 package iotdevice.com.iotDevice.member.info
 
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import com.strongloop.android.remoting.adapters.Adapter
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.common.BaseActivity
 import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iotDevice.repository.CustomerRepository
-import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.activity_change_password.*
+import iotdevice.com.iotDevice.R
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
@@ -29,12 +31,11 @@ class ChangePasswordActivity: BaseActivity(), AnkoLogger {
 
         title = getString(R.string.change_password_title)
 
+        findViewById<Button>(R.id.changePasswordBtn).setOnClickListener {
+            if (findViewById<EditText>(R.id.oldPassword).text.isNotEmpty() &&
+                (findViewById<EditText>(R.id.newPassword).text.toString() == findViewById<EditText>(R.id.newPasswordConfirm).text.toString())) {
 
-        changePasswordBtn.setOnClickListener({
-            if (oldPassword.text.isNotEmpty() &&
-                    (newPassword.text.toString() == newPasswordConfirm.text.toString())) {
-
-                customerRepository.changePassword(oldPassword.text.toString(), newPassword.text.toString(), object: Adapter.JsonCallback(){
+                customerRepository.changePassword(findViewById<EditText>(R.id.oldPassword).text.toString(), findViewById<EditText>(R.id.newPassword).text.toString(), object: Adapter.JsonCallback(){
 
                     override fun onSuccess(response: Any?) {
                         info("change success")
@@ -52,6 +53,6 @@ class ChangePasswordActivity: BaseActivity(), AnkoLogger {
             } else {
                 DialogUtils.createAlertDialog( this, getString(R.string.change_password_title), getString(R.string.password_not_match) )
             }
-        })
+        }
     }
 }

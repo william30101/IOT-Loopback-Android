@@ -3,7 +3,7 @@ package iotdevice.com.iotDevice.splash
 import android.os.Bundle
 import iotdevice.com.iotDevice.common.BaseActivity
 import iotdevice.com.iotDevice.login.LoginActivity
-import iotdevice.com.iot_device.R
+import iotdevice.com.iotDevice.R
 import org.jetbrains.anko.startActivity
 import java.util.*
 import kotlin.concurrent.schedule

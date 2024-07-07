@@ -2,6 +2,8 @@ package iotdevice.com.iotDevice.deviceAction
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Button
+import android.widget.TextView
 import com.strongloop.android.loopback.callbacks.ListCallback
 import com.strongloop.android.loopback.callbacks.ObjectCallback
 import iotdevice.com.iotDevice.App
@@ -12,8 +14,7 @@ import iotdevice.com.iotDevice.model.relateview.ImageModel
 import iotdevice.com.iotDevice.repository.CustomerDeviceRepository
 import iotdevice.com.iotDevice.repository.CustomerRepository
 import iotdevice.com.iotDevice.repository.DeviceRepository
-import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.activity_add_device.*
+import iotdevice.com.iotDevice.R
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import java.util.*
@@ -48,7 +49,13 @@ class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
 
         val itemList = intent.getParcelableArrayListExtra<ImageModel>("itemList")
 
-        addDeviceBtn.setOnClickListener({ _ ->
+        val addDeviceBtn = findViewById<Button>(R.id.addDeviceBtn)
+
+        val deviceDisplayNameEditText = findViewById<TextView>(R.id.deviceDisplayNameEditText)
+        val deviceCodeEditText = findViewById<TextView>(R.id.deviceCodeEditText)
+        val devicePasswordEditText = findViewById<TextView>(R.id.devicePasswordEditText)
+
+        addDeviceBtn.setOnClickListener { _ ->
 
             val deviceName = deviceDisplayNameEditText.text.toString()
             val deviceCode = deviceCodeEditText.text.toString()
@@ -56,43 +63,60 @@ class AddDevicesActivity : AppCompatActivity(), AnkoLogger {
 
             if (deviceName.isNotEmpty() && deviceCode.isNotEmpty() && devicePassword.isNotEmpty()) {
                 deviceRepository.filter(deviceCode, devicePassword,
-                        object : ListCallback<DeviceModel> {
-                            override fun onSuccess(objects: MutableList<DeviceModel>?) {
+                    object : ListCallback<DeviceModel> {
+                        override fun onSuccess(objects: MutableList<DeviceModel>?) {
 
-                                if (itemList.map { it.deviceId == objects?.get(0)?.getId() }.any{ it }) {
-                                    DialogUtils.createAlertDialog(this@AddDevicesActivity, getString(R.string.add_device_title), getString(R.string.add_device_duplicate))
-                                    return
-                                }
-
-                                customerDeviceRepository.add(objects?.get(0)?.getId().toString(),
-                                        customerRepository.currentUserId.toString(),
-                                        deviceName,
-                                        deviceCode,
-                                        object : ObjectCallback<CustomerDeviceModel> {
-
-                                            override fun onSuccess(res: CustomerDeviceModel?) {
-                                                toast(getString(R.string.add_device_success))
-                                                Timer().schedule(2000) {
-                                                    finish()
-                                                }
-                                            }
-
-                                            override fun onError(t: Throwable?) {
-                                                DialogUtils.createAlertDialog(this@AddDevicesActivity, getString(R.string.add_device_title), getString(R.string.add_device_fail))
-
-                                            }
-                                        })
+                            if (itemList!!.map { it.deviceId == objects?.get(0)?.getId() }
+                                    .any { it }) {
+                                DialogUtils.createAlertDialog(
+                                    this@AddDevicesActivity,
+                                    getString(R.string.add_device_title),
+                                    getString(R.string.add_device_duplicate)
+                                )
+                                return
                             }
 
-                            override fun onError(t: Throwable?) {
-                                DialogUtils.createAlertDialog(this@AddDevicesActivity, getString(R.string.add_device_title), getString(R.string.add_device_fail))
-                            }
-                        })
+                            customerDeviceRepository.add(objects?.get(0)?.getId().toString(),
+                                customerRepository.currentUserId.toString(),
+                                deviceName,
+                                deviceCode,
+                                object : ObjectCallback<CustomerDeviceModel> {
+
+                                    override fun onSuccess(res: CustomerDeviceModel?) {
+                                        toast(getString(R.string.add_device_success))
+                                        Timer().schedule(2000) {
+                                            finish()
+                                        }
+                                    }
+
+                                    override fun onError(t: Throwable?) {
+                                        DialogUtils.createAlertDialog(
+                                            this@AddDevicesActivity,
+                                            getString(R.string.add_device_title),
+                                            getString(R.string.add_device_fail)
+                                        )
+
+                                    }
+                                })
+                        }
+
+                        override fun onError(t: Throwable?) {
+                            DialogUtils.createAlertDialog(
+                                this@AddDevicesActivity,
+                                getString(R.string.add_device_title),
+                                getString(R.string.add_device_fail)
+                            )
+                        }
+                    })
             } else {
-                DialogUtils.createAlertDialog(this, getString(R.string.add_device_title), getString(R.string.add_device_check_msg))
+                DialogUtils.createAlertDialog(
+                    this,
+                    getString(R.string.add_device_title),
+                    getString(R.string.add_device_check_msg)
+                )
             }
 
-        })
+        }
 
     }
 

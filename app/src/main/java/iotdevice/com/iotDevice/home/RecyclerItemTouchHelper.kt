@@ -30,7 +30,7 @@ class RecyclerItemTouchHelper(dragDirs: Int, swipeDirs: Int, private val listene
                 actionState, isCurrentlyActive)
     }
 
-    override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder) {
+    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         val foregroundView = (viewHolder as  ImageListAdapter.ViewHolder).viewForeground
         ItemTouchHelper.Callback.getDefaultUIUtil().clearView(foregroundView)
     }

@@ -8,7 +8,7 @@ import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.common.ChartUtils.Companion.calHourAndMinutes
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import iotdevice.com.iotDevice.repository.DeviceStatusRepository
-import iotdevice.com.iot_device.R
+import iotdevice.com.iotDevice.R
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import java.util.*

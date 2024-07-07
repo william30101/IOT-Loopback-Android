@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
-        <import type="android.text.TextUtils"/>
+<!--        <import type="android.view.View"/>-->
+<!--        <import type="android.text.TextUtils"/>-->
 
         <variable
             name="barChartBottomInfo"
@@ -91,6 +91,7 @@
             app:layout_constraintTop_toTopOf="@+id/line3_title"
             tools:text="10" />
 
+<!--        android:visibility="@{TextUtils.isEmpty(barChartBottomInfo.line4Title) ? View.GONE : View.VISIBLE}"-->
         <TextView
             android:id="@+id/line4_title"
             android:layout_width="wrap_content"
@@ -98,16 +99,15 @@
             android:layout_marginBottom="8dp"
             tools:text="line4_title"
             android:text="@{barChartBottomInfo.line4Title}"
-            android:visibility="@{TextUtils.isEmpty(barChartBottomInfo.line4Title) ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/line3_title" />
 
+<!--        android:visibility="@{TextUtils.isEmpty(barChartBottomInfo.line4Value) ? View.GONE : View.VISIBLE }"-->
         <TextView
             android:id="@+id/line4_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{barChartBottomInfo.line4Value}"
-            android:visibility="@{TextUtils.isEmpty(barChartBottomInfo.line4Value) ? View.GONE : View.VISIBLE }"
             app:layout_constraintStart_toStartOf="@+id/line3_value"
             app:layout_constraintTop_toTopOf="@+id/line4_title"
             tools:text="150" />

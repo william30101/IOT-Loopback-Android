@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="java.lang.Long" />
+<!--        <import type="java.lang.Long" />-->
         <variable
             name="itemViewModel"
             type="iotdevice.com.iotDevice.chart.ItemViewModel"/>

@@ -20,7 +20,7 @@ class IOTPreference {
 
         fun getUserName(): String {
             return App.sInstance.getSharedPreferences(saveFileName, MODE_PRIVATE)
-                    .getString("USERNAME", "")
+                    .getString("USERNAME", "")!!
         }
     }
 }

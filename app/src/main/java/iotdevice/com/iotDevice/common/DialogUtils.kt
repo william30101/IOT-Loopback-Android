@@ -2,7 +2,7 @@ package iotdevice.com.iotDevice.common
 
 import android.content.Context
 import android.support.v7.app.AlertDialog
-import iotdevice.com.iot_device.R
+import iotdevice.com.iotDevice.R
 
 class DialogUtils {
 

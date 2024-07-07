@@ -19,29 +19,34 @@ repositories {
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    compileSdkVersion 34
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 22
+        targetSdkVersion 34
     }
     compileOptions {
         encoding 'UTF-8'
-        sourceCompatibility JavaVersion.VERSION_1_6
-        targetCompatibility JavaVersion.VERSION_1_6
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         debugincloud {
-            debuggable true
         }
         release {
             minifyEnabled false
         }
     }
+
+    useLibrary("org.apache.http.legacy")
+
+    namespace 'com.strongloop.android.loopback'
 }
 
 dependencies {
-    compile 'org.atteo:evo-inflector:1.2'
-    compile 'com.google.guava:guava:18.0'
-    compile 'com.loopj.android:android-async-http:1.4.6'
+    implementation 'com.loopj.android:android-async-http:1.4.6'
+    implementation 'org.atteo:evo-inflector:1.2'
+    implementation 'com.google.guava:guava:18.0'
+//    compile 'org.atteo:evo-inflector:1.2'
+//    compile 'com.google.guava:guava:18.0'
+//    compile 'com.loopj.android:android-async-http:1.4.6'
 }

@@ -4,13 +4,16 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.*
+import android.widget.Button
 import com.strongloop.android.loopback.callbacks.ListCallback
 import com.strongloop.android.loopback.callbacks.ObjectCallback
 import iotdevice.com.iotDevice.App
@@ -26,8 +29,7 @@ import iotdevice.com.iotDevice.model.relateview.ImageModel
 import iotdevice.com.iotDevice.repository.CustomerDeviceRepository
 import iotdevice.com.iotDevice.repository.CustomerRepository
 import iotdevice.com.iotDevice.repository.DeviceRepository
-import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.fragment_home.*
+import iotdevice.com.iotDevice.R
 import org.apache.http.client.HttpResponseException
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
@@ -44,38 +46,50 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
     private lateinit var customerDeviceRepository: CustomerDeviceRepository
     private lateinit var customerRepository: CustomerRepository
     private lateinit var deviceRepository: DeviceRepository
+    private lateinit var  homeSwipeRefreshLayout: SwipeRefreshLayout
     val adapter = App.sInstance.loopBackAdapter.apply {
         customerDeviceRepository = this.createRepository(CustomerDeviceRepository::class.java)
         customerRepository = this.createRepository(CustomerRepository::class.java)
         deviceRepository = this.createRepository(DeviceRepository::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_home, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
-        activity.title = getString(R.string.home_screen_title)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        activity?.title = getString(R.string.home_screen_title)
+
+        val addDeviceFab = view.findViewById<FloatingActionButton>(R.id.addDeviceFab)
+
+        val imageListRecyclerView = view.findViewById<RecyclerView>(R.id.imageListRecyclerView)
+
+        homeSwipeRefreshLayout = view.findViewById(R.id.homeSwipeRefreshLayout)!!
 
         imageList.clear()
-        addDeviceFab.setOnClickListener({ _ ->
+        addDeviceFab?.setOnClickListener { _ ->
             val intent = Intent(activity, AddDevicesActivity::class.java)
 
             intent.putParcelableArrayListExtra("itemList", imageList)
             startActivity(intent)
-        })
+        }
 
-        imageListRecyclerView.layoutManager = LinearLayoutManager(activity)
+        imageListRecyclerView?.layoutManager = LinearLayoutManager(activity)
 
 
 
-        imageAdapter = ImageListAdapter(context)
-        imageListRecyclerView.adapter = imageAdapter
+        imageAdapter = ImageListAdapter(context!!)
+        imageListRecyclerView?.adapter = imageAdapter
 
         imageAdapter.setOnItemClickListener(object : ImageListAdapter.ClickListener {
             override fun onItemLongClick(position: Int, v: View) {
-                activity.startActivity<EditDeviceActivity>("deviceId" to imageList[position].deviceId, "deviceName" to imageList[position].displayName)
+                activity?.startActivity<EditDeviceActivity>("deviceId" to imageList[position].deviceId, "deviceName" to imageList[position].displayName)
             }
 
             override fun onItemClick(position: Int, v: View) {
@@ -83,7 +97,7 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
                 val chartFragment = ChartFragment()
                 val bundle = Bundle()
                 bundle.putParcelable("device", imageList[position])
-                transmitFragment(fragmentManager, chartFragment, bundle)
+                transmitFragment(fragmentManager!!, chartFragment, bundle)
             }
         })
 
@@ -97,9 +111,9 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
 
-        homeSwipeRefreshLayout.setOnRefreshListener({
+        homeSwipeRefreshLayout.setOnRefreshListener {
             getDevice()
-        })
+        }
 
     }
 
@@ -131,9 +145,9 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
 
         searchView?.apply {
             // Get the SearchView and set the searchable configuration
-            val searchManager = activity.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+            val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
-            setSearchableInfo(searchManager.getSearchableInfo(activity.componentName))
+            setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
 
             setIconifiedByDefault(true)
             queryHint = getString(R.string.search_hint)
@@ -204,7 +218,7 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
                         }
                     }
                 } else {
-                    DialogUtils.createAlertDialog( activity, getString(R.string.home_title))
+                    DialogUtils.createAlertDialog( activity!!, getString(R.string.home_title))
 
                 }
 //                HttpURLConnection.HTTP_UNSUPPORTED_TYPE
@@ -220,7 +234,7 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
             val deletedItem = imageList.get(viewHolder.adapterPosition)
 
             // remove the item from recycler view
-            DialogUtils.createConfirmDialog(activity, getString(R.string.del_device_title), getString(R.string.del_device_desc), {
+            DialogUtils.createConfirmDialog(activity!!, getString(R.string.del_device_title), getString(R.string.del_device_desc), {
 
                 customerDeviceRepository.delDevice(deletedItem.id, object : ObjectCallback<CustomerDeviceModel> {
                     override fun onSuccess(myObj: CustomerDeviceModel?) {
@@ -228,7 +242,7 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
                     }
 
                     override fun onError(t: Throwable?) {
-                        DialogUtils.createAlertDialog(activity, getString(R.string.del_device_title),
+                        DialogUtils.createAlertDialog(activity!!, getString(R.string.del_device_title),
                                 getString(R.string.del_device_fail))
                     }
                 })}, {
@@ -238,7 +252,7 @@ class HomeFragment : Fragment(), TokenManager.LoginListener , AnkoLogger, Recycl
 
     fun createAlertDialog() {
 
-        val builder = AlertDialog.Builder(context).apply {
+        val builder = AlertDialog.Builder(context!!).apply {
             this.setTitle("NetworkError")
             this.setMessage("Please Check your connection status")
             this.setPositiveButton("OK"){_, _-> }

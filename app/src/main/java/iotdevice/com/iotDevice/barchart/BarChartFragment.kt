@@ -7,6 +7,7 @@ import android.graphics.RectF
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
+import iotdevice.com.iotDevice.R
 import iotdevice.com.iotDevice.chart.ChartListItem
 import iotdevice.com.iotDevice.common.ChartUtils
 import iotdevice.com.iotDevice.common.ChartUtils.Companion.AVERAGE_OUTPUT
@@ -31,9 +33,7 @@ import iotdevice.com.iotDevice.common.ChartUtils.Companion.OPERATION_TIME
 import iotdevice.com.iotDevice.common.ChartUtils.Companion.averageProductvityUnit
 import iotdevice.com.iotDevice.common.ChartUtils.Companion.hourUnit
 import iotdevice.com.iotDevice.common.ChartUtils.Companion.productivityUnit
-import iotdevice.com.iot_device.R
-import iotdevice.com.iot_device.databinding.BarchartBinding
-import kotlinx.android.synthetic.main.fragment_chart.*
+import iotdevice.com.iotDevice.databinding.BarchartBinding
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 
@@ -53,21 +53,30 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
     private var instance: BarChartFragment? = null
 
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
+
     val barColor = intArrayOf(ColorTemplate.rgb("#ff3333"), ColorTemplate.rgb("#ff0088"),
             ColorTemplate.rgb("#a500cc"), ColorTemplate.rgb("#770077"))
 
     private lateinit var barChartViewModel: BarChartViewModel
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.barchart, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mTfRegular = Typeface.createFromAsset(activity.assets, "OpenSans-Regular.ttf")
-        mTfLight = Typeface.createFromAsset(activity.assets, "OpenSans-Light.ttf")
+        mTfRegular = Typeface.createFromAsset(activity?.assets, "OpenSans-Regular.ttf")
+        mTfLight = Typeface.createFromAsset(activity?.assets, "OpenSans-Light.ttf")
+
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
 
         binding.barChart.setOnChartValueSelectedListener(this)
 
@@ -123,11 +132,11 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
         val arguments = arguments
 
-        val device = arguments.getParcelable<ChartListItem>("device")
+        val device = arguments?.getParcelable<ChartListItem>("device")
 
-        deviceId = device.deviceId
-        itemTitle = device.title
-        deviceName = arguments.getString("deviceName")
+        deviceId = device?.deviceId ?: 0
+        itemTitle = device?.title ?: ""
+        deviceName = arguments?.getString("deviceName") ?: ""
 
 
         barChartViewModel = ViewModelProviders.of(this).get(BarChartViewModel::class.java)
@@ -151,14 +160,14 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
                     when(this.xAxisType) {
                         ChartUtils.AxisXType.Hour -> {
                             setAxisXFormatter(HourAxisValueFormatter(binding.barChart))
-                            val mv = XYMarkerView(activity, HourAxisValueFormatter(binding.barChart), it.enablePointDecimal)
-                            mv.chartView = binding.barChart // For bounds control
+                            val mv = activity?.let { it1 -> XYMarkerView(it1, HourAxisValueFormatter(binding.barChart), it.enablePointDecimal) }
+                            mv?.chartView = binding.barChart // For bounds control
                             binding.barChart.marker = mv // Set the marker to the chart
                         }
                         ChartUtils.AxisXType.Month -> {
                             setAxisXFormatter(DayAxisValueFormatter(binding.barChart))
-                            val mv = XYMarkerView(activity, DayAxisValueFormatter(binding.barChart), it.enablePointDecimal)
-                            mv.chartView = binding.barChart // For bounds control
+                            val mv = activity?.let { it1 -> XYMarkerView(it1, DayAxisValueFormatter(binding.barChart), it.enablePointDecimal) }
+                            mv?.chartView = binding.barChart // For bounds control
                             binding.barChart.marker = mv // Set the marker to the chart
                         }
                     }
@@ -219,7 +228,7 @@ class BarChartFragment: Fragment(), AnkoLogger, OnChartValueSelectedListener {
 
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         info { "test" }
 //        outState?.putSerializable(STATE_ITEMS, mItems)

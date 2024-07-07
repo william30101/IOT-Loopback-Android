@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import com.strongloop.android.loopback.RestAdapter
 import iotdevice.com.iotDevice.member.TokenManager
-import iotdevice.com.iot_device.BuildConfig
 import kotlin.properties.Delegates
 
 class App : Application() {
@@ -30,7 +29,7 @@ class App : Application() {
                             applicationContext, "http://35.194.235.166:3000/api")
                 } else {
                     RestAdapter(
-                            applicationContext, "http://192.168.0.103:3000/api")
+                            applicationContext, "http://35.194.235.166:3000/api")
                 }
             }
             return adapter!!

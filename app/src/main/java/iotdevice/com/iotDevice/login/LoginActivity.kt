@@ -5,6 +5,11 @@ import android.accounts.AccountManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.AppCompatEditText
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import iotdevice.com.iotDevice.common.DialogUtils
 import iotdevice.com.iotDevice.common.IOTPreference
 import iotdevice.com.iotDevice.home.HomeActivity
@@ -14,8 +19,7 @@ import iotdevice.com.iotDevice.member.auth.AuthUtil
 import iotdevice.com.iotDevice.model.CustomerModel
 import iotdevice.com.iotDevice.register.RegisterActivity
 import iotdevice.com.iotDevice.resetpassword.ResetPasswordActivity
-import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.activity_login.*
+import iotdevice.com.iotDevice.R
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.startActivity
@@ -39,17 +43,17 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
         mAccountManager = AccountManager.get(this)
 //        val loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
 
-        loginBtn.setOnClickListener({ _ ->
+        findViewById<Button>(R.id.loginBtn).setOnClickListener {
             checkUserInput()
-        })
+        }
 
-        registerTextView.setOnClickListener({ _ ->
+        findViewById<ImageView>(R.id.registerImageView).setOnClickListener {
             startActivity(RegisterActivityIntent())
-        })
+        }
 
-        forgotPasswordTextView.setOnClickListener({ _ ->
+        findViewById<TextView>(R.id.forgotPasswordTextView).setOnClickListener {
             startActivity<ResetPasswordActivity>()
-        })
+        }
 
         val intent = Intent(this, HomeActivity::class.java)
 
@@ -68,8 +72,10 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
 
     override fun onLoginComplete(result: CustomerModel) {
         val authToken = result.id
-        val accountName = loginUserName.text.toString()
-        val accountPassword = password_Edit.text.toString()
+
+
+        val accountName = findViewById<AppCompatEditText>(R.id.loginUserName).text.toString()
+        val accountPassword = findViewById<EditText>(R.id.password_Edit).text.toString()
         val account = Account(accountName, AuthUtil.ACCOUNT_TYPE_NAME)
 
         info("authToken : $authToken")
@@ -87,7 +93,7 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
 //        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, AuthUtil.AUTH_TOKEN_TYPE_NAME)
         intent.putExtra(AccountManager.KEY_AUTHTOKEN, authToken)
         intent.putExtra(AccountManager.KEY_PASSWORD, accountPassword)
-        setAccountAuthenticatorResult(intent.extras)
+        setAccountAuthenticatorResult(intent.extras!!)
         setResult(RESULT_OK, intent)
 
         IOTPreference.saveUserName(result.username)
@@ -102,16 +108,17 @@ class LoginActivity : AccountAuthenticatorActivity(), AnkoLogger, TokenManager.L
 
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         setResult(RESULT_CANCELED)
         super.onBackPressed()
     }
 
     private fun checkUserInput() {
-        if (loginUserName.text.toString().isNotEmpty() &&
-                password_Edit.text.toString().isNotEmpty()) {
-            TokenManager.performLoginRequest(loginUserName.text.toString(),
-                    password_Edit.text.toString(), this)
+        if (findViewById<AppCompatEditText>(R.id.loginUserName).text.toString().isNotEmpty() &&
+            findViewById<EditText>(R.id.password_Edit).text.toString().isNotEmpty()) {
+            TokenManager.performLoginRequest(findViewById<AppCompatEditText>(R.id.loginUserName).text.toString(),
+                findViewById<EditText>(R.id.password_Edit).text.toString(), this)
         } else {
             DialogUtils.createAlertDialog( this, getString(R.string.login_title), msg = resources.getString(R.string.loginin_field_not_completed))
         }

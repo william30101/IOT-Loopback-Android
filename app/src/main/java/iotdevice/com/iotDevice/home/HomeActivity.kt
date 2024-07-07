@@ -6,8 +6,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import iotdevice.com.iotDevice.common.BaseActivity
 import iotdevice.com.iotDevice.more.MoreFragment
-import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.activity_home.*
+import iotdevice.com.iotDevice.R
 import org.jetbrains.anko.AnkoLogger
 
 
@@ -72,12 +71,14 @@ class HomeActivity : BaseActivity(), AnkoLogger {
         setContentView(R.layout.activity_home)
 
 
+        val navigation = findViewById<BottomNavigationView>(R.id.navigation)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         // Open Home fragment
         changeFragmentTo(FragmentType.Home)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         if (manager.backStackEntryCount ==1) {
             finish()

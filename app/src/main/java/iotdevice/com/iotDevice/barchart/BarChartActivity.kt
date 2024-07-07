@@ -6,11 +6,12 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
+import iotdevice.com.iotDevice.R
 import iotdevice.com.iotDevice.chart.ChartListItem
 import iotdevice.com.iotDevice.common.BaseActivity
 import iotdevice.com.iotDevice.common.ChartUtils
-import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.activity_barchart.*
+
+
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 
@@ -19,7 +20,7 @@ class BarChartActivity: BaseActivity(), AnkoLogger, ViewPager.OnPageChangeListen
 
     private lateinit var pageList: MutableList<PageView>
 
-    lateinit var fragmentBundle: Bundle
+    var fragmentBundle: Bundle? = null
     var firstSelectedPosition: Int = 0
     val itemList = ChartUtils.charItemList
     var deviceName = ""
@@ -30,10 +31,12 @@ class BarChartActivity: BaseActivity(), AnkoLogger, ViewPager.OnPageChangeListen
         setContentView(R.layout.activity_barchart)
 
         fragmentBundle = intent.extras
-        val device = fragmentBundle.getParcelable<ChartListItem>("device")
-        deviceName = fragmentBundle.getString("deviceName")
+        val device = fragmentBundle?.getParcelable<ChartListItem>("device")
+        deviceName = fragmentBundle?.getString("deviceName") ?: ""
 
-        firstSelectedPosition = itemList.indexOfFirst { it.title == device.title }
+        firstSelectedPosition = itemList.indexOfFirst { it.title == device?.title }
+
+        val pager = findViewById<ViewPager>(R.id.pager)
 
         pager.adapter = BarChartPagerAdapter(this, supportFragmentManager)
         pager.addOnPageChangeListener(this)
