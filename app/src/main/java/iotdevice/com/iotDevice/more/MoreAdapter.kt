@@ -5,10 +5,11 @@ import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import iotdevice.com.iotDevice.common.RecycleViewListener
 import iotdevice.com.iot_device.R
 import iotdevice.com.iot_device.databinding.LayoutMoreHeaderBinding
@@ -36,7 +37,7 @@ class MoreAdapter(private val context: Context, private val userName: String): R
         return itemList.size + 1
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         when(holder) {
             is HeaderViewHolder -> {

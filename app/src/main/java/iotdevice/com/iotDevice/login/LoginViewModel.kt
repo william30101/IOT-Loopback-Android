@@ -1,16 +1,17 @@
 package iotdevice.com.iotDevice.login
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.strongloop.android.loopback.AccessToken
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.model.CustomerModel
 import iotdevice.com.iotDevice.repository.CustomerRepository
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 
-class LoginViewModel : ViewModel(), AnkoLogger {
+
+class LoginViewModel : ViewModel() {
 
     val userData = MutableLiveData<CustomerModel>()
 
@@ -23,7 +24,7 @@ class LoginViewModel : ViewModel(), AnkoLogger {
         customerRepo.loginUser(email, password,
                 object : CustomerRepository.LoginCallback {
                     override fun onSuccess(token: AccessToken?, currentUser: CustomerModel?) {
-                        info("currentUser :" + currentUser?.username + " AccessToken" + token)
+                        Log.i(tag, "currentUser :" + currentUser?.username + " AccessToken" + token)
 
                         currentUser?.id = token?.id.toString()
                         userData.value = currentUser
@@ -31,12 +32,16 @@ class LoginViewModel : ViewModel(), AnkoLogger {
 
                     override fun onError(throwObj: Throwable) {
                         // login failed
-                        info("loginfail $throwObj")
+                        Log.i(tag, "loginfail $throwObj")
                     }
                 }
         )
 
         return userData
+    }
+
+    companion object {
+        const val tag = "LoginViewModel"
     }
 
 

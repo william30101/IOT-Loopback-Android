@@ -13,26 +13,26 @@ buildscript {
 }
 
 repositories {
-    mavenLocal()
-    mavenCentral()
+//    mavenLocal()
+//    mavenCentral()
 
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    useLibrary 'org.apache.http.legacy'
+    compileSdkVersion 34
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 22
+        //noinspection EditedTargetSdkVersion
+        targetSdkVersion 34
     }
     compileOptions {
         encoding 'UTF-8'
-        sourceCompatibility JavaVersion.VERSION_1_6
-        targetCompatibility JavaVersion.VERSION_1_6
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         debugincloud {
-            debuggable true
         }
         release {
             minifyEnabled false
@@ -41,7 +41,9 @@ android {
 }
 
 dependencies {
-    compile 'org.atteo:evo-inflector:1.2'
-    compile 'com.google.guava:guava:18.0'
-    compile 'com.loopj.android:android-async-http:1.4.6'
+    implementation 'org.atteo:evo-inflector:1.2'
+    implementation 'com.google.guava:guava:18.0'
+    implementation 'com.loopj.android:android-async-http:1.4.6'
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+
 }

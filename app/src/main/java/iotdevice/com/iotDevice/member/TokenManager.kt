@@ -6,18 +6,19 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.login.LoginActivity
 import iotdevice.com.iotDevice.member.auth.AuthUtil
 import iotdevice.com.iotDevice.model.CustomerModel
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.sql.Timestamp
 
-object TokenManager: AuthenticationSessionFacade, AnkoLogger {
+object TokenManager: AuthenticationSessionFacade {
 
+    val tag = "TokenManager"
     var passwordFromManager = ""
     var mUsername = ""           // User name for currently logged in user
 
@@ -62,7 +63,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
                     setLoginStatus(true, accountName, mExpiryTimestamp!!, refreshToken, password)
 
                 } catch (e: Exception) {
-                    info("getAuthToken failed: " + e.message)
+                    Log.i(tag, "getAuthToken failed: " + e.message)
                 }
 //            }
 
@@ -92,7 +93,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
 
         val memberRequestService = MemberRequestService()
 
-        launch(UI) {
+        MainScope().launch {
             memberRequestService.signIn(userName, password, loginListener)
         }
     }
@@ -101,7 +102,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
 
         val memberRequestService = MemberRequestService()
 
-        launch(UI) {
+        MainScope().launch {
             memberRequestService.register(email, password, userName, resiterListener)
         }
     }
@@ -114,7 +115,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
         mRefreshToken = refreshToken
         passwordFromManager = password
 
-        info("======= set Login status")
+        Log.i(tag, "======= set Login status")
     }
 
     override val isLoggedIn: Boolean
@@ -136,7 +137,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
                 ) {
 
                 isLoggedIn = true
-                info("currently logged in")
+                Log.i(tag, "currently logged in")
             }
 
             return isLoggedIn
@@ -148,7 +149,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
     }
 
     private fun requestLogin(launchingActivity: Activity, destinationIntent: Intent?) {
-        info("No accounts registered, requesting login")
+        Log.i(tag, "No accounts registered, requesting login")
 
         val intent = Intent(App.sInstance.context, LoginActivity::class.java)
 
@@ -175,7 +176,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
         mTokenAvailableListener = tokenListener
         val account = getAccount()
 
-        info(" ==== check login status")
+        Log.i(tag, " ==== check login status")
 
         if (!isLoggedIn) {  // no accounts, request login and create new
 //            requestLogin(launchingActivity, destinationIntent)
@@ -225,7 +226,7 @@ object TokenManager: AuthenticationSessionFacade, AnkoLogger {
 //                    requestLogin(launchingActivity, destinationIntent)
 //                }
                     } catch (e: Exception) {
-                        info("getAuthToken failed: " + e.message)
+                        Log.i(tag, "getAuthToken failed: " + e.message)
 
                         if (mTokenAvailableListener != null) {
                             mTokenAvailableListener?.OnTokenFailed(null)

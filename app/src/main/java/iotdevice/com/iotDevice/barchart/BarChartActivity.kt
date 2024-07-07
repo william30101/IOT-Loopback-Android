@@ -2,20 +2,18 @@ package iotdevice.com.iotDevice.barchart
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
+import android.util.Log
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import iotdevice.com.iotDevice.chart.ChartListItem
 import iotdevice.com.iotDevice.common.BaseActivity
 import iotdevice.com.iotDevice.common.ChartUtils
-import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.activity_barchart.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
+import iotdevice.com.iot_device.databinding.ActivityBarchartBinding
 
 
-class BarChartActivity: BaseActivity(), AnkoLogger, ViewPager.OnPageChangeListener {
+class BarChartActivity: BaseActivity(), ViewPager.OnPageChangeListener {
 
     private lateinit var pageList: MutableList<PageView>
 
@@ -24,21 +22,26 @@ class BarChartActivity: BaseActivity(), AnkoLogger, ViewPager.OnPageChangeListen
     val itemList = ChartUtils.charItemList
     var deviceName = ""
 
+    private lateinit var binding: ActivityBarchartBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_barchart)
+        binding = ActivityBarchartBinding.inflate(layoutInflater)
 
-        fragmentBundle = intent.extras
+        setContentView(binding.root)
+
+        fragmentBundle = intent?.extras!!
         val device = fragmentBundle.getParcelable<ChartListItem>("device")
-        deviceName = fragmentBundle.getString("deviceName")
+        deviceName = fragmentBundle.getString("deviceName").toString()
 
-        firstSelectedPosition = itemList.indexOfFirst { it.title == device.title }
 
-        pager.adapter = BarChartPagerAdapter(this, supportFragmentManager)
-        pager.addOnPageChangeListener(this)
-        pager.offscreenPageLimit = itemList.size
-        pager.currentItem = firstSelectedPosition
+        firstSelectedPosition = itemList.indexOfFirst { it.title == device!!.title }
+
+        binding.pager.adapter = BarChartPagerAdapter(this, supportFragmentManager)
+        binding.pager.addOnPageChangeListener(this)
+        binding.pager.offscreenPageLimit = itemList.size
+        binding.pager.currentItem = firstSelectedPosition
     }
 
     override fun onPageScrollStateChanged(state: Int) {
@@ -48,7 +51,8 @@ class BarChartActivity: BaseActivity(), AnkoLogger, ViewPager.OnPageChangeListen
     }
 
     override fun onPageSelected(position: Int) {
-        info ("selected : $position")
+        Log.i(tag, "selected : $position")
+
         title = deviceName + " " + itemList[position].title
     }
 
@@ -90,6 +94,10 @@ class BarChartActivity: BaseActivity(), AnkoLogger, ViewPager.OnPageChangeListen
         override fun getCount(): Int {
             return itemList.size
         }
+    }
+
+    companion object {
+        const val tag = "BarChartActivity"
     }
 
 }

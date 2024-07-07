@@ -9,10 +9,10 @@ import android.content.Intent
 import android.os.Bundle
 import iotdevice.com.iotDevice.login.LoginActivity
 import iotdevice.com.iotDevice.login.LoginActivity.Companion.ARG_IS_ADDING_NEW_ACCOUNT
-import org.jetbrains.anko.AnkoLogger
 
 
-class AccountAuthenticator(ctx: Context) : AbstractAccountAuthenticator(ctx), AnkoLogger {
+
+class AccountAuthenticator(ctx: Context) : AbstractAccountAuthenticator(ctx) {
 
     val context = ctx
 

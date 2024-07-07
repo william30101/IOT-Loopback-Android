@@ -1,8 +1,8 @@
 package iotdevice.com.iotDevice.home
 
 import android.graphics.Canvas
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Created by ravi on 29/09/17.
@@ -30,7 +30,7 @@ class RecyclerItemTouchHelper(dragDirs: Int, swipeDirs: Int, private val listene
                 actionState, isCurrentlyActive)
     }
 
-    override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder) {
+    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         val foregroundView = (viewHolder as  ImageListAdapter.ViewHolder).viewForeground
         ItemTouchHelper.Callback.getDefaultUIUtil().clearView(foregroundView)
     }

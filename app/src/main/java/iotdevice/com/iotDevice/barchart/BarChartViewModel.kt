@@ -1,7 +1,8 @@
 package iotdevice.com.iotDevice.barchart
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.github.mikephil.charting.data.BarEntry
 import com.strongloop.android.loopback.RestAdapter
 import com.strongloop.android.loopback.callbacks.ListCallback
@@ -14,11 +15,9 @@ import iotdevice.com.iotDevice.common.ChartUtils.Companion.resource
 import iotdevice.com.iotDevice.model.DeviceStatusModel
 import iotdevice.com.iotDevice.repository.DeviceStatusRepository
 import iotdevice.com.iot_device.R
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import java.util.*
 
-class BarChartViewModel: ViewModel(), AnkoLogger {
+class BarChartViewModel: ViewModel() {
 
     private val adapter: RestAdapter by lazy { App.sInstance.loopBackAdapter }
     private val deviceStatusRepository: DeviceStatusRepository by lazy { adapter.createRepository(DeviceStatusRepository::class.java) }
@@ -33,64 +32,68 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
             override fun onSuccess(objects: MutableList<DeviceStatusModel>?) {
 
                 // TODO: Put each login to different place
-                val todayStatus = objects!![0]
 
-                val deviceStatusList : Map<Int, Float> = mapOf(
-                        0 to todayStatus.productivity0.toFloat(),
-                        1 to todayStatus.productivity1.toFloat(),
-                        2 to todayStatus.productivity2.toFloat(),
-                        3 to todayStatus.productivity3.toFloat(),
-                        4 to todayStatus.productivity4.toFloat(),
-                        5 to todayStatus.productivity5.toFloat(),
-                        6 to todayStatus.productivity6.toFloat(),
-                        7 to todayStatus.productivity7.toFloat(),
-                        8 to todayStatus.productivity8.toFloat(),
-                        9 to todayStatus.productivity9.toFloat(),
-                        10 to todayStatus.productivity10.toFloat(),
-                        11 to todayStatus.productivity11.toFloat(),
-                        12 to todayStatus.productivity12.toFloat(),
-                        13 to todayStatus.productivity13.toFloat(),
-                        14 to todayStatus.productivity14.toFloat(),
-                        15 to todayStatus.productivity15.toFloat(),
-                        16 to todayStatus.productivity16.toFloat(),
-                        17 to todayStatus.productivity17.toFloat(),
-                        18 to todayStatus.productivity18.toFloat(),
-                        19 to todayStatus.productivity19.toFloat(),
-                        20 to todayStatus.productivity20.toFloat(),
-                        21 to todayStatus.productivity21.toFloat(),
-                        22 to todayStatus.productivity22.toFloat(),
-                        23 to todayStatus.productivity23.toFloat())
+                // Fix a bug, Server will generate two records if
+                val todayStatus = objects?.last()
 
-                val totalOfDay = todayStatus.productivity0 +
-                        todayStatus.productivity1 +
-                        todayStatus.productivity2 +
-                        todayStatus.productivity3 +
-                        todayStatus.productivity4 +
-                        todayStatus.productivity5 +
-                        todayStatus.productivity6 +
-                        todayStatus.productivity7 +
-                        todayStatus.productivity8 +
-                        todayStatus.productivity9 +
-                        todayStatus.productivity10 +
-                        todayStatus.productivity11 +
-                        todayStatus.productivity12 +
-                        todayStatus.productivity13 +
-                        todayStatus.productivity14 +
-                        todayStatus.productivity15 +
-                        todayStatus.productivity16 +
-                        todayStatus.productivity17 +
-                        todayStatus.productivity18 +
-                        todayStatus.productivity19 +
-                        todayStatus.productivity20 +
-                        todayStatus.productivity21 +
-                        todayStatus.productivity22 +
-                        todayStatus.productivity23
+                todayStatus?.run {
+                    val deviceStatusList : Map<Int, Float> = mapOf(
+                        0 to productivity0.toFloat(),
+                        1 to productivity1.toFloat(),
+                        2 to productivity2.toFloat(),
+                        3 to productivity3.toFloat(),
+                        4 to productivity4.toFloat(),
+                        5 to productivity5.toFloat(),
+                        6 to productivity6.toFloat(),
+                        7 to productivity7.toFloat(),
+                        8 to productivity8.toFloat(),
+                        9 to productivity9.toFloat(),
+                        10 to productivity10.toFloat(),
+                        11 to productivity11.toFloat(),
+                        12 to productivity12.toFloat(),
+                        13 to productivity13.toFloat(),
+                        14 to productivity14.toFloat(),
+                        15 to productivity15.toFloat(),
+                        16 to productivity16.toFloat(),
+                        17 to productivity17.toFloat(),
+                        18 to productivity18.toFloat(),
+                        19 to productivity19.toFloat(),
+                        20 to productivity20.toFloat(),
+                        21 to productivity21.toFloat(),
+                        22 to productivity22.toFloat(),
+                        23 to productivity23.toFloat())
 
-                val maxData = deviceStatusList.maxBy { it.value }
+                    val totalOfDay =
+                            productivity0 +
+                            productivity1 +
+                            productivity2 +
+                            productivity3 +
+                            productivity4 +
+                            productivity5 +
+                            productivity6 +
+                            productivity7 +
+                            productivity8 +
+                            productivity9 +
+                            productivity10 +
+                            productivity11 +
+                            productivity12 +
+                            productivity13 +
+                            productivity14 +
+                            productivity15 +
+                            productivity16 +
+                            productivity17 +
+                            productivity18 +
+                            productivity19 +
+                            productivity20 +
+                            productivity21 +
+                            productivity22 +
+                            productivity23
 
-                val currentHour = GregorianCalendar().get(Calendar.HOUR_OF_DAY)
+                    val maxData = deviceStatusList.maxBy { it.value }
 
-                val bottomInfo = BarChartBottomInfo(
+                    val currentHour = GregorianCalendar().get(Calendar.HOUR_OF_DAY)
+
+                    val bottomInfo = BarChartBottomInfo(
                         resource.getString(R.string.total_of_day_title),
                         totalOfDay.toString() + productivityUnit,
                         resource.getString(R.string.maximum_productivity_of_day_title),
@@ -99,13 +102,16 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
                         maxData?.key.toString()  + hourUnit,
                         resource.getString(R.string.current_productivity_of_day_title),
                         deviceStatusList[currentHour].toString()  + productivityUnit
-                )
+                    )
 
-                setOutputData("HourOutput", deviceStatusList, bottomInfo, true, getLeftAxisNumber(maxData))
+                    setOutputData("HourOutput", deviceStatusList, bottomInfo, true, getLeftAxisNumber(maxData))
+                } ?: run {
+                    Log.e(tag, "No Data")
+                }
             }
 
             override fun onError(t: Throwable?) {
-                info("error : $t")
+                Log.e(tag, "error : $t")
 
                 val deviceStatusList = mutableMapOf<Int, Float>()
 
@@ -198,7 +204,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
             }
 
             override fun onError(t: Throwable?) {
-                info("error : $t")
+                Log.i(tag, "error : $t")
 
                 val dayTotalList: MutableMap<Int, Float> = mutableMapOf()
                 initCurrentMonthDays(dayTotalList)
@@ -258,7 +264,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
             }
 
             override fun onError(t: Throwable?) {
-                info("error : $t")
+                Log.i(tag, "error : $t")
 
                 val dayTotalList: MutableMap<Int, Float> = mutableMapOf()
 
@@ -349,7 +355,7 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
             }
 
             override fun onError(t: Throwable?) {
-                info("error : $t")
+                Log.i(tag, "error : $t")
 
                 val dayTotalList: MutableMap<Int, Float> = mutableMapOf()
 
@@ -393,6 +399,10 @@ class BarChartViewModel: ViewModel(), AnkoLogger {
         for (i in 1..days) {
             monthMap[i] = 0f
         }
+    }
+
+    companion object {
+        const val tag = "BarChartViewModel"
     }
 }
 

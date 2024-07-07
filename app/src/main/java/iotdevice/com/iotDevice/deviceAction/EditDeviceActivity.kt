@@ -1,7 +1,8 @@
 package iotdevice.com.iotDevice.deviceAction
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.strongloop.android.loopback.callbacks.ObjectCallback
 import iotdevice.com.iotDevice.App
 import iotdevice.com.iotDevice.common.DialogUtils
@@ -9,16 +10,16 @@ import iotdevice.com.iotDevice.model.CustomerDeviceModel
 import iotdevice.com.iotDevice.repository.CustomerDeviceRepository
 import iotdevice.com.iotDevice.repository.CustomerRepository
 import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.activity_edit_device.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.toast
+import iotdevice.com.iot_device.databinding.ActivityEditDeviceBinding
 import java.util.*
 import kotlin.concurrent.schedule
 
-class EditDeviceActivity : AppCompatActivity(), AnkoLogger {
+class EditDeviceActivity : AppCompatActivity() {
 
     lateinit var customerDeviceRepository: CustomerDeviceRepository
     lateinit var customerRepository: CustomerRepository
+
+    lateinit var binding: ActivityEditDeviceBinding
 
     val adapter = App.sInstance.loopBackAdapter.apply {
         customerDeviceRepository = this.createRepository(CustomerDeviceRepository::class.java)
@@ -27,23 +28,24 @@ class EditDeviceActivity : AppCompatActivity(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_device)
+        binding = ActivityEditDeviceBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val deviceId = intent.getIntExtra("deviceId", -1)
         val deviceName = intent.getStringExtra("deviceName")
 
         title = getString(R.string.edit_device_title)
-        originalDeviceName.text = deviceName
+        binding.originalDeviceName.text = deviceName
 
-        edit_device_name_btn.setOnClickListener({ _ ->
-            if (nexDeviceName.text.isNotEmpty()) {
+        binding.editDeviceNameBtn.setOnClickListener({ _ ->
+            if (binding.nexDeviceName.text.isNotEmpty()) {
                 customerDeviceRepository.editDevice(
                         customerRepository.currentUserId as Int,
                         deviceId,
-                        nexDeviceName.text.toString(),
+                        binding.nexDeviceName.text.toString(),
                         object : ObjectCallback<CustomerDeviceModel> {
                             override fun onSuccess(retObject: CustomerDeviceModel?) {
-                                toast(getString(R.string.edit_device_success))
+                                Toast.makeText(applicationContext, getString(R.string.edit_device_success), Toast.LENGTH_SHORT).show()
                                 Timer().schedule(2000) {
                                     finish()
                                 }

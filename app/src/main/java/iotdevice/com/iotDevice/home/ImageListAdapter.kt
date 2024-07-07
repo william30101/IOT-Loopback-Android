@@ -1,14 +1,15 @@
 package iotdevice.com.iotDevice.home
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import iotdevice.com.iotDevice.model.relateview.ImageModel
 import iotdevice.com.iot_device.R
-import kotlinx.android.synthetic.main.layout_image_list_item.view.*
 
 
 class ImageListAdapter(val context: Context) : RecyclerView.Adapter<ImageListAdapter.ViewHolder>() {
@@ -21,8 +22,8 @@ class ImageListAdapter(val context: Context) : RecyclerView.Adapter<ImageListAda
     val iconList = arrayListOf(R.mipmap.list_item_0, R.mipmap.list_item_1,
             R.mipmap.list_item_2, R.mipmap.list_item_3)
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.layout_image_list_item, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_image_list_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -30,8 +31,8 @@ class ImageListAdapter(val context: Context) : RecyclerView.Adapter<ImageListAda
         return feedModelItems.size
     }
 
-    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.bindImageModel( feedModelItems[position], position, context)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bindImageModel( feedModelItems[position], position, context)
     }
 
     interface ClickListener {
@@ -87,10 +88,12 @@ class ImageListAdapter(val context: Context) : RecyclerView.Adapter<ImageListAda
 
         fun bindImageModel(imageModel: ImageModel, position: Int, context: Context){
             // set displayName
-            itemView.descriptionTextView.text = imageModel.displayName
 
-            viewBackground = itemView.view_background
-            viewForeground = itemView.view_foreground
+            itemView.findViewById<TextView>(R.id.descriptionTextView).text  = imageModel.displayName
+
+            viewBackground = itemView.findViewById(R.id.view_background)
+            viewForeground = itemView.findViewById(R.id.view_foreground)
+
 
 //            itemView.editDevice.setOnClickListener({
 //                clickListener.onEditClick( adapterPosition, itemView)
@@ -100,7 +103,7 @@ class ImageListAdapter(val context: Context) : RecyclerView.Adapter<ImageListAda
 //                clickListener.onDelClick ( adapterPosition, itemView)
 //            })
 
-            itemView.imageView.setImageDrawable(context.getDrawable(iconList[position % 4]))
+            itemView.findViewById<ImageView>(R.id.imageView).setImageDrawable(context.getDrawable(iconList[position % 4]))
         }
 
         override fun onClick(v: View?) {

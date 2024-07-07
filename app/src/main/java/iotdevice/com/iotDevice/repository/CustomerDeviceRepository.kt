@@ -1,5 +1,6 @@
 package iotdevice.com.iotDevice.repository
 
+import android.util.Log
 import com.google.common.collect.ImmutableMap
 import com.strongloop.android.loopback.ModelRepository
 import com.strongloop.android.loopback.callbacks.JsonArrayParser
@@ -7,11 +8,9 @@ import com.strongloop.android.loopback.callbacks.JsonObjectParser
 import com.strongloop.android.loopback.callbacks.ListCallback
 import com.strongloop.android.loopback.callbacks.ObjectCallback
 import iotdevice.com.iotDevice.model.CustomerDeviceModel
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.json.JSONObject
 
-class CustomerDeviceRepository : ModelRepository<CustomerDeviceModel>("CustomerDevice", "CustomerDevices", CustomerDeviceModel::class.java), AnkoLogger {
+class CustomerDeviceRepository : ModelRepository<CustomerDeviceModel>("CustomerDevice", "CustomerDevices", CustomerDeviceModel::class.java) {
     fun add(deviceId: String, customerId: String, displayName: String = "", factoryCode: String, callback: ObjectCallback<CustomerDeviceModel>) {
 
 //        val createRelation = JSONObject("""{"customerId":$customerId, "deviceId": $deviceId }""")
@@ -56,7 +55,7 @@ class CustomerDeviceRepository : ModelRepository<CustomerDeviceModel>("CustomerD
                         }
 
                         override fun onError(t: Throwable?) {
-                            info("fail")
+                            Log.i(tag, "fail")
                         }
                     }))
         }
@@ -67,5 +66,9 @@ class CustomerDeviceRepository : ModelRepository<CustomerDeviceModel>("CustomerD
             invokeStaticMethod("prototype.remove", mapOf("id" to id),
                     JsonObjectParser(this@CustomerDeviceRepository, callback))
         }
+    }
+
+    companion object {
+        const val tag = "CustomerDeviceReposit"
     }
 }

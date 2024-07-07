@@ -2,15 +2,22 @@ package iotdevice.com.iotDevice.barchart
 
 import com.github.mikephil.charting.charts.BarLineChartBase
 import com.github.mikephil.charting.components.AxisBase
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.utils.ViewPortHandler
 import java.util.*
 
 /**
  * Created by philipp on 02/06/16.
  */
-class DayAxisValueFormatter(private val chart: BarLineChartBase<*>) : IAxisValueFormatter {
+class DayAxisValueFormatter(private val chart: BarLineChartBase<*>, enableDecimalPoint: Boolean = false) : iotdevice.com.iotDevice.barchart.ValueFormatter(
+    enableDecimalPoint
+){
 
-    override fun getFormattedValue(value: Float, axis: AxisBase?): String {
+    override fun getFormattedValue(
+        value: Float
+    ): String {
 
         val days = value.toInt()
 
@@ -25,7 +32,7 @@ class DayAxisValueFormatter(private val chart: BarLineChartBase<*>) : IAxisValue
         } else {
 
             val dayOfMonth = determineDayOfMonth(days, month + 12 * (year - 2016))
-            dayOfMonth.toString() + " " + monthName
+            "$dayOfMonth $monthName"
         }
     }
 
