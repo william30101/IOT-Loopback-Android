@@ -20,15 +20,16 @@ repositories {
 
 android {
     useLibrary 'org.apache.http.legacy'
-    compileSdkVersion 30
+    compileSdkVersion 34
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        //noinspection EditedTargetSdkVersion
+        targetSdkVersion 34
     }
     compileOptions {
         encoding 'UTF-8'
-        sourceCompatibility JavaVersion.VERSION_1_6
-        targetCompatibility JavaVersion.VERSION_1_6
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         debugincloud {

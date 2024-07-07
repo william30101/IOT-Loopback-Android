@@ -21,11 +21,11 @@ android {
             storePassword '1qaz@WSX'
         }
     }
-    compileSdkVersion 33
+    compileSdkVersion 34
     defaultConfig {
         applicationId "iotdevice.com.iot_device"
         minSdkVersion 21
-        targetSdk 33
+        targetSdk 34
         versionCode 25
         versionName "2.2.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -53,6 +53,10 @@ android {
         jvmTarget = '1.8'
     }
     useLibrary("org.apache.http.legacy")
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 ext {
